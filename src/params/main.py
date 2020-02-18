@@ -137,3 +137,7 @@ def main(path_to_data, path_to_out, num_seeds, num_cores):
     df = pd.concat(dfs)
     df["total_time"] = df["exit_date"] - df["arrival_date"]
     df.to_csv(path_to_out, index=False)
+
+
+if __name__ == "__main__":
+    main(PATH_TO_DATA, PATH_TO_OUT, NUM_SEEDS, NUM_CORES)
