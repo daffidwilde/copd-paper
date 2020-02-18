@@ -75,7 +75,7 @@ def run_multiple_class_trial(
 
     ciw.seed(seed)
 
-    all_queue_params = defaultdict(dict)
+    all_queue_params = {}
     for (intervention, subdata), service_prop in zip(
         data.groupby("intervention"), props
     ):
