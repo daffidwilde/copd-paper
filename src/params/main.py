@@ -32,7 +32,7 @@ def get_queue_params(data, prop, dist=stats.expon):
     lambda_ = np.mean(interarrival_times)
 
     mean_system_time = np.mean(data["true_los"])
-    mu_estimate = mean_system_time * service_prop
+    mu_estimate = mean_system_time * prop
 
     queue_params = {"arrival": 1 / lambda_, "service": 1 / mu_estimate}
 
