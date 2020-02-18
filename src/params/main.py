@@ -50,8 +50,8 @@ def run_multiple_class_trial(
     data : pandas.DataFrame
         The dataset to use for simulation. Assumed columns are: "intervention",
         "arrival_date", "discharge_date", "true_los".
-    props : list
-        A list of the service proportions for each class, :math:`p_i`.
+    props : tuple
+        A tuple of the service proportions for each class, :math:`p_i`.
     num_servers : int
         The number of servers in the system, :math:`c`.
     max_time : int
@@ -106,7 +106,9 @@ def run_multiple_class_trial(
         ]
     )
 
-    results["service_prop"] = round(props[results["customer_class"] - 1], 2)
+    results["service_prop"] = results["customer_class"].apply(
+        lambda c: round(props[c - 1], 2)
+    )
     results["num_servers"] = num_servers
     results["seed"] = seed
 
