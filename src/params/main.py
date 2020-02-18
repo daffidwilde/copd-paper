@@ -90,7 +90,7 @@ def run_multiple_class_trial(
             f"Class {i}": [Exponential(params["service"])]
             for i, params in enumerate(all_queue_params.values())
         },
-        num_servers=[num_servers],
+        number_of_servers=[num_servers],
         queue_capacities=queue_capacity,
     )
 
