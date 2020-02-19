@@ -123,11 +123,12 @@ def main(path_to_data, path_to_out, num_seeds, num_cores):
 
     prop_lims, steps = (0.1, 1), 10
     server_lims = (10, 21)
+    num_classes = copd["intervention"].nunique()
 
     tasks = (
         run_multiple_class_trial(copd, props, num_servers, seed=seed)
         for props, num_servers, seed in it.product(
-            it.product(np.linspace(*prop_lims, steps)),
+            it.product(np.linspace(*prop_lims, steps), repeat=num_classes),
             range(*server_lims),
             range(num_seeds),
         )
