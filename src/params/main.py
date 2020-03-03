@@ -1,5 +1,6 @@
 """ A script to simulate M|M|c queues with varying parameters. """
 
+from pathlib import Path
 import itertools as it
 import sys
 
@@ -14,9 +15,11 @@ from scipy import stats
 
 
 PATH_TO_DATA = str(sys.argv[1])
-PATH_TO_OUT = str(sys.argv[2])
+PATH_TO_OUT = Path(str(sys.argv[2]))
 NUM_SEEDS = int(sys.argv[3])
 NUM_CORES = int(sys.argv[4])
+
+PATH_TO_OUT.mkdir(exist_ok=True)
 
 
 def get_queue_params(data, prop, dist=stats.expon):
@@ -41,7 +44,13 @@ def get_queue_params(data, prop, dist=stats.expon):
 
 @dask.delayed
 def run_multiple_class_trial(
-    data, props, num_servers, max_time=365 * 30, queue_capacity=None, seed=0
+    data,
+    props,
+    num_servers,
+    max_time=365 * 10,
+    queue_capacity=None,
+    seed=0,
+    out=".",
 ):
     """ A function to run a multi-class simulation trial on an M|M|c queue.
 
@@ -62,6 +71,8 @@ def run_multiple_class_trial(
         assumed.
     seed : int
         A seed for Ciw's pseudo-random number generator.
+    out : pathlib.Path or str
+        The directory to which the results should be saved.
 
     Returns
     -------
@@ -111,6 +122,12 @@ def run_multiple_class_trial(
     )
     results["num_servers"] = num_servers
     results["seed"] = seed
+    results["total_time"] = results["exit_date"] - results["arrival_date"]
+
+    props_string = "_".join(map(lambda p: str(p), props))
+    results.to_csv(
+        out / f"{props_string}_{num_servers}_{seed}.csv", index=False
+    )
 
     return results
 
@@ -121,12 +138,14 @@ def main(path_to_data, path_to_out, num_seeds, num_cores):
         path_to_data, parse_dates=["admission_date", "discharge_date"]
     )
 
-    prop_lims, steps = (0.1, 1), 10
-    server_lims = (10, 21)
+    prop_lims, steps = (0.5, 1), 10
+    server_lims = (10, 51)
     num_classes = copd["intervention"].nunique()
 
     tasks = (
-        run_multiple_class_trial(copd, props, num_servers, seed=seed)
+        run_multiple_class_trial(
+            copd, props, num_servers, seed=seed, out=path_to_out
+        )
         for props, num_servers, seed in it.product(
             it.product(np.linspace(*prop_lims, steps), repeat=num_classes),
             range(*server_lims),
@@ -138,8 +157,7 @@ def main(path_to_data, path_to_out, num_seeds, num_cores):
         dfs = dask.compute(*tasks, scheduler="processes", num_workers=num_cores)
 
     df = pd.concat(dfs)
-    df["total_time"] = df["exit_date"] - df["arrival_date"]
-    df.to_csv(path_to_out, index=False)
+    df.to_csv(path_to_out / "main.csv", index=False)
 
 
 if __name__ == "__main__":
