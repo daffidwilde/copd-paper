@@ -1,5 +1,6 @@
 """ A script to simulate M|M|c queues with varying parameters. """
 
+from collections import defaultdict
 from pathlib import Path
 import itertools as it
 import sys
