@@ -44,13 +44,7 @@ def get_queue_params(data, prop, dist=stats.expon):
 
 @dask.delayed
 def run_multiple_class_trial(
-    data,
-    props,
-    num_servers,
-    max_time=365 * 10,
-    queue_capacity=None,
-    seed=0,
-    out=".",
+    data, props, num_servers, seed, max_time=365 * 10, out="results"
 ):
     """ A function to run a multi-class simulation trial on an M|M|c queue.
 
@@ -63,16 +57,14 @@ def run_multiple_class_trial(
         A tuple of the service proportions for each class, :math:`p_i`.
     num_servers : int
         The number of servers in the system, :math:`c`.
-    max_time : int
-        The maximum time for the simulation. Time units in days; defaults to
-        thirty years.
-    queue_capacity : int, optional
-        The capacity of the queue. If not specified, infinite capacity is
-        assumed.
     seed : int
         A seed for Ciw's pseudo-random number generator.
+    max_time : int
+        The maximum time for the simulation. Time units in days; defaults to
+        ten years. Records taken from the central 50% of the period.
     out : pathlib.Path or str
-        The directory to which the results should be saved.
+        The directory to which the results should be saved. Defaults to
+        "results".
 
     Returns
     -------
@@ -81,12 +73,8 @@ def run_multiple_class_trial(
         through the queuing system.
     """
 
-    if queue_capacity is not None:
-        queue_capacity = [queue_capacity]
-
     ciw.seed(seed)
-
-    all_queue_params = {}
+    all_queue_params = defaultdict(dict)
     for (intervention, subdata), service_prop in zip(
         data.groupby("intervention"), props
     ):
@@ -102,7 +90,6 @@ def run_multiple_class_trial(
             for i, params in enumerate(all_queue_params.values())
         },
         number_of_servers=[num_servers],
-        queue_capacities=queue_capacity,
     )
 
     Q = ciw.Simulation(N)
@@ -110,11 +97,7 @@ def run_multiple_class_trial(
 
     records = Q.get_all_records()
     results = pd.DataFrame(
-        [
-            r
-            for r in records
-            if max_time * 0.25 < r.arrival_date < max_time * 0.75
-        ]
+        [r for r in records if max_time * .25 < r.arrival_date < max_time * .75]
     )
 
     results["service_prop"] = results["customer_class"].apply(
@@ -124,12 +107,12 @@ def run_multiple_class_trial(
     results["seed"] = seed
     results["total_time"] = results["exit_date"] - results["arrival_date"]
 
-    props_string = "_".join(map(lambda p: str(p), props))
+    path = Path(out)
+    path.mkdir(exist_ok=True)
+    prop_string = "_".join(map(lambda p: str(p), props))
     results.to_csv(
-        out / f"{props_string}_{num_servers}_{seed}.csv", index=False
+        path / f"{prop_string}_{num_servers}_{seed}.csv", index=False
     )
-
-    return results
 
 
 def main(path_to_data, path_to_out, num_seeds, num_cores):
@@ -138,7 +121,9 @@ def main(path_to_data, path_to_out, num_seeds, num_cores):
         path_to_data, parse_dates=["admission_date", "discharge_date"]
     )
 
-    prop_lims, steps = (0.5, 1), 10
+    print("Data read in.")
+
+    prop_lims, steps = (0.5, 1), 6
     server_lims = (10, 51)
     num_classes = copd["intervention"].nunique()
 
@@ -153,12 +138,18 @@ def main(path_to_data, path_to_out, num_seeds, num_cores):
         )
     )
 
+    print("Tasks generated. Starting computation.")
+
     with ProgressBar():
-        dfs = dask.compute(*tasks, scheduler="processes", num_workers=num_cores)
+        dask.compute(*tasks, scheduler="processes", num_workers=num_cores)
 
-    df = pd.concat(dfs)
-    df.to_csv(path_to_out / "main.csv", index=False)
+    print("Computation completed. Concatenating files.")
 
+    dfs = (pd.read_csv(filename) for filename in path_to_out.glob("*.csv"))
+    results = pd.concat(dfs)
+    results.to_csv(path_to_out / "main.csv", index=False)
+
+    print("Done.")
 
 if __name__ == "__main__":
     main(PATH_TO_DATA, PATH_TO_OUT, NUM_SEEDS, NUM_CORES)
