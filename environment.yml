@@ -11,3 +11,4 @@ dependencies:
     - scipy=1.3.1
     - pip:
         - ciw==2.0.1
+        - git+https://github.com/daffidwilde/kmodes@v0.9.0
