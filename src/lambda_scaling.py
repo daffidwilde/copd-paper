@@ -8,7 +8,7 @@ import dask
 import numpy as np
 from dask.diagnostics import ProgressBar
 
-from .util import get_best_params, simulate_queue, DATA_DIR
+from .util import DATA_DIR, get_best_params, simulate_queue
 
 OUT_DIR = DATA_DIR / "lambda_scaling/"
 

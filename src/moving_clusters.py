@@ -5,7 +5,12 @@ import dask
 import numpy as np
 import pandas as pd
 
-from .util import get_best_params, get_queue_params, get_simulation_results, DATA_DIR
+from .util import (
+    DATA_DIR,
+    get_best_params,
+    get_queue_params,
+    get_simulation_results,
+)
 
 OUT_DIR = DATA_DIR / "moving_clusters/"
 

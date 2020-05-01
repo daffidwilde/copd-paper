@@ -3,16 +3,15 @@
 import itertools as it
 import sys
 
-from ciw.dists import Exponential
-from dask.diagnostics import ProgressBar
-from scipy import stats
-
 import ciw
 import dask
 import numpy as np
 import pandas as pd
+from ciw.dists import Exponential
+from dask.diagnostics import ProgressBar
+from scipy import stats
 
-from util import get_queue_params, DATA_DIR
+from util import DATA_DIR, get_queue_params
 
 OUT_DIR = DATA_DIR / "wasserstein/"
 
@@ -35,9 +34,7 @@ def run_multiple_class_trial(data, column, props, num_servers, seed, max_time):
 
     ciw.seed(seed)
     all_queue_params = defaultdict(dict)
-    for (label, subdata), service_prop in zip(
-        data.groupby(column), props
-    ):
+    for (label, subdata), service_prop in zip(data.groupby(column), props):
         all_queue_params[label] = get_queue_params(subdata, service_prop)
 
     N = ciw.create_network(
@@ -57,18 +54,30 @@ def run_multiple_class_trial(data, column, props, num_servers, seed, max_time):
 
     records = Q.get_all_records()
     results = pd.DataFrame(
-        [r for r in records if max_time * 0.25 < r.arrival_date < max_time * 0.75]
+        [
+            r
+            for r in records
+            if max_time * 0.25 < r.arrival_date < max_time * 0.75
+        ]
     )
 
     results["system_time"] = results["exit_date"] - results["arrival_date"]
-    results["service_prop"] = results["customer_class"].apply(lambda x: props[x])
+    results["service_prop"] = results["customer_class"].apply(
+        lambda x: props[x]
+    )
     results["num_servers"] = num_servers
     results["seed"] = seed
 
-    name = "_".join([str(p) for p in props]) + "_" + "_".join([str(num_servers), str(seed)])
+    name = (
+        "_".join([str(p) for p in props])
+        + "_"
+        + "_".join([str(num_servers), str(seed)])
+    )
     results.to_csv(OUT_DIR / f"{name}.csv", index=False)
 
-    distance = stats.wasserstein_distance(results["total_time"], copd["true_los"])
+    distance = stats.wasserstein_distance(
+        results["total_time"], copd["true_los"]
+    )
     return (*props, num_servers, seed, distance)
 
 
@@ -88,7 +97,12 @@ def main(prop_lims, n_clusters, server_lims, seeds, cores):
     with ProgressBar():
         results = dask.compute(*tasks, scheduler="processes", num_workers=cores)
 
-    columns = [*(f"p_{i}" for i in range(n_clusters)), "num_servers", "seed", "distance"]
+    columns = [
+        *(f"p_{i}" for i in range(n_clusters)),
+        "num_servers",
+        "seed",
+        "distance",
+    ]
     df = pd.DataFrame(results, columns=columns)
 
     df.to_csv(OUT_DIR / "main.csv", index=False)

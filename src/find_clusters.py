@@ -2,19 +2,18 @@
 
 import sys
 
+import ciw
+import dask
+import numpy as np
+import pandas as pd
 from ciw.dists import Exponential
-from kmodes.kprototypes import KPrototypes
 from scipy import special, stats
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
 from tqdm import tqdm
 from yellowbrick.utils import KneeLocator
 
-import ciw
-import dask
-import numpy as np
-import pandas as pd
-
+from kmodes.kprototypes import KPrototypes
 from util import DATA_DIR
 
 OUT_DIR = DATA_DIR / "clusters/"
@@ -60,7 +59,7 @@ codes = [
     "congenital",
     "abnormal_findings",
     "injury",
-    "external_causes", 
+    "external_causes",
     "contact_factors",
     "special_use",
 ]
