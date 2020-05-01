@@ -14,6 +14,7 @@ from scipy import stats
 from util import DATA_DIR, get_queue_params
 
 OUT_DIR = DATA_DIR / "wasserstein/"
+OUT_DIR.mkdir(exist_ok=True)
 
 COPD = pd.read_csv(
     DATA_DIR / "copd_clustered.csv",

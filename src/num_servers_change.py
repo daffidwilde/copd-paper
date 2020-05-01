@@ -2,7 +2,6 @@
 
 import itertools as it
 import sys
-from pathlib import Path
 
 import dask
 import numpy as np
@@ -11,6 +10,7 @@ from dask.diagnostics import ProgressBar
 from .util import DATA_DIR, get_best_params, simulate_queue
 
 OUT_DIR = DATA_DIR / "lambda_scaling/"
+OUT_DIR.mkdir(exist_ok=True)
 
 PROPS, _ = get_best_params()
 COPD = pd.read_csv(
