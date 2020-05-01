@@ -9,7 +9,7 @@ import pandas as pd
 from ciw.dists import Exponential
 from scipy import stats
 
-DATA_DIR = Path("../../data/")
+DATA_DIR = Path("../data/")
 
 
 def get_times(diff):

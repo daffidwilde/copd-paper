@@ -5,9 +5,8 @@ import dask
 import numpy as np
 import pandas as pd
 
-from .util import get_best_params, get_queue_params, get_simulation_results
+from .util import get_best_params, get_queue_params, get_simulation_results, DATA_DIR
 
-DATA_DIR = Path("../../data/")
 OUT_DIR = DATA_DIR / "moving_clusters/"
 
 PROPS, NUM_SERVERS = get_best_params()

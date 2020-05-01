@@ -8,9 +8,8 @@ import dask
 import numpy as np
 from dask.diagnostics import ProgressBar
 
-from .util import get_best_params, simulate_queue
+from .util import get_best_params, simulate_queue, DATA_DIR
 
-DATA_DIR = Path("../../data/")
 OUT_DIR = DATA_DIR / "lambda_scaling/"
 
 PROPS, NUM_SERVERS = get_best_params()
