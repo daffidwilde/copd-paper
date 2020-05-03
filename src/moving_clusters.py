@@ -13,6 +13,7 @@ from .util import (
 )
 
 OUT_DIR = DATA_DIR / "moving_clusters/"
+OUT_DIR.mkdir(exist_ok=True)
 
 PROPS, NUM_SERVERS = get_best_params()
 COPD = pd.read_csv(
