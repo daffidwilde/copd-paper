@@ -38,6 +38,7 @@ clinicals = [
     "intervention",
     "day_of_week",
     "gender",
+    "wimd",
 ]
 
 codes = [
@@ -89,7 +90,7 @@ conditions = [
 ]
 
 cols = clinicals + codes + conditions
-DATA = copd[cols].copy()
+DATA = copd[cols + ["admission_date", "discharge_date"]].copy()
 
 CATEGORICAL = [
     i
@@ -119,7 +120,7 @@ def get_knee_results(data, cluster_lims, cores, categorical):
     for n_clusters in tqdm(cluster_range):
 
         kp = KPrototypes(n_clusters, init="cao", random_state=0, n_jobs=cores)
-        kp.fit(data, categorical=categorical)
+        kp.fit(data[cols], categorical=categorical)
 
         knee_results.append(kp.cost_)
 
@@ -146,11 +147,11 @@ def assign_labels(data, n_clusters, cores, categorical):
     kp = KPrototypes(
         n_clusters, init="matching", n_init=50, random_state=0, n_jobs=cores
     )
-    kp.fit(data, categorical=categorical)
+    kp.fit(data[cols], categorical=categorical)
 
     labels = kp.labels_
-    copd["cluster"] = labels
-    copd.to_csv(DATA_DIR / "copd_clustered.csv", index=False)
+    data["cluster"] = labels
+    data.to_csv(DATA_DIR / "copd_clustered.csv", index=False)
 
 
 def main(data, cluster_lims, cores, categorical):
