@@ -8,8 +8,6 @@ import numpy as np
 import pandas as pd
 from ciw.dists import Exponential
 from scipy import special, stats
-from sklearn.decomposition import PCA
-from sklearn.metrics import silhouette_score
 from tqdm import tqdm
 from yellowbrick.utils import KneeLocator
 
@@ -23,7 +21,7 @@ PATH = str(sys.argv[1])
 NUM_CORES = int(sys.argv[2])
 
 CLUSTER_LIMS = (2, 9)
-COPD = pd.read_csv(PATH, parse_dates=["admission_date", "discharge_date"])
+copd = pd.read_csv(PATH, parse_dates=["admission_date", "discharge_date"])
 
 clinicals = [
     "n_spells",
@@ -38,6 +36,7 @@ clinicals = [
     "intervention",
     "day_of_week",
     "gender",
+    "wimd",
 ]
 
 codes = [
@@ -88,15 +87,21 @@ conditions = [
     "sepsis",
 ]
 
-COLUMNS = clinicals + codes + conditions
-DATA = COPD.copy()
+cols = clinicals + codes + conditions
+DATA = copd[cols + ["admission_date", "discharge_date"]].copy()
+
+CATEGORICAL = [
+    i
+    for i, (col, dtype) in enumerate(dict(DATA.dtypes).items())
+    if dtype == "object"
+]
 
 
-def clean_data(data, columns, missing_prop=0.25, max_stay=365):
+def clean_data(data, missing_prop=0.25, max_stay=365):
     """ Get rid of the columns where enough data is missing, and remove records
     that last too long or have any missing data. """
 
-    for col in columns:
+    for col in data.columns:
         if data[col].isnull().sum() > missing_prop * len(data):
             data = data.drop(col, axis=1)
 
@@ -106,14 +111,14 @@ def clean_data(data, columns, missing_prop=0.25, max_stay=365):
     return data
 
 
-def get_knee_results(data, cluster_lims, cores, columns, categorical):
+def get_knee_results(data, cluster_lims, cores, categorical):
 
     knee_results = []
     cluster_range = range(*cluster_lims)
     for n_clusters in tqdm(cluster_range):
 
         kp = KPrototypes(n_clusters, init="cao", random_state=0, n_jobs=cores)
-        kp.fit(data[columns], categorical=categorical)
+        kp.fit(data[cols], categorical=categorical)
 
         knee_results.append(kp.cost_)
 
@@ -135,34 +140,24 @@ def get_knee_results(data, cluster_lims, cores, columns, categorical):
     return n_clusters
 
 
-def assign_labels(data, n_clusters, cores, columns, categorical):
+def assign_labels(data, n_clusters, cores, categorical):
 
     kp = KPrototypes(
         n_clusters, init="matching", n_init=50, random_state=0, n_jobs=cores
     )
-    kp.fit(data[columns], categorical=categorical)
+    kp.fit(data[cols], categorical=categorical)
 
     labels = kp.labels_
     data["cluster"] = labels
     data.to_csv(DATA_DIR / "copd_clustered.csv", index=False)
 
 
-def main(data, cluster_lims, cores):
+def main(data, cluster_lims, cores, categorical):
 
-    data = clean_data(data, COLUMNS)
-
-    CATEGORICAL = [
-        i
-        for i, (col, dtype) in enumerate(dict(data[COLUMNS].dtypes).items())
-        if dtype == "object"
-    ]
-
-    n_clusters = get_knee_results(
-        data, cluster_lims, cores, COLUMNS, CATEGORICAL
-    )
-
-    assign_labels(data, n_clusters, cores, COLUMNS, CATEGORICAL)
+    data = clean_data(data)
+    n_clusters = get_knee_results(data, cluster_lims, cores, categorical)
+    assign_labels(data, n_clusters, cores, categorical)
 
 
 if __name__ == "__main__":
-    main(DATA, CLUSTER_LIMS, NUM_CORES)
+    main(DATA, CLUSTER_LIMS, NUM_CORES, CATEGORICAL)
