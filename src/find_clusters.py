@@ -89,7 +89,7 @@ conditions = [
 ]
 
 COLUMNS = clinicals + codes + conditions
-DATA = copd.copy()
+DATA = COPD.copy()
 
 
 def clean_data(data, columns, missing_prop=0.25, max_stay=365):
