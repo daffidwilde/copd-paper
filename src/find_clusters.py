@@ -23,7 +23,7 @@ PATH = str(sys.argv[1])
 NUM_CORES = int(sys.argv[2])
 
 CLUSTER_LIMS = (2, 9)
-copd = pd.read_csv(PATH, parse_dates=["admission_date", "discharge_date"])
+COPD = pd.read_csv(PATH, parse_dates=["admission_date", "discharge_date"])
 
 clinicals = [
     "n_spells",
@@ -88,21 +88,15 @@ conditions = [
     "sepsis",
 ]
 
-cols = clinicals + codes + conditions
-DATA = copd[cols].copy()
-
-CATEGORICAL = [
-    i
-    for i, (col, dtype) in enumerate(dict(DATA.dtypes).items())
-    if dtype == "object"
-]
+COLUMNS = clinicals + codes + conditions
+DATA = copd.copy()
 
 
-def clean_data(data, missing_prop=0.25, max_stay=365):
+def clean_data(data, columns, missing_prop=0.25, max_stay=365):
     """ Get rid of the columns where enough data is missing, and remove records
     that last too long or have any missing data. """
 
-    for col in data.columns:
+    for col in columns:
         if data[col].isnull().sum() > missing_prop * len(data):
             data = data.drop(col, axis=1)
 
@@ -112,14 +106,14 @@ def clean_data(data, missing_prop=0.25, max_stay=365):
     return data
 
 
-def get_knee_results(data, cluster_lims, cores, categorical):
+def get_knee_results(data, cluster_lims, cores, columns, categorical):
 
     knee_results = []
     cluster_range = range(*cluster_lims)
     for n_clusters in tqdm(cluster_range):
 
         kp = KPrototypes(n_clusters, init="cao", random_state=0, n_jobs=cores)
-        kp.fit(data, categorical=categorical)
+        kp.fit(data[columns], categorical=categorical)
 
         knee_results.append(kp.cost_)
 
@@ -141,24 +135,34 @@ def get_knee_results(data, cluster_lims, cores, categorical):
     return n_clusters
 
 
-def assign_labels(data, n_clusters, cores, categorical):
+def assign_labels(data, n_clusters, cores, columns, categorical):
 
     kp = KPrototypes(
         n_clusters, init="matching", n_init=50, random_state=0, n_jobs=cores
     )
-    kp.fit(data, categorical=categorical)
+    kp.fit(data[columns], categorical=categorical)
 
     labels = kp.labels_
-    copd["cluster"] = labels
-    copd.to_csv(DATA_DIR / "copd_clustered.csv", index=False)
+    data["cluster"] = labels
+    data.to_csv(DATA_DIR / "copd_clustered.csv", index=False)
 
 
-def main(data, cluster_lims, cores, categorical):
+def main(data, cluster_lims, cores):
 
-    data = clean_data(data)
-    n_clusters = get_knee_results(data, cluster_lims, cores, categorical)
-    assign_labels(data, n_clusters, cores, categorical)
+    data = clean_data(data, COLUMNS)
+
+    CATEGORICAL = [
+        i
+        for i, (col, dtype) in enumerate(dict(data[COLUMNS].dtypes).items())
+        if dtype == "object"
+    ]
+
+    n_clusters = get_knee_results(
+        data, cluster_lims, cores, COLUMNS, CATEGORICAL
+    )
+
+    assign_labels(data, n_clusters, cores, COLUMNS, CATEGORICAL)
 
 
 if __name__ == "__main__":
-    main(DATA, CLUSTER_LIMS, NUM_CORES, CATEGORICAL)
+    main(DATA, CLUSTER_LIMS, NUM_CORES)
