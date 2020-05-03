@@ -143,7 +143,9 @@ def get_knee_results(data, cluster_lims, cores, categorical):
 
 def assign_labels(data, n_clusters, cores, categorical):
 
-    kp = KPrototypes(n_clusters, init="matching", random_state=0, n_jobs=cores)
+    kp = KPrototypes(
+        n_clusters, init="matching", n_init=50, random_state=0, n_jobs=cores
+    )
     kp.fit(data, categorical=categorical)
 
     labels = kp.labels_
