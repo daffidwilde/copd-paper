@@ -78,7 +78,7 @@ def run_multiple_class_trial(data, column, props, num_servers, seed, max_time):
     results.to_csv(OUT_DIR / f"{name}.csv", index=False)
 
     distance = stats.wasserstein_distance(
-        results["system_time"], copd["true_los"]
+        results["system_time"], data["true_los"]
     )
     return (*props, num_servers, seed, distance)
 
