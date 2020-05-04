@@ -2,6 +2,7 @@
 
 import itertools as it
 import sys
+from collections import defaultdict
 
 import ciw
 import dask
