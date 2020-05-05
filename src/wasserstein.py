@@ -28,7 +28,7 @@ NUM_SEEDS = int(sys.argv[2])
 NUM_CLUSTERS = COPD["cluster"].nunique()
 MAX_TIME = 365 * 4
 PROP_LIMS = (0.5, 1, 11)
-SERVER_LIMS = (40, 56, 1)
+SERVER_LIMS = (40, 56, 5)
 
 
 @dask.delayed
