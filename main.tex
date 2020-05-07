@@ -1,16 +1,24 @@
 \documentclass{article}
 
 % Setting up the page
+\usepackage[utf8]{inputenc}
 \usepackage{fullpage}
 \usepackage{setspace}
     \doublespacing%
 
-% Bibliography and referencing
+% Bibliography, referencing
 \usepackage[numbers]{natbib}
+    \bibliographystyle{plain}
 \usepackage{hyperref}
+
+% Mathematics, symbols
+\usepackage{amsmath}
+\usepackage{pgf, interval}
+    \intervalconfig{soft open fences}
 
 % Images, tables
 \usepackage{graphicx}
+    \graphicspath{{img/}}
 \usepackage{booktabs}
 
 
@@ -27,7 +35,7 @@
 
 
 \begin{document}
-\maketitle
+\maketitle%
 
 \input{sections/abstract}
 \input{sections/intro}
