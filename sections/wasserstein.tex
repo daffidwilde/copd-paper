@@ -2,7 +2,6 @@
 
 The simplest model using the data available is an \(M|M|c\) queue with multiple
 classes. In this model, the following assumptions are made:
-
 \begin{enumerate}
     \item Inter-arrival and service times of patients are each exponential with
         some mean.
@@ -17,19 +16,18 @@ distribution is taken to be the reciprocal of the mean inter-arrival times for
 that group.
 
 Like arrivals, each group of patients has its own service time distribution.
-This will be calculated approximately via the length of a patient's stay.
-The length of stay is the total time spent in the system. Without full details
-of the process order or idle periods during a spell, some assumption must be
-made about the true `service' time in relation to the time spent in hospital.
-This work considers the mean service time, \(\frac{1}{\mu}\), to be
-proportional to the mean total system time, \(\frac{1}{\phi}\), such that:
-
+The parameter of this distribution is approximated via the length of a patient's
+stay, i.e.\ the total time spent in the system. Without full details of the
+process order or idle periods during a spell, some assumption must be made about
+the true `service' time in relation to the time spent in hospital. This work
+considers the mean service time, \(\frac{1}{\mu}\), to be directly proportional
+to the mean total system time, \(\frac{1}{\phi}\), such that:
 \begin{equation}
     \mu = p \phi
 \end{equation}
 
-where \(p \in \interval[open left]{0}{1}\) is some parameter to be determined
-for each group.
+\noindent where \(p \in \interval[open left]{0}{1}\) is some parameter to be
+determined for each group.
 
 As the full details of how the patients move through the hospital system, and
 the details of the system itself, are unknown, an appropriate number of servers
@@ -44,16 +42,14 @@ distributions where `work' can be loosely defined as the product of how much of
 the distribution's mass must be to be moved with the distance it must be moved
 by. More formally, the Wasserstein distance between two probability
 distributions \(U\) and \(V\) is defined as:
-
 \begin{equation}\label{eq:wasserstein}
     W(U, V) = \int_{0}^{1} \left\vert F^{-1}(t) - G^{-1}(t) \right\vert dt
 \end{equation}
 
-where \(F\) and \(G\) are the cumulative density functions of \(U\) and \(V\)
-respectively. A proof of~\eqref{eq:wasserstein} is presented in~\cite{RTC17}.
-
-Then the parameter set with the smallest mean distance over a number of runs is
-taken to be the most appropriate.
+\noindent where \(F\) and \(G\) are the cumulative density functions of \(U\)
+and \(V\) respectively. A proof of~\eqref{eq:wasserstein} is presented
+in~\cite{RTC17}. The parameter set with the smallest mean distance over a
+number of runs is then taken to be the most appropriate.
 
 \begin{figure}
     \centering%
