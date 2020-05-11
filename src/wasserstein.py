@@ -64,22 +64,10 @@ def run_multiple_class_trial(data, column, props, num_servers, seed, max_time):
     )
 
     results["system_time"] = results["exit_date"] - results["arrival_date"]
-    results["service_prop"] = results["customer_class"].apply(
-        lambda x: props[x]
-    )
-    results["num_servers"] = num_servers
-    results["seed"] = seed
-
-    name = (
-        "_".join([str(p) for p in props])
-        + "_"
-        + "_".join([str(num_servers), str(seed)])
-    )
-    results.to_csv(OUT_DIR / f"{name}.csv", index=False)
-
     distance = stats.wasserstein_distance(
         results["system_time"], data["true_los"]
     )
+
     return (*props, num_servers, seed, distance)
 
 
