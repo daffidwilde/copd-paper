@@ -1,7 +1,7 @@
 \section{Constructing the queuing model}\label{sec:wasserstein}
 
-The simplest model using the data available is an \(M|M|c\) queue with multiple
-classes. In this model, the following assumptions are made:
+The simplest queuing model using the data available is an \(M|M|c\) queue with
+multiple classes. In this model, the following assumptions are made:
 \begin{enumerate}
     \item Inter-arrival and service times of patients are each exponential with
         some mean.
@@ -27,13 +27,13 @@ to the mean total system time, \(\frac{1}{\phi}\), such that:
 \end{equation}
 
 \noindent where \(p \in \interval[open left]{0}{1}\) is some parameter to be
-determined for each group.
+determined for each group, denoted by \(p_i\) for group \(i\).
 
 As the full details of how the patients move through the hospital system, and
 the details of the system itself, are unknown, an appropriate number of servers
-\(c\) must be found as well as \(p\).
+\(c\) must be found as well as each \(p_i\).
 
-In order to evaluate appropriate values of each \(p\) and the value of \(c\),
+In order to evaluate appropriate values of each \(p_i\) and the value of \(c\),
 the system is simulated across of parameter space. Then, for each set of
 parameters, the total time distribution is compared with that in the available
 data via the (first) Wasserstein distance. This distance measures the
@@ -48,7 +48,7 @@ distributions \(U\) and \(V\) is defined as:
 
 \noindent where \(F\) and \(G\) are the cumulative density functions of \(U\)
 and \(V\) respectively. A proof of~\eqref{eq:wasserstein} is presented
-in~\cite{RTC17}. The parameter set with the smallest mean distance over a
+in~\cite{RTC17}. The parameter set with the smallest maximum distance over a
 number of runs is then taken to be the most appropriate.
 
 \begin{figure}
@@ -65,9 +65,11 @@ number of runs is then taken to be the most appropriate.
              the worst parameter set.}\label{fig:worst_params}
 \end{figure}
 
-Reiterate the objective of the paper --- to model a COPD ward within a hospital
---- and draw attention to lack of fine-grain data. Lead into how this can be
-overcome with the Wasserstein distance (a lot of this has been written up in
-\texttt{nbs/wasserstein.ipynb}). A brief summary of how the parameter set is
-chosen and a nice image of the queue we are building. Close out the section with
-best and worst case parameter set plots.
+The results of this parameter estimation can be summarised in
+Figures~\ref{fig:best_params}~and~\ref{fig:worst_params}. Each figure shows a
+comparison between the observed lengths of stay across all groups with the newly
+simulated data with the best and worst parameter sets respectively. Indeed, it
+can be seen that, in the best case, a very close fit has been found. Meanwhile,
+Figure~\ref{fig:worst_params} highlights the importance of good parameter
+estimation under this model since the likelihood of short-stay patient arrivals
+has been inflated disproportionately.
