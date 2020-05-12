@@ -1,7 +1,7 @@
 \documentclass{article}
 
 % Setting up the page
-\usepackage{fullpage}
+\usepackage[margin=1in, includefoot, footskip=30pt]{geometry}
 \usepackage{setspace}
     \doublespacing%
 
@@ -17,9 +17,10 @@
 \usepackage{subcaption}
 
 % Custom lengths
-\newcommand{\imgwidth}{.85\textwidth}
-\newcommand{\halfimgwidth}{.45\textwidth}
-\newcommand{\tablewidth}{.9\textwidth}
+\newlength{\imgwidth}
+\setlength{\imgwidth}{.9\textwidth}
+\newlength{\halfimgwidth}
+\setlength{\halfimgwidth}{.5\imgwidth}
 
 
 \title{%
