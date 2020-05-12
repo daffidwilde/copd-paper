@@ -12,19 +12,78 @@ However, this process relies heavily on detailed data --- about both the system
 and the population within that system --- which may limit research where
 sophisticated data pipelines are not yet in place. This work demonstrates how
 this issue may be overcome using administrative, spell-level hospital data to
-build a meso-level population clustering and a multi-class queuing model. 
+build a meso-level population clustering and a multi-class queuing model.
 
 % TODO Image of process: administrative data -> extract service parameters ->
 %                        validate parameters with Wasserstein distance ->
 %                        continue with queuing model as normal
+
+\subsection{Literature review}\label{subsec:review}
 
 % TODO Brief literature review of:
 %       - clustering patient corpus
 %       - reverse-engineering model parameters in healthcare
 %       - queuing in healthcare
 
+\subsection{Cluster analysis}\label{subsec:clusters}
+
+\begin{table}
+    \centering
+    \input{tex/summary.tex}
+    \caption{A summary of patient-level clinical attributes and disease
+    prevalence by cluster and by population}\label{tab:summary}
+\end{table}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{\halfimgwidth}
+        \includegraphics[width=\linewidth]{cluster_los}
+        \caption{}\label{fig:cluster_los}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{\halfimgwidth}
+        \includegraphics[width=\linewidth]{intervention_los}
+        \caption{}\label{fig:intervention_los}
+    \end{subfigure}
+    \caption{%
+        Kernel density estimate plots for length of stay by
+        (\subref{fig:cluster_los}) cluster and (\subref{fig:intervention_los})
+        intervention
+    }\label{fig:los_kde}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{\halfimgwidth}
+        \includegraphics[width=\linewidth]{cluster_wimd}
+        \caption{}\label{fig:cluster_wimd}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{\halfimgwidth}
+        \includegraphics[width=\linewidth]{intervention_wimd}
+        \caption{}\label{fig:intervention_wimd}
+    \end{subfigure}
+    \caption{%
+        Histograms for WIMD by (\subref{fig:cluster_wimd}) cluster and
+        (\subref{fig:intervention_wimd}) intervention
+    }\label{fig:wimd_hist}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{\halfimgwidth}
+        \includegraphics[width=\linewidth]{cluster_charlson_gross}
+        \caption{}\label{fig:cluster_charlson}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{\halfimgwidth}
+        \includegraphics[width=\linewidth]{intervention_charlson_gross}
+        \caption{}\label{fig:intervention_charlson}
+    \end{subfigure}
+    \caption{%
+        Histograms for CCI by (\subref{fig:cluster_charlson}) cluster and
+        (\subref{fig:intervention_charlson}) intervention
+    }\label{fig:charlson_hist}
+\end{figure}
+
+
 % TODO Condensed analysis of clustering
 %       - choosing k and a clustering algorithm
-%       - length of stay
-%       - clinical indicators
 %       - comparison with treatment segmentation

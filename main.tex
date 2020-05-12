@@ -11,13 +11,16 @@
 
 % Images, tables
 \usepackage{graphicx}
+    \graphicspath{{img/}}
 \usepackage{booktabs}
-
+\usepackage{caption}
+\usepackage{subcaption}
 
 % Custom lengths
-\newcommand{\imgwidth}{.85\textwidth}
-\newcommand{\tablewidth}{.9\textwidth}
-
+\newlength{\imgwidth}
+\setlength{\imgwidth}{.9\textwidth}
+\newlength{\halfimgwidth}
+\setlength{\halfimgwidth}{.5\imgwidth}
 
 \title{%
     Understanding COPD patients in the hospital system via administrative data
