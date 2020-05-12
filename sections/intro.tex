@@ -1,6 +1,30 @@
 \section{Introduction}\label{sec:intro}
 
-This introduction will briefly summarise the literature review for studying a
-patient corpus via clustering. Following this, a condensed data analysis is
-presented highlighting the main conclusions of the clustering and the overall
-benefits compared with traditional condition-treatment segmentation.
+Population health research is becoming increasingly based on data-driven methods
+(as opposed to those designed by clinical experts) through the advent of
+accessible software and an abundance of electronic data. To better understand
+the needs and behaviours of a population, it can be helpful to find an
+appropriate segmentation of that population; such a segmentation allows for
+finer-grained analysis of groups in the population that share some form of
+homogeneity. One commonly used analysis is of patient flow and queuing systems.
+
+However, this process relies heavily on detailed data --- about both the system
+and the population within that system --- which may limit research where
+sophisticated data pipelines are not yet in place. This work demonstrates how
+this issue may be overcome using administrative, spell-level hospital data to
+build a meso-level population clustering and a multi-class queuing model. 
+
+% TODO Image of process: administrative data -> extract service parameters ->
+%                        validate parameters with Wasserstein distance ->
+%                        continue with queuing model as normal
+
+% TODO Brief literature review of:
+%       - clustering patient corpus
+%       - reverse-engineering model parameters in healthcare
+%       - queuing in healthcare
+
+% TODO Condensed analysis of clustering
+%       - choosing k and a clustering algorithm
+%       - length of stay
+%       - clinical indicators
+%       - comparison with treatment segmentation
