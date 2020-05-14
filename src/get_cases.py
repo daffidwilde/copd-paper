@@ -39,6 +39,11 @@ def get_case(data, case):
 def main():
 
     data = pd.read_csv(DATA_DIR / "main.csv")
+    print("Data read in.")
+
     for case in ["best", "worst"]:
         get_case(data, case)
         print(case, "done.")
+
+if __name__ == "__main__":
+    main()
