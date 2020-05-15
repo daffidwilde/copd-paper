@@ -1,18 +1,27 @@
 \section{Introduction}\label{sec:intro}
 
 Population health research is becoming increasingly based on data-driven methods
-(as opposed to those designed by clinical experts) through the advent of
-accessible software and an abundance of electronic data. To better understand
-the needs and behaviours of a population, it can be helpful to find an
-appropriate segmentation of that population; such a segmentation allows for
-finer-grained analysis of groups in the population that share some form of
-homogeneity. One commonly used analysis is of patient flow and queuing systems.
+(as opposed to those designed solely by clinical experts) for patient-centred
+care through the advent of accessible software and a relative abundance of
+electronic data. To better understand the needs and behaviours of a population,
+it can be helpful to find an appropriate segmentation of that population; such a
+segmentation allows for finer-grained analysis of groups in the population that
+share some form of homogeneity. One commonly used method for such
+patient-centred analysis is that of patient flow and their interaction with the
+healthcare system.
 
 However, this process relies heavily on detailed data --- about both the system
 and the population within that system --- which may limit research where
 sophisticated data pipelines are not yet in place. This work demonstrates how
 this issue may be overcome using administrative, spell-level hospital data to
-build a meso-level population clustering and a multi-class queuing model.
+build a patient clustering that feeds into a multi-class queuing model.
+Specifically, this work examines patient records from the NHS Wales Cwm Taf
+Morgannwg University Health Board (UHB) that present chronic obstructive
+pulmonary disease (COPD). COPD is of particular interest to Cwm Taf Morgannwg as
+it was found that they had the highest prevalence of the condition across all
+the Welsh health boards in an internal report by NHS Wales.
+
+% TODO No reference for graph sent by Kendal but is this alright?
 
 % TODO Image of process: administrative data -> extract service parameters ->
 %                        validate parameters with Wasserstein distance ->
@@ -20,17 +29,34 @@ build a meso-level population clustering and a multi-class queuing model.
 
 \subsection{Literature review}\label{subsec:review}
 
+Clustering is the process of separating the instances of a dataset into distinct
+parts to maximise homogeneity within each cluster and heterogeneity
+between each cluster. Within healthcare, and particularly population health,
+this concept has many applications. When applying this to a population, some
+form of patient corpus is considered the \emph{de facto} dataset but the choice
+of characteristics with which to describe a patient or record remains
+open. The review for this work identified three groups of characteristics used
+to cluster a patient population: a patient's system utilisation metrics, their
+clinical attributes and their pathway. The first two encompass a method known as
+segmentation analysis wherein a population is segmented in a straightforward
+sense. The latter, however, does not strictly segment the patients directly
+but rather groups their movements through a healthcare system via process
+mining.~\cite{AG2018}~and~\cite{DDGM+12015} demonstrate how this technique can
+help to improve the efficiency of a hospital system rather than tackling the
+issue of patient-centred care as is the focus of this work.
+
 % TODO Brief literature review of:
 %       - clustering patient corpus
-%       - reverse-engineering model parameters in healthcare
+%       - reverse-engineering model parameters in healthcare ???
 %       - queuing in healthcare
 
 \subsection{Cluster analysis}\label{subsec:clusters}
 
 \begin{table}
     \centering
-    \input{tex/summary.tex}
-    \caption{A summary of patient-level clinical attributes and disease
+    \resizebox{\textwidth}{!}{%
+        \input{tex/summary.tex}
+    }\caption{A summary of patient-level clinical attributes and disease
     prevalence by cluster and by population}\label{tab:summary}
 \end{table}
 
@@ -65,6 +91,22 @@ build a meso-level population clustering and a multi-class queuing model.
         Histograms for WIMD by (\subref{fig:cluster_wimd}) cluster and
         (\subref{fig:intervention_wimd}) intervention
     }\label{fig:wimd_hist}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{\halfimgwidth}
+        \includegraphics[width=\linewidth]{cluster_n_icds}
+        \caption{}\label{fig:cluster_n_icds}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{\halfimgwidth}
+        \includegraphics[width=\linewidth]{intervention_n_icds}
+        \caption{}\label{fig:intervention_n_icds}
+    \end{subfigure}
+    \caption{%
+        Histograms for number of ICDs by (\subref{fig:cluster_n_icds}) cluster
+        and (\subref{fig:intervention_n_icds}) intervention
+    }\label{fig:n_icds_hist}
 \end{figure}
 
 \begin{figure}
