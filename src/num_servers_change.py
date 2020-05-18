@@ -4,12 +4,13 @@ import itertools as it
 import sys
 
 import dask
+import pandas as pd
 import numpy as np
 from dask.diagnostics import ProgressBar
 
-from .util import DATA_DIR, get_best_params, simulate_queue
+from util import DATA_DIR, get_best_params, simulate_queue
 
-OUT_DIR = DATA_DIR / "lambda_scaling/"
+OUT_DIR = DATA_DIR / "num_servers_change/"
 OUT_DIR.mkdir(exist_ok=True)
 
 PROPS, _ = get_best_params()
@@ -40,8 +41,8 @@ def main(num_cores, props, num_servers_range, num_seeds, max_time=365 * 3):
         )
 
     for result in results:
-        num_servers = result["num_servers"].first()
-        seed = result["seed"].first()
+        num_servers = result["num_servers"].iloc[0]
+        seed = result["seed"].iloc[0]
 
         filename = OUT_DIR / f"{num_servers}_{seed}.csv"
         result.to_csv(filename, index=False)

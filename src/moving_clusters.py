@@ -1,11 +1,17 @@
 """ Functions for moving clusters experiment. """
 
+import itertools as it
+import sys
+
 import ciw
 import dask
 import numpy as np
 import pandas as pd
 
-from .util import (
+from ciw.dists import Exponential
+from dask.diagnostics import ProgressBar
+
+from util import (
     DATA_DIR,
     get_best_params,
     get_queue_params,
@@ -72,7 +78,7 @@ def simulate_moving_clusters_queue(
     Q = ciw.Simulation(N)
     Q.simulate_until_max_time(max_time)
 
-    results = get_simulation_results(Q, max_time)
+    results = get_simulation_results(Q, max_time, lambda_coeff=1)
 
     results["utilisation"] = Q.transitive_nodes[0].server_utilisation
     results["prop_to_move"] = prop_to_move
@@ -92,7 +98,7 @@ def main(
     num_cores, props, num_servers, num_seeds, max_time, prop_to_move_range
 ):
 
-    n_clusters = copd["cluster"].nunique()
+    n_clusters = COPD["cluster"].nunique()
     label_combinations = (
         labels
         for labels in it.product(range(n_clusters), repeat=2)

@@ -4,10 +4,11 @@ import itertools as it
 import sys
 
 import dask
+import pandas as pd
 import numpy as np
 from dask.diagnostics import ProgressBar
 
-from .util import DATA_DIR, get_best_params, simulate_queue
+from util import DATA_DIR, get_best_params, simulate_queue
 
 OUT_DIR = DATA_DIR / "lambda_scaling/"
 OUT_DIR.mkdir(exist_ok=True)
@@ -22,7 +23,7 @@ NUM_CORES = int(sys.argv[1])
 NUM_SEEDS = int(sys.argv[2])
 LAMBDA_GRANULARITY = float(sys.argv[3])
 
-LAMBDA_COEFF_RANGE = np.arange(0.5, 2, LAMBDA_GRANULARITY)
+LAMBDA_COEFF_RANGE = np.arange(0.5, 2.01, LAMBDA_GRANULARITY)
 MAX_TIME = 365 * 4
 
 
@@ -45,8 +46,8 @@ def main(
         )
 
     for result in results:
-        lambda_coeff = result["lambda_coeff"].first()
-        seed = result["seed"].first()
+        lambda_coeff = result["lambda_coeff"].iloc[0]
+        seed = result["seed"].iloc[0]
 
         filename = OUT_DIR / f"{lambda_coeff}_{seed}.csv"
         result.to_csv(filename, index=False)

@@ -35,7 +35,9 @@ def get_queue_params(data, prop=1, lambda_coeff=1, dist=stats.expon):
     return queue_params
 
 
-def get_simulation_results(Q, max_time):
+def get_simulation_results(
+    Q, max_time, num_servers=None, lambda_coeff=None, seed=None
+):
 
     records = Q.get_all_records()
     results = pd.DataFrame(
@@ -49,7 +51,7 @@ def get_simulation_results(Q, max_time):
     results["utilisation"] = Q.transitive_nodes[0].server_utilisation
     results["system_time"] = results["exit_date"] - results["arrival_date"]
     results["num_servers"] = num_servers
-    results["lambda_coeff"] = round(lambda_coeff, 2)
+    results["lambda_coeff"] = lambda_coeff
     results["seed"] = seed
 
     return results[
@@ -68,7 +70,7 @@ def get_best_params():
 
     with open(DATA_DIR / "wasserstein/best_params.txt", "r") as f:
         strings = f.read().split(" ")
-        props, num_servers = list(map(float, strings[:-1])), int(strings[-1])
+        props, num_servers = list(map(float, strings[:-2])), int(strings[-2])
 
     return props, num_servers
 
@@ -100,5 +102,8 @@ def simulate_queue(
     Q = ciw.Simulation(N)
     Q.simulate_until_max_time(max_time)
 
-    result = get_simulation_results(Q, max_time)
+    result = get_simulation_results(
+        Q, max_time, num_servers, lambda_coeff, seed
+    )
+    
     return result
