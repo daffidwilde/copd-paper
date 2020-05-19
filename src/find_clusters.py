@@ -1,5 +1,7 @@
 """ Functions for finding the optimal number of clusters in the dataset. """
 
+import sys
+
 import ciw
 import dask
 import numpy as np
