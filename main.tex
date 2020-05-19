@@ -1,11 +1,44 @@
 \documentclass{article}
 
+% Setting up the page
+\usepackage[margin=1in, includefoot, footskip=30pt]{geometry}
+\usepackage{setspace}
+    \doublespacing%
 
-\title{Investigating interaction of COPD patients in the hospital system}
+% Bibliography and referencing
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+% Images, tables
+\usepackage{graphicx}
+    \graphicspath{{img/}}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% Custom lengths
+\newlength{\imgwidth}
+\setlength{\imgwidth}{.9\textwidth}
+\newlength{\halfimgwidth}
+\setlength{\halfimgwidth}{.5\imgwidth}
+
+
+\title{%
+    Understanding COPD patients in the hospital system via administrative data
+}
 \author{Henry Wilde, Vincent Knight, Jonathan Gillard}
 \date{}
 
+
 \begin{document}
 \maketitle
+
+\input{sections/abstract}
+\input{sections/intro}
+\input{sections/wasserstein}
+\input{sections/scenarios}
+\input{sections/conclusion}
+
+\bibliography{bibliography}
 
 \end{document}
