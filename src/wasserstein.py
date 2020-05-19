@@ -18,7 +18,7 @@ OUT_DIR = DATA_DIR / "wasserstein/"
 OUT_DIR.mkdir(exist_ok=True)
 
 COPD = pd.read_csv(
-    DATA_DIR / "copd_clustered.csv",
+    DATA_DIR / "clusters/copd_clustered.csv",
     parse_dates=["admission_date", "discharge_date"],
 )
 
@@ -27,12 +27,14 @@ NUM_SEEDS = int(sys.argv[2])
 
 NUM_CLUSTERS = COPD["cluster"].nunique()
 MAX_TIME = 365 * 4
-PROP_LIMS = (0.5, 1, 11)
+PROP_LIMS = (0.5, 1, 6)
 SERVER_LIMS = (40, 56, 5)
 
 
 @dask.delayed
-def run_multiple_class_trial(data, column, props, num_servers, seed, max_time):
+def run_multiple_class_trial(
+    data, column, props, num_servers, seed, max_time, write=None
+):
 
     ciw.seed(seed)
     all_queue_params = defaultdict(dict)
@@ -64,11 +66,51 @@ def run_multiple_class_trial(data, column, props, num_servers, seed, max_time):
     )
 
     results["system_time"] = results["exit_date"] - results["arrival_date"]
+    if write is not None:
+        results.to_csv(OUT_DIR / write / f"{seed}.csv", index=False)
+
     distance = stats.wasserstein_distance(
         results["system_time"], data["true_los"]
     )
 
     return (*props, num_servers, seed, distance)
+
+
+def get_case(data, case):
+
+    maximal_distance = data.groupby(
+        ["p_0", "p_1", "p_2", "p_3", "num_servers"]
+    )["distance"].max()
+    
+    if case == "best":
+        *ps, c = maximal_distance.idxmin()
+        distance = maximal_distance.min()
+    elif case == "worst":
+        *ps, c = maximal_distance.idxmax()
+        distance = maximal_distance.max()
+    else:
+        raise NotImplementedError("Case must be one of `'best'` or `'worst'`.")
+
+    tasks = (
+        run_multiple_class_trial(
+            COPD, "cluster", ps, c, seed, MAX_TIME, write=case
+        )
+        for seed in range(SEEDS)
+    )
+
+    with ProgressBar():
+        _ = dask.compute(*tasks, scheduler="processes", num_workers=CORES)
+
+    dfs = (
+        pd.read_csv(OUT_DIR / case / f"{seed}.csv") for seed in range(SEEDS)
+    )
+
+    df = pd.concat(dfs)
+    df.to_csv(OUT_DIR / case / "main.csv", index=False)
+
+    with open(DATA_DIR / case / "params.txt", "w") as f:
+        string = " ".join(map(str, [*ps, c, distance]))
+        f.write(string)
 
 
 def main(prop_lims, n_clusters, server_lims, seeds, cores):
@@ -94,8 +136,10 @@ def main(prop_lims, n_clusters, server_lims, seeds, cores):
         "distance",
     ]
     df = pd.DataFrame(results, columns=columns)
-
     df.to_csv(OUT_DIR / "main.csv", index=False)
+
+    for case in ["best", "worst"]:
+        get_case(df, case)
 
 
 if __name__ == "__main__":
