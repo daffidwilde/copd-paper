@@ -30,31 +30,34 @@ the Welsh health boards in an internal report by NHS Wales.
 
 \subsection{Literature review}\label{subsec:review}
 
+Given the subject matter of this work, the relevant literature spans much of
+operational research in healthcare and the focus of this review is on the
+principal topics of segmentation analysis, the handling of missing data in
+healthcare settings and queuing theory applied to hospital systems.
+
+Segmentation analysis allows for the targeted analysis of otherwise
+heterogeneous datasets and encompasses several techniques from
+operational research, statistics and machine learning. One of the most
+attractive qualities simplified
+communication of patient needs to stakeholders within a healthcare
+system~\cite{VMD2016review, YGHT+12020}. For instance, profiling often forms
+part of the wider analysis where each segment can be summarised in a phrase or
+infographic~\cite{VMD2016, YSKT+42019}. The review for this work identified
+three groups of characteristics used to cluster a patient population: a
+patient's system utilisation metrics, their clinical attributes and their
+pathway. The latter does not strictly segment the patients directly but rather
+groups their movements through a healthcare system. This is typically done via
+process mining.~\cite{AG2018}~and~\cite{DDGM+12015} demonstrate how this
+technique can help to improve the efficiency of a hospital system rather than
+tackling the issue of patient-centred care as is the focus of this work.
+
 Clustering is the process of separating the instances of a dataset into distinct
 parts to maximise homogeneity within each cluster and heterogeneity between each
 cluster. Within healthcare, and particularly population health, this concept has
 many applications. When applying this to a population, some form of patient
 corpus is considered the \emph{de facto} dataset but the choice of
-characteristics with which to describe a patient or record remains open. The
-review for this work identified three groups of characteristics used to cluster
-a patient population: a patient's system utilisation metrics, their clinical
-attributes and their pathway. The first two belong to a method known as
-segmentation analysis wherein a patient population is segmented in the
-straightforward sense. The latter, however, does not strictly segment the
-patients directly but rather groups their movements through a healthcare system
-via process mining.~\cite{AG2018}~and~\cite{DDGM+12015} demonstrate how this
-technique can help to improve the efficiency of a hospital system rather than
-tackling the issue of patient-centred care as is the focus of this work.
-
-Segmentation analysis is an expanding part of population health literature as it
-allows for the targeted analysis of heterogeneous datasets and simplified
-communication of patient needs to stakeholders within a healthcare
-system~\cite{VMD2016review, YKTT+12018}. For instance, profiling often forms
-part of segmentation analysis where each segment can be summarised in a phrase
-or infographic~\cite{VMD2016, YSKT+42019}.
-
+characteristics with which to describe a patient or record remains open.
 % TODO Brief literature review of:
-%       - clustering patient corpus
 %       - reverse-engineering model parameters in healthcare ???
 %       - queuing in healthcare
 
@@ -94,17 +97,24 @@ March 2019 totalling 10,881 spells.
 
 \begin{figure}
     \centering
+    \includegraphics[width=\imgwidth]{cluster_ltcs}
+    \caption{Proportions of number of LTCs presented by patients per
+    cluster}\label{fig:cluster_ltcs}
+\end{figure}
+
+\begin{figure}
+    \centering
     \begin{subfigure}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{cluster_wimd}
-        \caption{}\label{fig:cluster_wimd}
+        \includegraphics[width=\linewidth]{cluster_spell_cost}
+        \caption{}\label{fig:cluster_spell_cost}
     \end{subfigure}\hfill%
     \begin{subfigure}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{intervention_wimd}
-        \caption{}\label{fig:intervention_wimd}
+        \includegraphics[width=\linewidth]{intervention_spell_cost}
+        \caption{}\label{fig:intervention_spell_cost}
     \end{subfigure}
     \caption{%
-        Histograms for WIMD by (\subref{fig:cluster_wimd}) cluster and
-        (\subref{fig:intervention_wimd}) intervention
+        Histograms for spell costs by (\subref{fig:cluster_spell_cost}) cluster
+        and (\subref{fig:intervention_spell_cost}) intervention
     }\label{fig:wimd_hist}
 \end{figure}
 
