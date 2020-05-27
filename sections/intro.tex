@@ -15,12 +15,14 @@ However, this process relies heavily on detailed data --- about both the system
 and the population within that system --- which may limit research where
 sophisticated data pipelines are not yet in place. This work demonstrates how
 this issue may be overcome using administrative, spell-level hospital data to
-build a patient clustering that feeds into a multi-class queuing model.
+build a useful patient clustering that feeds into a multi-class queuing model.
 Specifically, this work examines patient records from the NHS Wales Cwm Taf
 Morgannwg University Health Board (UHB) that present chronic obstructive
 pulmonary disease (COPD). COPD is of particular interest to Cwm Taf Morgannwg as
-it was found that they had the highest prevalence of the condition across all
-the Welsh health boards in an internal report by NHS Wales.
+the condition is known to often present as a comorbidity in
+patients~\cite{Houben2019} and it was found that they had the highest prevalence
+of the condition across all the Welsh health boards in an internal report by NHS
+Wales.
 
 % TODO No reference for graph sent by Kendal but is this alright?
 
@@ -32,31 +34,70 @@ the Welsh health boards in an internal report by NHS Wales.
 
 Given the subject matter of this work, the relevant literature spans much of
 operational research in healthcare and the focus of this review is on the
-principal topics of segmentation analysis, the handling of missing data in
-healthcare settings and queuing theory applied to hospital systems.
+principal topics of segmentation analysis, the handling of missing or incomplete
+data in healthcare settings and queuing theory applied to hospital systems.
+
+\subsubsection{Segmentation analysis}
 
 Segmentation analysis allows for the targeted analysis of otherwise
-heterogeneous datasets and encompasses several techniques from
-operational research, statistics and machine learning. One of the most
-attractive qualities simplified
-communication of patient needs to stakeholders within a healthcare
-system~\cite{VMD2016review, YGHT+12020}. For instance, profiling often forms
-part of the wider analysis where each segment can be summarised in a phrase or
-infographic~\cite{VMD2016, YSKT+42019}. The review for this work identified
-three groups of characteristics used to cluster a patient population: a
-patient's system utilisation metrics, their clinical attributes and their
-pathway. The latter does not strictly segment the patients directly but rather
-groups their movements through a healthcare system. This is typically done via
-process mining.~\cite{AG2018}~and~\cite{DDGM+12015} demonstrate how this
-technique can help to improve the efficiency of a hospital system rather than
-tackling the issue of patient-centred care as is the focus of this work.
+heterogeneous datasets and encompasses several techniques from operational
+research, statistics and machine learning. One of the most desirable qualities
+of this kind of analysis is the ability to glean and communicate simplified
+summaries of patient needs to stakeholders within a healthcare
+system~\cite{Vuik2016b, Yoon2020}. For instance, clinical profiling often
+forms part of the wider analysis where each segment can be summarised in a
+phrase or infographic~\cite{Vuik2016a, Yan2019}.
 
-Clustering is the process of separating the instances of a dataset into distinct
-parts to maximise homogeneity within each cluster and heterogeneity between each
-cluster. Within healthcare, and particularly population health, this concept has
-many applications. When applying this to a population, some form of patient
-corpus is considered the \emph{de facto} dataset but the choice of
-characteristics with which to describe a patient or record remains open.
+The review for this work identified three commonplace groups of patient
+characteristics used to segment a patient population: their system
+utilisation metrics, their clinical attributes and their pathway. The latter
+is not used to segment the patients directly but rather groups their movements
+through a healthcare system. This is typically done via process
+mining.~\cite{Arnolds2018}~and~\cite{Delias2015} demonstrate how this technique
+can be used to improve the efficiency of a hospital system as opposed to
+tackling the more relevant issue of patient-centred care. The remaining
+characteristics can be segmented with a number of techniques but recent works
+tend to use unsupervised methods, typically latent class analysis (LCA) or
+clustering~\cite{Yan2018}.
+
+LCA is a statistical, model-based method used to identify groups (called latent
+classes) in data by relating its observations to some unobserved (latent),
+categorical attribute. This attribute has multiple categories, each
+corresponding to a latent class. The discovered relations are then used to
+separate the observations into latent classes according to their maximum
+likelihood class membership~\cite{Hagenaars2002,Lazarsfeld1968}. This method has
+proved useful in the study of comorbidity patterns as
+in~\cite{Larsen2017,Kuwornu2014} where combinations of demographic and clinical
+attributes are related to various subgroups of chronic diseases.
+
+Similarly to LCA, clustering identifies groups (clusters) in data to produce a
+labelling of its instances. However, clustering includes a wide variety of
+methods where the common theme is to maximise homogeneity within, and
+heterogeneity between, each cluster~\cite{Everitt2011}. The \(k\)-means paradigm
+is the most popular form of clustering in literature. The method iteratively
+partitions numerical data into \(k \in \mathbb{N}\) distinct parts where \(k\)
+is fixed \emph{a priori}. This method has proved popular as it is easily
+scalable and its implementations are concise~\cite{Olafsson2008,Wu2009}. In
+addition to \(k\)-means, hierarchical clustering methods can be effective if a
+suitable number of parts cannot be found initially~\cite{Vuik2016a}. Although,
+supervised hierarchical segmentation methods such as classification and
+regression trees (as in~\cite{Harper2006}) have been used where an existing,
+well-defined label is of particular significance.
+
+\subsubsection{Handling incomplete data}
+
+This is a reference for the estimation of service times
+(theoretically)~\cite{Goldenshluger2016,Kumar2010}.
+
+\subsubsection{Queuing models}
+
+These are the principal queuing theory works by
+Erlang~\cite{Erlang1917,Erlang1920}. This is a reference for the approximation
+of general service times using phase-type distributions in single-server
+queues~\cite{Djabali2018}. Deadlock is an aspect of applied queuing theory of
+interest in recent literature~\cite{Palmer2018}. The software used is
+Ciw~\cite{Palmer2019}.
+
 % TODO Brief literature review of:
 %       - reverse-engineering model parameters in healthcare ???
 %       - queuing in healthcare
