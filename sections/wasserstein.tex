@@ -31,7 +31,9 @@ determined for each group, denoted by \(p_i\) for group \(i\).
 
 As the full details of how the patients move through the hospital system, and
 the details of the system itself, are unknown, an appropriate number of servers
-\(c\) must be found as well as each \(p_i\).
+\(c\) must be found as well as each \(p_i\). Finding the optimal resource
+capacity, represented by \(c\), for the system is often a difficult problem
+solved using simulation models as in~\cite{Williams2015,Steins2013}
 
 In order to evaluate appropriate values of each \(p_i\) and the value of \(c\),
 the system is simulated across of parameter space. Then, for each set of
@@ -48,8 +50,8 @@ distributions \(U\) and \(V\) is defined as:
 
 \noindent where \(F\) and \(G\) are the cumulative density functions of \(U\)
 and \(V\) respectively. A proof of~\eqref{eq:wasserstein} is presented
-in~\cite{RTC17}. The parameter set with the smallest maximum distance over a
-number of runs is then taken to be the most appropriate.
+in~\cite{Ramdas2017}. The parameter set with the smallest maximum distance over
+a number of runs is then taken to be the most appropriate.
 
 \begin{figure}
     \centering%
