@@ -84,7 +84,7 @@ under comparison (in this case: days). Both of these characteristics can aid
 understanding and explanation. In simple terms, the distance measures the
 approximate `minimal work' required to move between two probability
 distributions where `work' can be loosely defined as the product of how much of
-the distribution's mass must be to be moved with the distance it must be moved
+the distribution's mass is to moved and the distance it must be moved
 by. More formally, the Wasserstein distance between two probability
 distributions \(U\) and \(V\) is defined as:
 \begin{equation}\label{eq:wasserstein}
@@ -120,13 +120,6 @@ each leaving two years of simulated data from each repetition.
              the worst parameter set.}\label{fig:worst_params}
 \end{figure}
 
-\begin{table}
-    \centering
-    \resizebox{\imgwidth}{!}{\input{tex/comparison}}
-    \caption{A comparison of summary statistics between the observed data, and
-        the best and worst simulated data.}\label{tab:comparison}
-\end{table}
-
 The results of this parameter sweep can be summarised in
 Figures~\ref{fig:best_params}~and~\ref{fig:worst_params}. Each figure shows a
 comparison of the observed lengths of stay across all groups and the newly
@@ -137,3 +130,10 @@ estimation under this model since the likelihood of short-stay patient arrivals
 has been inflated disproportionately against the tail of the distribution.
 Table~\ref{tab:comparison} reinforces these results numerically, showing a
 clear fit by the best parameters across the board.
+
+\begin{table}
+    \centering
+    \input{tex/comparison}
+    \caption{A comparison of summary statistics between the observed data, and
+        the best and worst simulated data.}\label{tab:comparison}
+\end{table}
