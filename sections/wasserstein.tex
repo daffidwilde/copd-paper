@@ -1,14 +1,39 @@
 \section{Constructing the queuing model}\label{sec:wasserstein}
 
-The simplest queuing model using the data available is an \(M|M|c\) queue with
-multiple classes. In this model, the following assumptions are made:
+% TODO What exactly is the problem and how can it be addressed?
+
+Owing to a lack of available data on the system and its patients, the options
+for the queuing model used are limited compared to those employed in some modern
+works. However, there is a precedent for simplifying healthcare systems to a
+single node with, for example, parallel servers that emulate resource
+availability.~\cite{Steins2013}~and~\cite{Williams2015} provide a good examples
+of how this approach, when paired with discrete event simulation, can expose the
+resource needs of a system beyond deterministic queuing theory models. In
+particular,~\citeauthor{Williams2015} show how a single node, multiple server
+queue can be used to accurately predict bed capacity and length of stay
+distributions in a critical care unit using administrative data.
+
+To follow in the suit of recent literature, a single node using a \(M|M|c\)
+queue is employed to model a hypothetical ward of patients presenting COPD.\ In
+addition to this, the grouping found in Section~\ref{subsec:overview} provides
+a set of patient classes in the queue. Under this model, the following
+assumptions are made:
 \begin{enumerate}
-    \item Inter-arrival and service times of patients are each exponential with
-        some mean.
-    \item There are $c$ servers available to arriving patients at a single node
-        representing the overall resource availability at the hospital.
-    \item There is no queue or system capacity.
-    \item A first-in first-out service policy is implemented.
+    \item Inter-arrival and service times of patients are each exponentially
+        distributed with some mean. This is in spite of the system time
+        distributions shown in Figure~\ref{fig:clusters_los} in order to
+        simplify the model parameterisation.
+    \item There are $c$ servers available to arriving patients at the node
+        representing the overall resource availability including bed capacity
+        and medical staff.
+    \item There is no queue or system capacity. In~\cite{Williams2015}, a
+        queue capacity of zero is set under the assumption that any surplus
+        arrivals would be sent to another suitable ward or unit. As this
+        hypothetical ward represents COPD patients potentially throughout a
+        hospital, this assumption is not held.
+    \item Without the availability of expert clinical knowledge, a first-in
+        first-out service policy is employed in lieu of some patient priority 
+        framework.
 \end{enumerate}
 
 Each group of patients has its own arrival distribution. The parameter of this
@@ -16,12 +41,13 @@ distribution is taken to be the reciprocal of the mean inter-arrival times for
 that group.
 
 Like arrivals, each group of patients has its own service time distribution.
-The parameter of this distribution is approximated via the length of a patient's
-stay, i.e.\ the total time spent in the system. Without full details of the
-process order or idle periods during a spell, some assumption must be made about
-the true `service' time in relation to the time spent in hospital. This work
-considers the mean service time, \(\frac{1}{\mu}\), to be directly proportional
-to the mean total system time, \(\frac{1}{\phi}\), such that:
+Without full details of the process order or idle periods during a spell, some
+assumption must be made about the true `service' time of a patient in hospital.
+It is assumed here that the mean service time of a group of patients may be
+approximated via their mean length of stay, i.e.\ the mean time spent in the
+system. For simplicity, this work considers the mean service time,
+\(\frac{1}{\mu}\), to be directly proportional to the mean total system time,
+\(\frac{1}{\phi}\), such that:
 \begin{equation}
     \mu = p \phi
 \end{equation}
@@ -29,16 +55,29 @@ to the mean total system time, \(\frac{1}{\phi}\), such that:
 \noindent where \(p \in \interval[open left]{0}{1}\) is some parameter to be
 determined for each group, denoted by \(p_i\) for group \(i\).
 
-As the full details of how the patients move through the hospital system, and
-the details of the system itself, are unknown, an appropriate number of servers
-\(c\) must be found as well as each \(p_i\). Finding the optimal resource
-capacity, represented by \(c\), for the system is often a difficult problem
-solved using simulation models as in~\cite{Williams2015,Steins2013}
-
 In order to evaluate appropriate values of each \(p_i\) and the value of \(c\),
-the system is simulated across of parameter space. Then, for each set of
-parameters, the total time distribution is compared with that in the available
-data via the (first) Wasserstein distance. This distance measures the
+the system is simulated across a parameter space. The objective then is to
+determine which set of parameters provides the most realistic analogue of the
+observed data. Given that the length of stay is one of the few ground truths
+available in the provided data, and given that length of stay and resource
+availability are connected, the output of this model is the simulated length of
+stay. With this simulated data, a parameter set can be evaluated by comparing
+its associated system time distribution with the real length of stay
+distribution.
+
+The statistical comparison of two or more distributions can be done in a number
+of ways. Such methods include the Kolmogorov-Smirnov test, a variety of
+discrepancy approaches such as summed mean-squared error, and \(f\)-divergences.
+A popular choice amongst the latter group (which may be considered
+distance-like) is the Kullback-Leibler divergence which measures relative
+information entropy from one probability distribution to
+another~\cite{Kullback1951}. The key issue with many of these methods is that
+they lack interpretability which is paramount when conveying information to
+stakeholders. Interpretability not just from explaining how something works but
+how its results may be explained also.
+
+As such, a reasonable candidate is the (first) Wasserstein metric, also known as
+the ``earth mover's'' or ``digger's'' distance.  This distance measures the
 approximate `minimal work' required to move between two probability
 distributions where `work' can be loosely defined as the product of how much of
 the distribution's mass must be to be moved with the distance it must be moved
@@ -67,11 +106,20 @@ a number of runs is then taken to be the most appropriate.
              the worst parameter set.}\label{fig:worst_params}
 \end{figure}
 
-The results of this parameter estimation can be summarised in
+The results of this parameter sweep can be summarised in
 Figures~\ref{fig:best_params}~and~\ref{fig:worst_params}. Each figure shows a
-comparison between the observed lengths of stay across all groups with the newly
-simulated data with the best and worst parameter sets respectively. Indeed, it
-can be seen that, in the best case, a very close fit has been found. Meanwhile,
+comparison of the observed lengths of stay across all groups and the newly
+simulated data with the best and worst parameter sets respectively. It can be
+seen that, in the best case, a very close fit has been found. Meanwhile,
 Figure~\ref{fig:worst_params} highlights the importance of good parameter
 estimation under this model since the likelihood of short-stay patient arrivals
-has been inflated disproportionately.
+has been inflated disproportionately against the tail of the distribution.
+Table~\ref{tab:comparison} reinforces these results numerically, showing a
+clear fit by the best parameters across the board.
+
+\begin{table}
+    \centering
+    \input{tex/comparison}
+    \caption{A comparison of summary statistics between the observed data, and
+        the best and worst simulated data.}\label{tab:comparison}
+\end{table}
