@@ -6,7 +6,7 @@ Owing to a lack of available data on the system and its patients, the options
 for the queuing model used are limited compared to those employed in some modern
 works. However, there is a precedent for simplifying healthcare systems to a
 single node with, for example, parallel servers that emulate resource
-availability.~\cite{Steins2013}~and~\cite{Williams2015} provide a good examples
+availability.~\cite{Steins2013}~and~\cite{Williams2015} provide good examples
 of how this approach, when paired with discrete event simulation, can expose the
 resource needs of a system beyond deterministic queuing theory models. In
 particular,~\citeauthor{Williams2015} show how a single node, multiple server
@@ -23,7 +23,7 @@ assumptions are made:
         distributed with some mean. This is in spite of the system time
         distributions shown in Figure~\ref{fig:clusters_los} in order to
         simplify the model parameterisation.
-    \item There are $c$ servers available to arriving patients at the node
+    \item There are \(c\) servers available to arriving patients at the node
         representing the overall resource availability including bed capacity
         and medical staff.
     \item There is no queue or system capacity. In~\cite{Williams2015}, a
@@ -84,7 +84,7 @@ under comparison (in this case: days). Both of these characteristics can aid
 understanding and explanation. In simple terms, the distance measures the
 approximate `minimal work' required to move between two probability
 distributions where `work' can be loosely defined as the product of how much of
-the distribution's mass is to moved and the distance it must be moved
+the distribution's mass is to be moved and the distance it must be moved
 by. More formally, the Wasserstein distance between two probability
 distributions \(U\) and \(V\) is defined as:
 \begin{equation}\label{eq:wasserstein}
@@ -99,7 +99,8 @@ observed length of stay distribution is then taken to be the most appropriate.
 
 Specifically, the parameter sweep included values of each \(p_i\) from \(0.5\)
 to \(1\) with a granularity of \(10^{-1}\) and values of \(c\) from \(40\) to
-\(60\) at steps of \(5\). These choices were informed by the assumptions of the
+\(60\) at steps of \(5\).  % TODO Update these values when the new results come back
+These choices were informed by the assumptions of the
 model and formative analysis to reduce the parameter space given the
 computational resources required to conduct the simulations. Each parameter set
 was repeated \(50\) times with each simulation running for four years of virtual
