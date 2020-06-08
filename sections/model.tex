@@ -9,7 +9,7 @@ single node with, for example, parallel servers that emulate resource
 availability.~\cite{Steins2013}~and~\cite{Williams2015} provide good examples
 of how this approach, when paired with discrete event simulation, can expose the
 resource needs of a system beyond deterministic queuing theory models. In
-particular,~\citeauthor{Williams2015} show how a single node, multiple server
+particular,~\cite{Williams2015} shows how a single node, multiple server
 queue can be used to accurately predict bed capacity and length of stay
 distributions in a critical care unit using administrative data.
 
@@ -55,11 +55,11 @@ system. For simplicity, this work considers the mean service time,
 \noindent where \(p \in \interval[open left]{0}{1}\) is some parameter to be
 determined for each group, denoted by \(p_i\) for group \(i\).
 
-One of the few ground truths available in the provided data is the distribution 
-of the total length of stay. Given that the length of stay and resource availability 
-are connected, the approach here will be to simulate the length of stay distribution 
-for a range of values \(p_i\) and \(c\) in order to find the parameters that best 
-match the observed data.
+One of the few ground truths available in the provided data is the distribution
+of the total length of stay. Given that the length of stay and resource
+availability are connected, the approach here will be to simulate the length of
+stay distribution for a range of values \(p_i\) and \(c\) in order to find the
+parameters that best match the observed data.
 
 The statistical comparison of two or more distributions can be done in a number
 of ways. Such methods include the Kolmogorov-Smirnov test, a variety of
