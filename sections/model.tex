@@ -55,15 +55,11 @@ system. For simplicity, this work considers the mean service time,
 \noindent where \(p \in \interval[open left]{0}{1}\) is some parameter to be
 determined for each group, denoted by \(p_i\) for group \(i\).
 
-In order to evaluate appropriate values of each \(p_i\) and the value of \(c\),
-the system is simulated across a parameter space. The objective then is to
-determine which set of parameters provides the most realistic analogue of the
-observed data. Given that the length of stay is one of the few ground truths
-available in the provided data, and given that length of stay and resource
-availability are connected, the output of this model is the simulated length of
-stay. With this simulated data, a parameter set can be evaluated by comparing
-its associated system time distribution with the real length of stay
-distribution.
+One of the few ground truths available in the provided data is the distribution 
+of the total length of stay. Given that the length of stay and resource availability 
+are connected, the approach here will be to simulate the length of stay distribution 
+for a range of values \(p_i\) and \(c\) in order to find the parameters that best 
+match the observed data.
 
 The statistical comparison of two or more distributions can be done in a number
 of ways. Such methods include the Kolmogorov-Smirnov test, a variety of
