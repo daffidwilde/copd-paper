@@ -33,8 +33,8 @@ Wales.
 
 Given the subject matter of this work, the relevant literature spans much of
 operational research in healthcare and the focus of this review is on the
-principal topics of segmentation analysis, the handling of missing or incomplete
-data in healthcare settings and queuing theory applied to hospital systems.
+principal topics of segmentation analysis, queuing models applied to hospital
+systems, and the handling of missing or incomplete data for such queues.
 
 \subsubsection{Segmentation analysis}
 
@@ -75,18 +75,13 @@ methods where the common theme is to maximise homogeneity within, and
 heterogeneity between, each cluster~\cite{Everitt2011}. The \(k\)-means paradigm
 is the most popular form of clustering in literature. The method iteratively
 partitions numerical data into \(k \in \mathbb{N}\) distinct parts where \(k\)
-is fixed \emph{a priori}. This method has proved popular as it is easily
-scalable and its implementations are concise~\cite{Olafsson2008,Wu2009}. In
-addition to \(k\)-means, hierarchical clustering methods can be effective if a
-suitable number of parts cannot be found initially~\cite{Vuik2016a}. Although,
-supervised hierarchical segmentation methods such as classification and
-regression trees (as in~\cite{Harper2006}) have been used where an existing,
-well-defined label is of particular significance.
-
-\subsubsection{Handling incomplete data}
-
-These are references for the estimation of service times
-(theoretically)~\cite{Djabali2018,Goldenshluger2016,Kumar2010}.
+is fixed a priori. This method has proved popular as it is easily scalable and
+its implementations are concise~\cite{Olafsson2008,Wu2009}. In addition to
+\(k\)-means, hierarchical clustering methods can be effective if a suitable
+number of parts cannot be found initially~\cite{Vuik2016a}. Although, supervised
+hierarchical segmentation methods such as classification and regression trees
+(as in~\cite{Harper2006}) have been used where an existing, well-defined label
+is of particular significance.
 
 \subsubsection{Queuing models}
 
@@ -95,18 +90,38 @@ Erlang~\cite{Erlang1917,Erlang1920}. Deadlock is an aspect of applied queuing
 theory of interest in recent literature~\cite{Palmer2018}. The software used is
 Ciw~\cite{Palmer2019}.
 
-% TODO Brief literature review of:
-%       - reverse-engineering model parameters in healthcare ???
-%       - queuing in healthcare
+\subsubsection{Handling incomplete queue data}
 
-\subsection{Overview of the dataset}\label{subsec:overview}
+It is often the case that in practical situations where suitable data is not
+(immediately) available, further inquiry will stop in that particular line of
+research. Queuing models in healthcare settings appear to be such a
+case.~\cite{Asanjarani2017} is a bibliographic work that collates articles on
+the estimation of queuing system characteristics --- including their parameters.
+Despite its breadth of almost 300 publications, only two articles have been
+identified as being applied to healthcare:~\cite{Mohammadi2012,Yom2014}.  Both
+works are concerned with customers that can re-enter services during their time
+in the queuing system. This is particularly of value when considering the effect
+of unpredictable behaviour in intensive care units, for
+instance.~\cite{Mohammadi2012} seeks to approximate service and re-service
+densities through a Bayesian approach and by separating out those customers
+seeking to be serviced again. On the other hand,~\cite{Yom2014} considers an
+extension to the \(M/M/c\) queue with direct re-entries. The devised model is
+then used to determine resource requirements in a mass casualty event.
+
+Aside from healthcare-specific works, the approximation of
+queue parameters has formed a part of relevant modern queuing research. However,
+the scope is largely focused on theoretic approximations rather than by
+simulation.~\cite{Djabali2018,Goldenshluger2016} are two such recent
+works that consider an underlying process to estimate a general service time
+distribution in single server and infinite server queues respectively.
+
+\subsection{Overview of the dataset and its clustering}\label{subsec:overview}
 
 The dataset used in this work was provided by the Cwm Taf Morgannwg UHB as part
 of an ongoing research project with the authors. The dataset contains a
-spell-level summary of 5,243 patients presenting COPD from February 2011 through
-March 2019 totalling 10,881 spells. 
-
-\subsection{Cluster analysis}\label{subsec:clusters}
+spell-level summary of \input{tex/npatients}patients presenting COPD from
+\input{tex/min_date}through \input{tex/max_date}totalling
+\input{tex/nspells}spells. 
 
 \begin{table}
     \centering
