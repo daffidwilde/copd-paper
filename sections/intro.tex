@@ -15,19 +15,28 @@ and the population within that system --- which may limit research where
 sophisticated data pipelines are not yet in place. This work demonstrates how
 this issue may be overcome using administrative, spell-level hospital data to
 build a patient clustering that feeds into a multi-class queuing model.
-Specifically, this work examines patient records from the NHS Wales Cwm Taf
-Morgannwg University Health Board (UHB) that present chronic obstructive
-pulmonary disease (COPD). COPD is of particular interest to Cwm Taf Morgannwg
-UHB as the condition is known to often present as a comorbidity in
-patients~\cite{Houben2019} and it was found that they had the highest prevalence
-of the condition across all the Welsh health boards in an internal report by NHS
-Wales.
+Specifically, this work examines patient records from the National Health
+Service (NHS) Wales Cwm Taf Morgannwg University Health Board (UHB) that present
+chronic obstructive pulmonary disease (COPD). COPD is of particular interest to
+Cwm Taf Morgannwg UHB as the condition is known to often present as a
+comorbidity in patients~\cite{Houben2019} and it was found that they had the
+highest prevalence of the condition across all the Welsh health boards in an
+internal report by NHS Wales.
 
 % TODO No reference for graph sent by Kendal but is this alright?
 
 % TODO Image of process: administrative data -> extract service parameters ->
 %                        validate parameters with Wasserstein distance ->
 %                        continue with queuing model as normal
+
+The remainder of the paper is structured as follows: Section~\ref{sec:intro}
+provides a literature review, and an overview of the data and its clustering;
+Section~\ref{sec:model} describes the queuing model used and the estimation of
+its parameters; Section~\ref{sec:scenarios} presents a number of what-if
+scenarios with insight provided by the model parameterisation and the
+clustering; Section~\ref{sec:conclusion} concludes the paper. Although the data
+is confidential and may not be published, the source code used in this paper is
+available online at~\url{https://github.com/daffidwilde/copd-paper}.
 
 \subsection{Literature review}\label{subsec:review}
 
@@ -97,16 +106,16 @@ It is often the case that in practical situations where suitable data is not
 research. Queuing models in healthcare settings appear to be such a
 case.~\cite{Asanjarani2017} is a bibliographic work that collates articles on
 the estimation of queuing system characteristics --- including their parameters.
-Despite its breadth of almost 300 publications, only two articles have been
-identified as being applied to healthcare:~\cite{Mohammadi2012,Yom2014}.  Both
-works are concerned with customers that can re-enter services during their time
-in the queuing system. This is particularly of value when considering the effect
-of unpredictable behaviour in intensive care units, for
+Despite its breadth of almost 300 publications from 1955, only two articles have
+been identified as being applied to healthcare:~\cite{Mohammadi2012,Yom2014}.
+Both works are concerned with customers that can re-enter services during their
+time in the queuing system. This is particularly of value when considering the
+effect of unpredictable behaviour in intensive care units, for
 instance.~\cite{Mohammadi2012} seeks to approximate service and re-service
 densities through a Bayesian approach and by separating out those customers
 seeking to be serviced again. On the other hand,~\cite{Yom2014} considers an
 extension to the \(M/M/c\) queue with direct re-entries. The devised model is
-then used to determine resource requirements in a mass casualty event.
+then used to determine resource requirements in two healthcare settings.
 
 Aside from healthcare-specific works, the approximation of
 queue parameters has formed a part of relevant modern queuing research. However,
@@ -121,14 +130,67 @@ The dataset used in this work was provided by the Cwm Taf Morgannwg UHB as part
 of an ongoing research project with the authors. The dataset contains a
 spell-level summary of \input{tex/npatients}patients presenting COPD from
 \input{tex/min_date}through \input{tex/max_date}totalling
-\input{tex/nspells}spells. 
+\input{tex/nspells}spells. The dataset is made up of instances each describing a
+patient spell with the following attributes:
+\begin{itemize}
+    \item Personal identifiers, i.e.\ patient and spell ID numbers, and age.
+    \item Admission/discharge dates and approximate times.
+    \item A number of attributes summarising the clinical path of the spell
+        including admission/discharge methods, and the number of episodes,
+        consultants and wards in the spell.
+    \item Diagnosis (ICD) and primary procedure (HRG) codes from each episode.
+    \item Indicators for any COPD intervention. The value for any spell is one
+        of no intervention, pulmonary rehabilitation, specialist nursing, and
+        both interventions.
+    \item Charlson Comorbidity Index (CCI) contributions from several long term
+        conditions (LTCs) as well as indicators for some other conditions such
+        as sepsis and obesity.
+    \item Rank under the 2019 Welsh Index of Multiple Deprivation (WIMD)
+        indicating relative deprivation of the area the patient lives in.
+\end{itemize}
+
+In addition to the above, the following attributes were engineered:
+\begin{itemize}
+    \item Age and overall spell cost data were linked to approximately half of
+        the spells in the dataset from another administrative dataset provided
+        by the Cwm Taf Morgannwg UHB.\
+    \item To better capture the kinds of conditions present in each spell, the
+        presenting ICD codes were generalised to their categories according to
+        NHS documentation and counts for each category were attached to the
+        spell.
+    \item The number of COPD-related admissions in the last twelve months based
+        on the patient ID number.
+\end{itemize}
+
+For the segmentation, a variant of the \(k\)-means algorithm that allows for the
+clustering of mixed-type data was used to partition the spells in the dataset.
+This algorithm, presented in~\cite{Huang1998} along with the categoric-only
+\(k\)-modes algorithm, is called \(k\)-prototypes and uses \(k\)-means on the
+numeric data and \(k\)-modes on the categoric data simultaneously. The
+attributes included in the clustering encompass both utilisation metrics and
+clinical attributes of the patients in the spell. They were as follows: the
+summative clinical path attributes, the CCI contributions and condition
+indicators, the WIMD rank, length of stay (LOS), COPD intervention status, and
+the engineered attributes (not including age and costs due to lack of coverage).
+
+To determine the optimal number of clusters, \(k\), the knee point detection
+algorithm introduced in~\cite{Satopaa2011} was used with a range of potential
+values for \(k\) from 2 to 10. This range was chosen based on what may be
+considered feasibly informative to stakeholders. The knee point detection
+algorithm can be considered a deterministic version of the popular `elbow
+method' for determining a number of clusters. This revealed an optimal value
+for \(k\) of 4 but both 3 and 5 clusters were considered. Each case was
+eliminated due to a lack of clear separation in the characteristics of the
+clusters.
 
 \begin{table}
     \centering
     \resizebox{\textwidth}{!}{%
         \input{tex/summary.tex}
-    }\caption{A summary of patient-level clinical attributes and disease
-    prevalence by cluster and by population}\label{tab:summary}
+    }\caption{%
+        A summary of patient-level clinical attributes and disease prevalence by
+        cluster and for the population.
+    }\label{tab:summary}
 \end{table}
 
 \begin{figure}
@@ -142,9 +204,8 @@ spell-level summary of \input{tex/npatients}patients presenting COPD from
         \caption{}\label{fig:intervention_los}
     \end{subfigure}
     \caption{%
-        Kernel density estimate plots for length of stay by
-        (\subref{fig:cluster_los}) cluster and (\subref{fig:intervention_los})
-        intervention
+        Historgrams for length of stay by (\subref{fig:cluster_los}) cluster and
+        (\subref{fig:intervention_los}) intervention.
     }\label{fig:los_kde}
 \end{figure}
 
@@ -161,7 +222,7 @@ spell-level summary of \input{tex/npatients}patients presenting COPD from
     \caption{%
         Proportions of concurrent LTC counts presented by patients by
         (\subref{fig:cluster_ltcs}) cluster and (\subref{fig:intervention_ltcs})
-        intervention
+        intervention.
     }\label{fig:ltcs}
 \end{figure}
 
@@ -177,7 +238,7 @@ spell-level summary of \input{tex/npatients}patients presenting COPD from
     \end{subfigure}
     \caption{%
         Histograms for spell costs by (\subref{fig:cluster_spell_cost}) cluster
-        and (\subref{fig:intervention_spell_cost}) intervention
+        and (\subref{fig:intervention_spell_cost}) intervention.
     }\label{fig:wimd_hist}
 \end{figure}
 
@@ -193,7 +254,7 @@ spell-level summary of \input{tex/npatients}patients presenting COPD from
     \end{subfigure}
     \caption{%
         Histograms for number of ICDs by (\subref{fig:cluster_n_icds}) cluster
-        and (\subref{fig:intervention_n_icds}) intervention
+        and (\subref{fig:intervention_n_icds}) intervention.
     }\label{fig:n_icds_hist}
 \end{figure}
 
@@ -209,7 +270,7 @@ spell-level summary of \input{tex/npatients}patients presenting COPD from
     \end{subfigure}
     \caption{%
         Histograms for CCI by (\subref{fig:cluster_charlson}) cluster and
-        (\subref{fig:intervention_charlson}) intervention
+        (\subref{fig:intervention_charlson}) intervention.
     }\label{fig:charlson_hist}
 \end{figure}
 
