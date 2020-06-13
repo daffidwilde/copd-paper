@@ -133,12 +133,14 @@ spell-level summary of \input{tex/npatients}patients presenting COPD from
 \input{tex/nspells}spells. The dataset is made up of instances each describing a
 patient spell with the following attributes:
 \begin{itemize}
-    \item Personal identifiers, i.e.\ patient and spell ID numbers, and age.
+    \item Personal identifiers and information, i.e.\ patient and spell ID
+        numbers, and gender.
     \item Admission/discharge dates and approximate times.
-    \item A number of attributes summarising the clinical path of the spell
-        including admission/discharge methods, and the number of episodes,
-        consultants and wards in the spell.
-    \item Diagnosis (ICD) and primary procedure (HRG) codes from each episode.
+    \item Attributes summarising the clinical path of the spell including
+        admission/discharge methods, and the number of episodes, consultants and
+        wards in the spell.
+    \item International Classification of Diseases (ICD) codes and primary
+        Healthcare Resource Group (HRG) codes from each episode.
     \item Indicators for any COPD intervention. The value for any spell is one
         of no intervention, pulmonary rehabilitation, specialist nursing, and
         both interventions.
@@ -146,52 +148,60 @@ patient spell with the following attributes:
         conditions (LTCs) as well as indicators for some other conditions such
         as sepsis and obesity.
     \item Rank under the 2019 Welsh Index of Multiple Deprivation (WIMD)
-        indicating relative deprivation of the area the patient lives in.
+        indicating relative deprivation of the postcode area the patient lives
+        in.
 \end{itemize}
 
-In addition to the above, the following attributes were engineered:
+In addition to the above, the following attributes were engineered for each
+spell:
 \begin{itemize}
-    \item Age and overall spell cost data were linked to approximately half of
-        the spells in the dataset from another administrative dataset provided
-        by the Cwm Taf Morgannwg UHB.\
-    \item To better capture the kinds of conditions present in each spell, the
-        presenting ICD codes were generalised to their categories according to
-        NHS documentation and counts for each category were attached to the
-        spell.
+    \item Age and spell cost data were linked to approximately half of the
+        spells in the dataset from another administrative dataset provided by
+        the Cwm Taf Morgannwg UHB.\
+    \item The presenting ICD codes were generalised to their categories
+        according to NHS documentation and counts for each category were
+        attached.
     \item The number of COPD-related admissions in the last twelve months based
-        on the patient ID number.
+        on the associated patient ID number.
 \end{itemize}
 
-For the segmentation, a variant of the \(k\)-means algorithm that allows for the
-clustering of mixed-type data was used to partition the spells in the dataset.
-This algorithm, presented in~\cite{Huang1998} along with the categoric-only
-\(k\)-modes algorithm, is called \(k\)-prototypes and uses \(k\)-means on the
-numeric data and \(k\)-modes on the categoric data simultaneously. The
-attributes included in the clustering encompass both utilisation metrics and
-clinical attributes of the patients in the spell. They were as follows: the
-summative clinical path attributes, the CCI contributions and condition
-indicators, the WIMD rank, length of stay (LOS), COPD intervention status, and
-the engineered attributes (not including age and costs due to lack of coverage).
+Due to a lack of information about the patients beyond their COPD-related
+admissions, the spells of the dataset were segmented. A variant of the
+\(k\)-means algorithm was used. This variant, called \(k\)-prototypes, allows
+for the clustering of mixed-type data by performing \(k\)-means on the numeric
+attributes and \(k\)-modes on the categoric. Both \(k\)-prototypes and
+\(k\)-modes were presented in~\cite{Huang1998}.
+
+The attributes included in the clustering encompass both utilisation metrics and
+clinical attributes relating to the spell. They were as follows: the summative
+clinical path attributes, the CCI contributions and condition indicators, the
+WIMD rank, length of stay (LOS), COPD intervention status, and the engineered
+attributes (not including age and costs due to lack of coverage).
 
 To determine the optimal number of clusters, \(k\), the knee point detection
 algorithm introduced in~\cite{Satopaa2011} was used with a range of potential
 values for \(k\) from 2 to 10. This range was chosen based on what may be
 considered feasibly informative to stakeholders. The knee point detection
 algorithm can be considered a deterministic version of the popular `elbow
-method' for determining a number of clusters. This revealed an optimal value
-for \(k\) of 4 but both 3 and 5 clusters were considered. Each case was
-eliminated due to a lack of clear separation in the characteristics of the
-clusters.
+method' for determining a number of clusters. This revealed an optimal value for
+\(k\) of 4 but both 3 and 5 clusters were considered. Each case was eliminated
+due to a lack of clear separation in the characteristics of the clusters.
+Additionally, the initialisation method used for \(k\)-prototypes was that
+presented in~\cite{Wilde2020} as it was found to give an improvement in the
+clustering over other initialisation methods.
 
 \begin{table}
     \centering
     \resizebox{\textwidth}{!}{%
         \input{tex/summary.tex}
     }\caption{%
-        A summary of patient-level clinical attributes and disease prevalence by
-        cluster and for the population.
+        A summary of clinical and condition-specific characteristics for each
+        cluster and the population.
     }\label{tab:summary}
 \end{table}
+
+A summary of the spells in each cluster, and the overall dataset (referred to as
+the population), is provided in Table~\ref{tab:summary}. 
 
 \begin{figure}
     \centering
