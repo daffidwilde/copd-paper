@@ -13,15 +13,15 @@ of patient flow and their interaction with the healthcare system.
 However, this process relies heavily on detailed data --- about both the system
 and the population within that system --- which may limit research where
 sophisticated data pipelines are not yet in place. This work demonstrates how
-this issue may be overcome using administrative, spell-level hospital data to
-build a patient clustering that feeds into a multi-class queuing model.
-Specifically, this work examines patient records from the National Health
-Service (NHS) Wales Cwm Taf Morgannwg University Health Board (UHB) that present
-chronic obstructive pulmonary disease (COPD). COPD is of particular interest to
-Cwm Taf Morgannwg UHB as the condition is known to often present as a
-comorbidity in patients~\cite{Houben2019} and it was found that they had the
-highest prevalence of the condition across all the Welsh health boards in an
-internal report by NHS Wales.
+this issue may be overcome using administrative, hospital data detailing patient
+spells. This data is then used to build a patient clustering that feeds into a
+multi-class queuing model. Specifically, this work examines patient records from
+the National Health Service (NHS) Wales Cwm Taf Morgannwg University Health
+Board (UHB) that present chronic obstructive pulmonary disease (COPD). COPD is
+of particular interest to Cwm Taf Morgannwg UHB as the condition is known to
+often present as a comorbidity in patients~\cite{Houben2019} and it was found
+that they had the highest prevalence of the condition across all the Welsh
+health boards in an internal report by NHS Wales.
 
 % TODO No reference for graph sent by Kendal but is this alright?
 
@@ -126,11 +126,16 @@ distribution in single server and infinite server queues respectively.
 
 \subsection{Overview of the dataset and its clustering}\label{subsec:overview}
 
-The dataset used in this work was provided by the Cwm Taf Morgannwg UHB. The dataset contains a
-spell-level summary of \input{tex/npatients}patients presenting COPD from
-\input{tex/min_date}through \input{tex/max_date}totalling
-\input{tex/nspells}spells. The dataset is made up of instances each describing a
-patient spell with the following attributes:
+The dataset used in this work was provided by the Cwm Taf Morgannwg UHB.\ The
+dataset contains an administrative summary of \input{tex/npatients}patients
+presenting COPD from \input{tex/min_date}through \input{tex/max_date}totalling
+\input{tex/nspells}spells. A patient (hospital) spell is defined as the
+continuous stay of a patient using a hospital bed on premises controlled by a
+health care provider and is made up of one or more patient
+episodes~\cite{NHS2020}.
+
+The dataset is made up of instances each describing a patient spell with the
+following attributes:
 \begin{itemize}
     \item Personal identifiers and information, i.e.\ patient and spell ID
         numbers, and gender.
@@ -140,9 +145,9 @@ patient spell with the following attributes:
         wards in the spell.
     \item International Classification of Diseases (ICD) codes and primary
         Healthcare Resource Group (HRG) codes from each episode.
-    \item Indicators for any COPD intervention. The value for any spell is one
-        of no intervention, pulmonary rehabilitation, specialist nursing, and
-        both interventions.
+    \item Indicators for any COPD intervention. The value for any given spell is
+        one of no intervention, pulmonary rehabilitation, specialist nursing,
+        and both interventions.
     \item Charlson Comorbidity Index (CCI) contributions from several long term
         conditions (LTCs) as well as indicators for some other conditions such
         as sepsis and obesity.
