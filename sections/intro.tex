@@ -13,15 +13,16 @@ of patient flow and their interaction with the healthcare system.
 However, this process relies heavily on detailed data --- about both the system
 and the population within that system --- which may limit research where
 sophisticated data pipelines are not yet in place. This work demonstrates how
-this issue may be overcome using administrative, hospital data detailing patient
-spells. This data is then used to build a patient clustering that feeds into a
-multi-class queuing model. Specifically, this work examines patient records from
-the National Health Service (NHS) Wales Cwm Taf Morgannwg University Health
-Board (UHB) that present chronic obstructive pulmonary disease (COPD). COPD is
-of particular interest to Cwm Taf Morgannwg UHB as the condition is known to
-often present as a comorbidity in patients~\cite{Houben2019} and it was found
-that they had the highest prevalence of the condition across all the Welsh
-health boards in an internal report by NHS Wales.
+this issue may be overcome using administrative, spell-level, hospital data,
+i.e.\ a dataset that summarises patient spells. This data is then used to build
+a patient clustering that feeds into a multi-class queuing model. Specifically,
+this work examines records of patient spells from the National Health Service
+(NHS) Wales Cwm Taf Morgannwg University Health Board (UHB) that present chronic
+obstructive pulmonary disease (COPD).  COPD is of particular interest to Cwm Taf
+Morgannwg UHB as the condition is known to often present as a comorbidity in
+patients~\cite{Houben2019} and it was found that they had the highest prevalence
+of the condition across all the Welsh health boards in an internal report by NHS
+Wales.
 
 % TODO No reference for graph sent by Kendal but is this alright?
 
@@ -134,8 +135,7 @@ continuous stay of a patient using a hospital bed on premises controlled by a
 health care provider and is made up of one or more patient
 episodes~\cite{NHS2020}.
 
-The dataset is made up of instances each describing a patient spell with the
-following attributes:
+The spells included in the dataset are described by the following attributes:
 \begin{itemize}
     \item Personal identifiers and information, i.e.\ patient and spell ID
         numbers, and gender.
@@ -169,11 +169,11 @@ spell:
         on the associated patient ID number.
 \end{itemize}
 
-Due to a lack of information about the patients beyond their COPD-related
-admissions, the spells of the dataset were segmented using a variant of the
-\(k\)-means algorithm. This variant, called \(k\)-prototypes, allows for the
-clustering of mixed-type data by performing \(k\)-means on the numeric
-attributes and \(k\)-modes on the categoric. Both \(k\)-prototypes and
+Due to a lack of information about the patients themselves --- beyond their
+COPD-related admissions --- the spells of the dataset were segmented using a
+variant of the \(k\)-means algorithm. This variant, called \(k\)-prototypes,
+allows for the clustering of mixed-type data by performing \(k\)-means on the
+numeric attributes and \(k\)-modes on the categoric. Both \(k\)-prototypes and
 \(k\)-modes were presented in~\cite{Huang1998}.
 
 The attributes included in the clustering encompass both utilisation metrics and
@@ -290,5 +290,4 @@ the population), is provided in Table~\ref{tab:summary}.
 
 
 % TODO Condensed analysis of clustering
-%       - choosing k and a clustering algorithm
 %       - comparison with treatment segmentation
