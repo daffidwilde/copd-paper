@@ -95,10 +95,25 @@ is of particular significance.
 
 \subsubsection{Queuing models}
 
-These are the principal queuing theory works by
-Erlang~\cite{Erlang1917,Erlang1920}. Deadlock is an aspect of applied queuing
-theory of interest in recent literature~\cite{Palmer2018}. The software used is
-Ciw~\cite{Palmer2019}.  % TODO Write this section
+Since the seminal works by Erlang~\cite{Erlang1917,Erlang1920} established
+the core concepts of queuing theory, the application of queues and queuing
+networks to real services has become abundant including the healthcare service.
+By applying these models to healthcare settings, many aspects of the underlying
+system can be studied. A common area of study in healthcare settings is of
+service capacity.~\cite{McClain1976} is an early example of such work where
+acute bed capacity was determined using hospital occupancy data. Meanwhile, more
+modern works such as~\cite{Palvannan2012,Pinto2014} consider wider sources of
+data (where available) to build their queuing models. Moreover, the output of
+a model is catered more towards being actionable --- as is the prerogative of
+operational research. For instance,~\cite{Pinto2014} devises new categorisations
+for both hospital beds and arrivals that are informed by the queuing model.
+
+In addition to results from these abstract models, healthcare queuing research
+has expanded to include computer simulation models. These areas include the
+construction and simulation of Markov processes via process
+mining~\cite{Arnolds2018,Rebuge2012} or patient flow~\cite{Bhattacharjee2014}.
+
+The software used is Ciw~\cite{Palmer2019}.  % TODO Write this section
 
 \subsubsection{Handling incomplete queue data}
 
