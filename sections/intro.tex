@@ -107,13 +107,36 @@ data (where available) to build their queuing models. Moreover, the output of
 a model is catered more towards being actionable --- as is the prerogative of
 operational research. For instance,~\cite{Pinto2014} devises new categorisations
 for both hospital beds and arrivals that are informed by the queuing model.
+A further example is~\cite{Komashie2015} where queuing models are used to
+measure and understand satisfaction amongst patients and staff.
 
-In addition to results from these abstract models, healthcare queuing research
-has expanded to include computer simulation models. These areas include the
+In addition to these theoretic models, healthcare queuing research has expanded
+to include computer simulation models. The simulation of queues, or networks
+thereof, have the benefit of being able to easily capture the stochastic nuances
+of hospital systems over their theoretic counterparts. Example areas include the
 construction and simulation of Markov processes via process
-mining~\cite{Arnolds2018,Rebuge2012} or patient flow~\cite{Bhattacharjee2014}.
-
-The software used is Ciw~\cite{Palmer2019}.  % TODO Write this section
+mining~\cite{Arnolds2018,Rebuge2012}, and patient flow~\cite{Bhattacharjee2014}.
+Regardless of the advantages of simulation models, a prerequisite is reliable
+software with which to construct those simulations. A popular tool for building
+queues --- both in industry and academia --- is Simul8. This piece of software
+is based on processes and is highly visual which makes it attractive to
+organisations looking to implement queuing models without necessary technical
+expertise, including the NHS.~\cite{Brailsford2013} discusses the issues around
+operational research and simulation being taken up in the NHS despite the
+availability of intuitive software like Simul8. However, it does not address a
+core principle of good simulation work: reproducibility. The ability to reliably
+reproduce a set of results is a matter of great importance to scientific
+research but this remains an issue in simulation research
+generally~\cite{Fitzpatrick2019}. When considering issues with reproducibility
+in scientific computing (simulation included), the buck often ends with the
+software used~\cite{Ivie2018}. The use of well-developed, open source software
+can alleviate issues around reproducibility and reliability as the processes by
+which they are used involve less uncertainty and require more rigour than
+`drag-and-drop' software. One example of such a piece of software is
+Ciw~\cite{Palmer2019}. Ciw is a discrete event simulation library written in
+Python that is fully documented and tested. The simulations constructed and
+studied in Sections~\ref{sec:model}~and~\ref{sec:scenarios} utilise this library
+and aid the overall reproducibility of this work.
 
 \subsubsection{Handling incomplete queue data}
 
