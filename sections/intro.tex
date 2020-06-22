@@ -250,7 +250,49 @@ clustering over other initialisation methods.
 \end{table}
 
 A summary of the spells in each cluster, and the overall dataset (referred to as
-the population), is provided in Table~\ref{tab:summary}. 
+the population), is provided in Table~\ref{tab:summary}. From this table, a
+number of helpful insights can be made. For instance, the needs of the spells in
+each cluster can be summarised succinctly:
+
+\begin{itemize}
+    \item Cluster 0 represents those spells with relatively low clinical
+        complexity but high resource requirements. The mean spell cost is almost
+        four times the population average and the shortest spell is almost two
+        weeks long. Moreover, the mean number of COPD-related admissions in the
+        last year is higher for this cluster than any other indicating that the
+        patients therein require more interactions with the system.
+    \item Cluster 1 is the next largest segment and represents the spells with
+        complex clinical profiles despite lower resource requirements.
+        Specifically, the spells in this cluster have the highest median CCI and
+        number of LTCs, and the highest condition prevalences across all
+        clusters but they have the second lowest length of stay and spell costs.
+    \item Cluster 2 represents the majority of spells and those where resource
+        requirements and clinical complexities are minimal; these spells have
+        the shortest lengths, and the patients present with fewer diagnoses and
+        a lower median CCI than any other cluster. In addition to this, the
+        spells in Cluster 2 have the highest intervention prevalences and the
+        lowest condition prevalences across all clusters.
+    \item Cluster 3 represents the smallest section of the population but
+        perhaps the most critical: spells with high complexity and high resource
+        needs. The patients within Cluster 3 are the oldest in the population
+        and are some of the most frequently returning despite having the lowest
+        intervention rates. The lengths of stay vary between seven and 32 weeks,
+        and the mean spell cost is almost eight times the population average.
+        This cluster also has the second highest median CCI, and the highest
+        median number of concurrent diagnoses.
+\end{itemize}
+
+The attributes listed in Table~\ref{tab:summary} can be studied beyond
+summaries such as these, however, and the figures remaining in this section aim
+to do that. In particular, the distributions for some of the clinical
+characteristics are shown in Figures~\ref{fig:los_hist}~through~\ref{fig:icds}
+for each cluster. In addition to this, each of these figures also shows the
+distribution for the same attributes but by splitting the spell population by
+intervention rather than cluster. While this classical approach (i.e.\ of
+splitting a population based on a condition or treatment) can provide some
+insight into how the different interventions are used, it has been included to
+highlight the value added by segmenting the population on a number of
+attributes.
 
 \begin{figure}
     \centering
@@ -263,9 +305,25 @@ the population), is provided in Table~\ref{tab:summary}.
         \caption{}\label{fig:intervention_los}
     \end{subfigure}
     \caption{%
-        Historgrams for length of stay by (\subref{fig:cluster_los}) cluster and
+        Histograms for length of stay by (\subref{fig:cluster_los}) cluster and
         (\subref{fig:intervention_los}) intervention.
-    }\label{fig:los_kde}
+    }\label{fig:los_hist}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{\halfimgwidth}
+        \includegraphics[width=\linewidth]{cluster_charlson_gross}
+        \caption{}\label{fig:cluster_charlson}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{\halfimgwidth}
+        \includegraphics[width=\linewidth]{intervention_charlson_gross}
+        \caption{}\label{fig:intervention_charlson}
+    \end{subfigure}
+    \caption{%
+        Histograms for CCI by (\subref{fig:cluster_charlson}) cluster and
+        (\subref{fig:intervention_charlson}) intervention.
+    }\label{fig:charlson_hist}
 \end{figure}
 
 \begin{figure}
@@ -288,51 +346,15 @@ the population), is provided in Table~\ref{tab:summary}.
 \begin{figure}
     \centering
     \begin{subfigure}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{cluster_spell_cost}
-        \caption{}\label{fig:cluster_spell_cost}
+        \includegraphics[width=\linewidth]{cluster_icds}
+        \caption{}\label{fig:cluster_icds}
     \end{subfigure}\hfill%
     \begin{subfigure}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{intervention_spell_cost}
-        \caption{}\label{fig:intervention_spell_cost}
+        \includegraphics[width=\linewidth]{intervention_icds}
+        \caption{}\label{fig:intervention_icds}
     \end{subfigure}
     \caption{%
-        Histograms for spell costs by (\subref{fig:cluster_spell_cost}) cluster
-        and (\subref{fig:intervention_spell_cost}) intervention.
-    }\label{fig:wimd_hist}
+        Histograms for number of ICDs by (\subref{fig:cluster_icds}) cluster
+        and (\subref{fig:intervention_icds}) intervention.
+    }\label{fig:icds}
 \end{figure}
-
-\begin{figure}
-    \centering
-    \begin{subfigure}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{cluster_n_icds}
-        \caption{}\label{fig:cluster_n_icds}
-    \end{subfigure}\hfill%
-    \begin{subfigure}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{intervention_n_icds}
-        \caption{}\label{fig:intervention_n_icds}
-    \end{subfigure}
-    \caption{%
-        Histograms for number of ICDs by (\subref{fig:cluster_n_icds}) cluster
-        and (\subref{fig:intervention_n_icds}) intervention.
-    }\label{fig:n_icds_hist}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \begin{subfigure}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{cluster_charlson_gross}
-        \caption{}\label{fig:cluster_charlson}
-    \end{subfigure}\hfill%
-    \begin{subfigure}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{intervention_charlson_gross}
-        \caption{}\label{fig:intervention_charlson}
-    \end{subfigure}
-    \caption{%
-        Histograms for CCI by (\subref{fig:cluster_charlson}) cluster and
-        (\subref{fig:intervention_charlson}) intervention.
-    }\label{fig:charlson_hist}
-\end{figure}
-
-
-% TODO Condensed analysis of clustering
-%       - comparison with treatment segmentation
