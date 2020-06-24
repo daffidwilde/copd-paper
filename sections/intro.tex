@@ -66,7 +66,7 @@ mining.~\cite{Arnolds2018}~and~\cite{Delias2015} demonstrate how this technique
 can be used to improve the efficiency of a hospital system as opposed to
 tackling the more relevant issue of patient-centred care. The remaining
 characteristics can be segmented with a number of techniques but recent works
-tend to use unsupervised methods, typically latent class analysis (LCA) or
+tend to use unsupervised methods --- typically latent class analysis (LCA) or
 clustering~\cite{Yan2018}.
 
 LCA is a statistical, model-based method used to identify groups (called latent
@@ -194,7 +194,9 @@ The spells included in the dataset are described by the following attributes:
         nursing (SN), and both interventions.
     \item Charlson Comorbidity Index (CCI) contributions from several long term
         conditions (LTCs) as well as indicators for some other conditions such
-        as sepsis and obesity.
+        as sepsis and obesity. CCI has been shown to be useful in anticipating
+        hospital utilisation as a measure for the burdens associated with
+        comorbidity~\cite{Simon2011}.
     \item Rank under the 2019 Welsh Index of Multiple Deprivation (WIMD)
         indicating relative deprivation of the postcode area the patient lives
         in which is known to be linked to COPD prevalence and
@@ -253,7 +255,6 @@ A summary of the spells in each cluster, and the overall dataset (referred to as
 the population), is provided in Table~\ref{tab:summary}. From this table, a
 number of helpful insights can be made. For instance, the needs of the spells in
 each cluster can be summarised succinctly:
-
 \begin{itemize}
     \item Cluster 0 represents those spells with relatively low clinical
         complexity but high resource requirements. The mean spell cost is almost
@@ -283,32 +284,44 @@ each cluster can be summarised succinctly:
 \end{itemize}
 
 The attributes listed in Table~\ref{tab:summary} can be studied beyond summaries
-such as these, however, and the figures remaining in this section aim to do
-that. In particular, the distributions for some of the clinical characteristics
-are shown in Figures~\ref{fig:los_hist}~through~\ref{fig:icds} for each cluster.
-In addition to this, each of these figures also shows the distribution for the
-same attributes but by splitting the spell population by intervention rather
-than cluster. While this classical approach --- of splitting a population based
-on a condition or treatment --- can provide some insight into how the different
+such as these, however. Figures~\ref{fig:los}~through~\ref{fig:icds} show
+the distributions for some of the clinical characteristics for each cluster. In
+addition to this, each of these figures also shows the distribution for the same
+attributes but by splitting the spell population by intervention rather than
+cluster. While this classical approach --- of splitting a population based on a
+condition or treatment --- can provide some insight into how the different
 interventions are used, it has been included to highlight the value added by
-segmenting the population on a number of attributes without such a prescriptive
-framework.
+segmenting the population using the data available here without such a
+prescriptive framework.
 
 \begin{figure}
     \centering
     \begin{subfigure}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{cluster_los}
+        \includegraphics[width=\linewidth]{cluster_true_los}
         \caption{}\label{fig:cluster_los}
     \end{subfigure}\hfill%
     \begin{subfigure}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{intervention_los}
+        \includegraphics[width=\linewidth]{intervention_true_los}
         \caption{}\label{fig:intervention_los}
     \end{subfigure}
     \caption{%
         Histograms for length of stay by (\subref{fig:cluster_los}) cluster and
         (\subref{fig:intervention_los}) intervention.
-    }\label{fig:los_hist}
+    }\label{fig:los}
 \end{figure}
+
+Figure~\ref{fig:los} shows the length of stay distributions as histograms.
+Figure~\ref{fig:cluster_los} demonstrates the different bed resource
+requirements well for each cluster --- better than Table~\ref{tab:summary}
+might --- in that the difference between the clusters is not just a matter of
+varying means and ranges, but entirely different shapes to their respective
+distributions. Indeed, they are all positively skewed but there is no real
+consistency beyond that. When comparing this to
+Figure~\ref{fig:intervention_los}, there is certainly some variety but the
+overall shapes of the distributions are very similar. This is except for the
+spells with no COPD intervention where binning could not improve the
+visualisation due to the widespread and near uniform distribution of their
+lengths of stay.
 
 \begin{figure}
     \centering
@@ -323,8 +336,16 @@ framework.
     \caption{%
         Histograms for CCI by (\subref{fig:cluster_charlson}) cluster and
         (\subref{fig:intervention_charlson}) intervention.
-    }\label{fig:charlson_hist}
+    }\label{fig:charlson}
 \end{figure}
+
+In a similar vein, Figure~\ref{fig:charlson} shows that clustering has revealed
+distinct patterns in the CCI of the spells within each cluster where splitting
+by intervention does not. For instance, despite Cluster 2 making up the majority
+of the population, the spells within that cluster are atypical of the
+population's CCI distribution and are heavily skewed towards the minimal value.
+This skewness is also apparent in the spells with both interventions but not in
+the remaining plots in Figure~\ref{fig:intervention_charlson}.
 
 \begin{figure}
     \centering
@@ -337,7 +358,7 @@ framework.
         \caption{}\label{fig:intervention_ltcs}
     \end{subfigure}
     \caption{%
-        Proportions of concurrent LTC counts presented by patients by
+        Proportions of the number of concurrent LTCs in a spell by
         (\subref{fig:cluster_ltcs}) cluster and (\subref{fig:intervention_ltcs})
         intervention.
     }\label{fig:ltcs}
@@ -354,7 +375,8 @@ framework.
         \caption{}\label{fig:intervention_icds}
     \end{subfigure}
     \caption{%
-        Histograms for number of ICDs by (\subref{fig:cluster_icds}) cluster
-        and (\subref{fig:intervention_icds}) intervention.
+        Proportions of the number of concurrent ICDs in a spell by
+        (\subref{fig:cluster_icds}) cluster and (\subref{fig:intervention_icds})
+        intervention.
     }\label{fig:icds}
 \end{figure}
