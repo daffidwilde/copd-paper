@@ -320,8 +320,7 @@ consistency beyond that. When comparing this to
 Figure~\ref{fig:intervention_los}, there is certainly some variety but the
 overall shapes of the distributions are very similar. This is except for the
 spells with no COPD intervention where binning could not improve the
-visualisation due to the widespread and near uniform distribution of their
-lengths of stay.
+visualisation due to the widespread distribution of their lengths of stay.
 
 \begin{figure}
     \centering
@@ -341,11 +340,11 @@ lengths of stay.
 
 In a similar vein, Figure~\ref{fig:charlson} shows that clustering has revealed
 distinct patterns in the CCI of the spells within each cluster where splitting
-by intervention does not. For instance, despite Cluster 2 making up the majority
-of the population, the spells within that cluster are atypical of the
-population's CCI distribution and are heavily skewed towards the minimal value.
-This skewness is also apparent in the spells with both interventions but not in
-the remaining plots in Figure~\ref{fig:intervention_charlson}.
+by intervention does not. All clusters other than Cluster 2 show clear, heavy
+tails, and in the cases of Clusters 1 and 3 the body of the data exists far from
+the origin as indicated in Table~\ref{tab:summary}. In contrast, the plots in
+Figure~\ref{fig:intervention_charlson} all display very similar, highly skewed
+distributions regardless of intervention.
 
 \begin{figure}
     \centering
@@ -380,3 +379,31 @@ the remaining plots in Figure~\ref{fig:intervention_charlson}.
         intervention.
     }\label{fig:icds}
 \end{figure}
+
+Figures~\ref{fig:ltcs}~and~\ref{fig:icds} show the proportions of each grouping
+presenting levels of concurrent LTCs and ICDs respectively. By exposing the
+distribution of these attributes, some notion of the clinical complexity for
+each cluster can be captured better than with Table~\ref{tab:summary} alone. In
+Figure~\ref{fig:cluster_ltcs}, for instance, there are distinct LTC count
+profiles amongst the clusters: Cluster 0 is typical of the population; Cluster 1
+shows that no patient presented solely COPD as an LTC in their spells, and more
+than half presented at least three; Cluster 2 is similar in form to the
+population but is severely biased towards patients presenting COPD as the only
+LTC;\ Cluster 3 is the most uniformly spread amongst the four bins despite
+increased length of stay and CCI suggesting a disparate array of patients in
+terms of their long term medical needs.
+
+Figure~\ref{fig:cluster_icds} largely mirrors these cluster profiles with the
+number of concurrent ICDs. Some points of interest, however, are that Cluster 1
+has a relatively low-leaning distribution of ICDs that does not marry up with
+the high rates of LTCs, and that the vast majority of spells in Cluster 3
+present with at least nine ICDs suggesting a likely wide range of conditions and
+comorbidities beyond the LTCs used to calculate CCI.\
+
+When considering the intervention counterparts to these figures (i.e.\
+Figures~\ref{fig:intervention_ltcs}~and~\ref{fig:intervention_icds}), very
+little can be drawn with regards to the corresponding spells. One thing of note
+is that patients receiving both interventions for their COPD (or either, in
+fact) have disproportionately fewer LTCs and concurrent ICDs when compared to
+the population. Aside from this, the profiles of each intervention are all very
+similar to one another.
