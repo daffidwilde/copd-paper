@@ -23,9 +23,10 @@ OUT_DIR.mkdir(exist_ok=True)
 
 PROPS, NUM_SERVERS = get_best_params()
 COPD = pd.read_csv(
-    DATA_DIR / "copd_clustered.csv",
+    DATA_DIR / "clusters/copd_clustered.csv",
     parse_dates=["admission_date", "discharge_date"],
-)
+).dropna(subset=["cluster"])
+COPD["cluster"] = COPD["cluster"].astype(int)
 
 NUM_CORES = int(sys.argv[1])
 NUM_SEEDS = int(sys.argv[2])

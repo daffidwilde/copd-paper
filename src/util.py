@@ -45,7 +45,8 @@ def get_simulation_results(
             r
             for r in records
             if max_time * 0.25 < r.arrival_date < max_time * 0.75
-        ]
+        ],
+        columns=ciw.DataRecord._fields,
     )
 
     results["utilisation"] = Q.transitive_nodes[0].server_utilisation
