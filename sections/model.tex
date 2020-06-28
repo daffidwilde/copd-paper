@@ -11,7 +11,7 @@ particular,~\cite{Williams2015} shows how a single node, multiple server
 queue can be used to accurately predict bed capacity and length of stay
 distributions in a critical care unit using administrative data.
 
-To follow in the suit of recent literature, a single node using a \(M|M|c\)
+To follow in the suit of recent literature, a single node using a \(M/M/c\)
 queue is employed to model a hypothetical ward of patients presenting COPD.\ In
 addition to this, the grouping found in Section~\ref{subsec:overview} provides
 a set of patient classes in the queue. Under this model, the following
@@ -19,7 +19,7 @@ assumptions are made:
 \begin{enumerate}
     \item Inter-arrival and service times of patients are each exponentially
         distributed with some mean. This is in spite of the system time
-        distributions shown in Figure~\ref{fig:clusters_los} in order to
+        distributions shown in Figure~\ref{fig:cluster_los} in order to
         simplify the model parameterisation.
     \item There are \(c\) servers available to arriving patients at the node
         representing the overall resource availability including bed capacity
@@ -114,32 +114,32 @@ repetition.
 
 \begin{figure}
     \centering%
-    \includegraphics[width=\imgwidth]{best_params}
-    \caption{A histogram of the simulated and observed length of stay data for
-             the best parameter set.}\label{fig:best_params}
-\end{figure}
-
-\begin{figure}
-    \centering%
-    \includegraphics[width=\imgwidth]{worst_params}
-    \caption{A histogram of the simulated and observed length of stay data for
-             the worst parameter set.}\label{fig:worst_params}
+    \begin{subfigure}{.5\imgwidth}
+        \includegraphics[width=\linewidth]{best_params}
+        \caption{}\label{fig:best_params}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{.5\imgwidth}
+        \includegraphics[width=\linewidth]{worst_params}
+        \caption{}\label{fig:worst_params}
+    \end{subfigure}
+    \caption{Histograms of the simulated and observed length of stay data for
+             the (\subref{fig:best_params}) best and (\subref{fig:worst_params})
+             worst parameter sets.}\label{fig:params}
 \end{figure}
 
 The results of this parameter sweep can be summarised in
-Figures~\ref{fig:best_params}~and~\ref{fig:worst_params}. Each figure shows a
-comparison of the observed lengths of stay across all groups and the newly
-simulated data with the best and worst parameter sets respectively. It can be
-seen that, in the best case, a very close fit has been found. Meanwhile,
-Figure~\ref{fig:worst_params} highlights the importance of good parameter
-estimation under this model since the likelihood of short-stay patient arrivals
-has been inflated disproportionately against the tail of the distribution.
-Table~\ref{tab:comparison} reinforces these results numerically, showing a
-clear fit by the best parameters across the board.
+Figures~\ref{fig:params}. Each plot shows a comparison of the observed lengths
+of stay across all groups and the newly simulated data with the best and worst
+parameter sets respectively. It can be seen that, in the best case, a very close
+fit has been found. Meanwhile, Figure~\ref{fig:worst_params} highlights the
+importance of good parameter estimation under this model since the likelihood of
+short-stay patient arrivals has been inflated disproportionately against the
+tail of the distribution. Table~\ref{tab:comparison} reinforces these results
+numerically, showing a clear fit by the best parameters across the board.
 
 \begin{table}
     \centering
-    \resizebox{\textwidth}{!}{\input{tex/comparison}}
+    \resizebox{\tabwidth}{!}{\input{tex/comparison}}
     \caption{A comparison of the observed data, and the best and worst simulated
         data based on the model parameters and summary statistics for length of
     stay (LOS).}\label{tab:comparison}
