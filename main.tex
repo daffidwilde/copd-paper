@@ -5,10 +5,16 @@
 \usepackage{setspace}
     \onehalfspacing%
 
-% Bibliography and referencing
+% Bibliography, referencing
 \usepackage[numbers]{natbib}
     \bibliographystyle{abbrvurl}
 \usepackage{hyperref}
+
+% Mathematics, symbols
+\usepackage{amsmath}
+    \DeclareMathOperator*{\argmin}{arg\,min}
+\usepackage{pgf, interval}
+    \intervalconfig{soft open fences}
 
 % Images, tables
 \usepackage{graphicx}
@@ -23,9 +29,9 @@
 
 % Custom lengths
 \newlength{\imgwidth}
-\setlength{\imgwidth}{.96\textwidth}
-\newlength{\halfimgwidth}
-\setlength{\halfimgwidth}{.5\imgwidth}
+\setlength{\imgwidth}{.9\textwidth}
+\newlength{\tabwidth}
+\setlength{\tabwidth}{.9\textwidth}
 
 \title{%
     Understanding COPD patients in the hospital system via administrative data
@@ -35,11 +41,11 @@
 
 
 \begin{document}
-\maketitle
+\maketitle%
 
 \input{sections/abstract}
 \input{sections/intro}
-\input{sections/wasserstein}
+\input{sections/model}
 \input{sections/scenarios}
 \input{sections/conclusion}
 
