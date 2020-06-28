@@ -1,7 +1,5 @@
 \section{Constructing the queuing model}\label{sec:model}
 
-% TODO What exactly is the problem and how can it be addressed?
-
 Owing to a lack of available data on the system and its patients, the options
 for the queuing model used are limited compared to those employed in some modern
 works. However, there is a precedent for simplifying healthcare systems to a
@@ -94,14 +92,14 @@ between any cluster's simulated system time distribution and the overall
 observed length of stay distribution is then taken to be the most appropriate.
 
 Specifically, the parameter sweep included values of each \(p_i\) from \(0.5\)
-to \(1\) with a granularity of \(10^{-1}\) and values of \(c\) from \(40\) to
-\(60\) at steps of \(5\).  % TODO Update these values when the new results come back
-These choices were informed by the assumptions of the
-model and formative analysis to reduce the parameter space given the
-computational resources required to conduct the simulations. Each parameter set
-was repeated \(50\) times with each simulation running for four years of virtual
-time. The warm-up and cool-down periods were taken to be approximately one year
-each leaving two years of simulated data from each repetition.
+to \(1\) with a granularity of \(5 \times 10^{-2}\) and values of \(c\) from
+\(40\) to \(60\) at steps of \(5\).  These choices were informed by the
+assumptions of the model and formative analysis to reduce the parameter space
+given the computational resources required to conduct the simulations. Each
+parameter set was repeated \(50\) times with each simulation running for four
+years of virtual time. The warm-up and cool-down periods were taken to be
+approximately one year each leaving two years of simulated data from each
+repetition.
 
 \begin{figure}
     \centering%
