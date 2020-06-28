@@ -16,14 +16,17 @@ experiments is to address the following questions:
     \item How is the system affected by patients moving between clusters?
 \end{itemize}
 
-%TODO Add a disclaimer about relative values here.
+Owing to the nature of the observed data, the queuing model parameterisation,
+and its assumptions, the effects of each scenario are given in relative terms
+with respect to the base case. The base case being those results generated from
+the best parameter set found in Section~\ref{sec:model}.
 
 \subsection{Changes to overall patient arrivals}\label{subsec:arrivals}
 
 \begin{figure}
     \centering
     \begin{minipage}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{lambda_time_logscale}
+        \includegraphics[width=\linewidth]{lambda_time}
         \captionof{figure}{A plot of \(\lambda\) scaling factor against mean
         relative system time}\label{fig:lambda_time}
     \end{minipage}\hfill%
@@ -39,7 +42,7 @@ experiments is to address the following questions:
 \begin{figure}
     \centering
     \begin{minipage}{\halfimgwidth}
-        \includegraphics[width=\linewidth]{servers_time_logscale}
+        \includegraphics[width=\linewidth]{servers_time}
         \captionof{figure}{A plot of the number of servers, \(c\), against mean
         relative system time}\label{fig:servers_time}
     \end{minipage}\hfill%
@@ -54,7 +57,7 @@ experiments is to address the following questions:
 
 \begin{figure}
     \centering
-    \includegraphics[width=\imgwidth]{moving_time_logscale}
+    \includegraphics[width=\imgwidth]{moving_time}
     \caption{Plots showing the effect of proportions of each cluster moving to
     another on the mean relative system time}\label{fig:moving_time}
 \end{figure}
