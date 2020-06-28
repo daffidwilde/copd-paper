@@ -91,7 +91,18 @@ in~\cite{Ramdas2017}. The parameter set with the smallest maximum distance
 between any cluster's simulated system time distribution and the overall
 observed length of stay distribution is then taken to be the most appropriate.
 
-Specifically, the parameter sweep included values of each \(p_i\) from \(0.5\)
+To be specific, let \(T\) denote the system time distribution of all of the
+observed data and let \(T_{i,c,p}\) denote the system time distribution for
+cluster \(i\) obtained from a simulation with \(c\) servers and
+\(p := \left(p_0, p_1, p_2, p_3\right)\). Then the optimal parameter set
+\(\left(c^*, p^*\right)\) is given by:
+\begin{equation}\label{eq:parameters}
+    \left(c^*, p^*\right) = \argmin_{c, p} \left\{%
+        \max_{i} \left\{ W\left(T_{i,c,p}, T\right) \right\}%
+    \right\}
+\end{equation}
+
+The parameter sweep included values of each \(p_i\) from \(0.5\)
 to \(1\) with a granularity of \(5 \times 10^{-2}\) and values of \(c\) from
 \(40\) to \(60\) at steps of \(5\).  These choices were informed by the
 assumptions of the model and formative analysis to reduce the parameter space
