@@ -68,7 +68,7 @@ def get_simulation_results(
 
 def get_best_params():
 
-    with open(DATA_DIR / "wasserstein/best_params.txt", "r") as f:
+    with open(DATA_DIR / "wasserstein/best/params.txt", "r") as f:
         strings = f.read().split(" ")
         props, num_servers = list(map(float, strings[:-2])), int(strings[-2])
 
