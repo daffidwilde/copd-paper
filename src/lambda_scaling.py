@@ -3,13 +3,20 @@
 import itertools as it
 import sys
 
+import tqdm
+
 import dask
 import numpy as np
-import tqdm
+import pandas as pd
 from dask.diagnostics import ProgressBar
-
 from util import (
-    COPD, DATA_DIR, PROPS, NUM_SERVERS, MAX_TIME, get_results, simulate_queue
+    COPD,
+    DATA_DIR,
+    MAX_TIME,
+    NUM_SERVERS,
+    PROPS,
+    get_results,
+    simulate_queue,
 )
 
 OUT_DIR = DATA_DIR / "lambda_scaling/"
@@ -50,7 +57,7 @@ def main():
 
     utilisations.to_csv(OUT_DIR / "utilisations.csv", index=False)
     system_times.to_csv(OUT_DIR / "system_times.csv", index=False)
-    
+
 
 if __name__ == "__main__":
     main()

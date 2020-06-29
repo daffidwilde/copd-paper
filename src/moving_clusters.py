@@ -3,16 +3,22 @@
 import itertools as it
 import sys
 
+import tqdm
+
 import ciw
 import dask
 import numpy as np
 import pandas as pd
-import tqdm
 from ciw.dists import Exponential
 from dask.diagnostics import ProgressBar
-
 from util import (
-    COPD, DATA_DIR, PROPS, NUM_SERVERS, MAX_TIME, get_queue_params, get_results
+    COPD,
+    DATA_DIR,
+    MAX_TIME,
+    NUM_SERVERS,
+    PROPS,
+    get_queue_params,
+    get_results,
 )
 
 OUT_DIR = DATA_DIR / "moving_clusters/"

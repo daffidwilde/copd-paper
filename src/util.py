@@ -49,9 +49,7 @@ def get_queue_params(data, prop=1, sigma=1):
 
 
 @dask.delayed
-def simulate_queue(
-    data, props, num_servers, seed, max_time, sigma=1
-):
+def simulate_queue(data, props, num_servers, seed, max_time, sigma=1):
     """ Build and simulate a queue under the provided parameters. """
 
     ciw.seed(seed)
