@@ -36,22 +36,22 @@ assumptions are made:
 
 Each group of patients has its own arrival distribution. The parameter of this
 distribution is taken to be the reciprocal of the mean inter-arrival times for
-that group.
+that group and is denoted by \(\lambda_i\) for each cluster \(i\).
 
 Like arrivals, each group of patients has its own service time distribution.
 Without full details of the process order or idle periods during a spell, some
 assumption must be made about the true `service' time of a patient in hospital.
 It is assumed here that the mean service time of a group of patients may be
 approximated via their mean length of stay, i.e.\ the mean time spent in the
-system. For simplicity, this work considers the mean service time,
-\(\frac{1}{\mu}\), to be directly proportional to the mean total system time,
-\(\frac{1}{\phi}\), such that:
-\begin{equation}
-    \mu = p \phi
+system. For simplicity, this work assumes that for each cluster, \(i\), the mean
+service time of that cluster, \(\frac{1}{\mu_i}\), to be directly proportional
+to the mean total system time of that cluster, \(\frac{1}{\phi_i}\), such that:
+\begin{equation}\label{eq:services}
+    \mu_i = p_i \phi_i
 \end{equation}
 
-\noindent where \(p \in \interval[open left]{0}{1}\) is some parameter to be
-determined for each group, denoted by \(p_i\) for group \(i\).
+\noindent where \(p_i \in \interval[open left]{0}{1}\) is some parameter to be
+determined for each group.
 
 One of the few ground truths available in the provided data is the distribution
 of the total length of stay. Given that the length of stay and resource
