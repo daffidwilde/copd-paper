@@ -96,6 +96,25 @@ as to what a particular number of servers exactly reflects in the real world.
 
 \subsection{Moving patients between clusters}\label{subsec:moving}
 
+In order to model the effects of patients moving between two clusters, the
+assumption is that services remain the same (and so does each cluster's \(p_i\))
+but their arrival rates are altered according to some transfer proportion.
+Consider two clusters indexed at \(i, j\), and their respective arrival rates,
+\(\lambda_i, \lambda_j\), and let \(\delta \in [0, 1]\) denote the proportion of
+arrivals to be moved from cluster \(i\) to cluster \(j\). Then the new arrival
+rates for each cluster, denoted by \(\hat\lambda_i, \hat\lambda_j\)
+respectively, are:
+\begin{equation}\label{eq:moving}
+    \hat\lambda_i = \left(1 - \delta\right) \lambda_i
+    \quad \text{and} \quad
+    \hat\lambda_j = \delta\lambda_i + \lambda_j
+\end{equation}
+
+By moving patient arrivals between clusters in this way, the overall arrivals
+are left the same since the sum of the arrival rates is the same. Hence, the
+(relative) effect on server utilisation and system time can be measured
+independently.
+
 \begin{figure}
     \centering
     \includegraphics[width=\imgwidth]{moving_time}
