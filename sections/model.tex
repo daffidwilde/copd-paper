@@ -3,15 +3,15 @@
 Owing to a lack of available data on the system and its patients, the options
 for the queuing model used are limited compared to those employed in some modern
 works. However, there is a precedent for simplifying healthcare systems to a
-single node with, for example, parallel servers that emulate resource
-availability.~\cite{Steins2013}~and~\cite{Williams2015} provide good examples
-of how this approach, when paired with discrete event simulation, can expose the
+single node with parallel servers that emulate resource
+availability.~\cite{Steins2013}~and~\cite{Williams2015} provide good examples of
+how this approach, when paired with discrete event simulation, can expose the
 resource needs of a system beyond deterministic queuing theory models. In
-particular,~\cite{Williams2015} shows how a single node, multiple server
-queue can be used to accurately predict bed capacity and length of stay
-distributions in a critical care unit using administrative data.
+particular,~\cite{Williams2015} shows how a single node, multiple server queue
+can be used to accurately predict bed capacity and length of stay distributions
+in a critical care unit using administrative data.
 
-To follow in the suit of recent literature, a single node using a \(M/M/c\)
+Following in the suit of recent literature, a single node using a \(M/M/c\)
 queue is employed to model a hypothetical ward of patients presenting COPD.\ In
 addition to this, the grouping found in Section~\ref{subsec:overview} provides
 a set of patient classes in the queue. Under this model, the following
@@ -23,7 +23,7 @@ assumptions are made:
         simplify the model parameterisation.
     \item There are \(c\) servers available to arriving patients at the node
         representing the overall resource availability including bed capacity
-        and medical staff.
+        and hospital staff.
     \item There is no queue or system capacity. In~\cite{Williams2015}, a
         queue capacity of zero is set under the assumption that any surplus
         arrivals would be sent to another suitable ward or unit. As this
@@ -128,7 +128,7 @@ repetition.
 \end{figure}
 
 The results of this parameter sweep can be summarised in
-Figures~\ref{fig:params}. Each plot shows a comparison of the observed lengths
+Figure~\ref{fig:params}. Each plot shows a comparison of the observed lengths
 of stay across all groups and the newly simulated data with the best and worst
 parameter sets respectively. It can be seen that, in the best case, a very close
 fit has been found. Meanwhile, Figure~\ref{fig:worst_params} highlights the
