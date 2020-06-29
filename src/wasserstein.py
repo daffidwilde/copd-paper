@@ -11,7 +11,6 @@ import pandas as pd
 from ciw.dists import Exponential
 from dask.diagnostics import ProgressBar
 from scipy import stats
-
 from util import DATA_DIR, get_queue_params
 
 OUT_DIR = DATA_DIR / "wasserstein/"
