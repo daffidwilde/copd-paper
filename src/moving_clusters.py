@@ -28,17 +28,17 @@ NUM_CORES = int(sys.argv[1])
 NUM_SEEDS = int(sys.argv[2])
 MOVE_GRANULARITY = float(sys.argv[3])
 
-PROP_TO_MOVE_RANGE = np.arange(0, 1, MOVE_GRANULARITY)
+PROP_TO_MOVE_RANGE = np.arange(0, 1, MOVE_GRANULARITY).round(2)
 
 n_clusters = COPD["cluster"].nunique()
-label_combinations = (
+combinations = lambda: (
     labels
     for labels in it.product(range(n_clusters), repeat=2)
     if labels[0] != labels[1]
 )
 
 PARAMS = lambda: it.product(
-    label_combinations, PROP_TO_MOVE_RANGE, range(NUM_SEEDS)
+    combinations(), PROP_TO_MOVE_RANGE, range(NUM_SEEDS)
 )
 
 

@@ -26,7 +26,7 @@ NUM_CORES = int(sys.argv[1])
 NUM_SEEDS = int(sys.argv[2])
 SIGMA_GRANULARITY = float(sys.argv[3])
 
-SIGMA_RANGE = np.arange(0.5, 2.01, SIGMA_GRANULARITY)
+SIGMA_RANGE = np.arange(0.5, 2.01, SIGMA_GRANULARITY).round(2)
 
 PARAMS = lambda: it.product(SIGMA_RANGE, range(NUM_SEEDS))
 
