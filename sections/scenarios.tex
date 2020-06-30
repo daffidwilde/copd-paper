@@ -18,11 +18,12 @@ following questions:
 \end{itemize}
 
 Owing to the nature of the observed data, the queuing model parameterisation
-and its assumptions, the effects of each scenario are given in relative terms
-with respect to the base case. The base case being those results generated from
-the best parameter set recorded in Table~\ref{tab:comparison}. In particular,
-each piece of data in each scenario is simply scaled by the corresponding median
-value in the base case meaning that a value of 1 is `normal'.
+and its assumptions, the effects on the chosen metrics in each scenario are
+given in relative terms with respect to the base case. The base case being those
+results generated from the best parameter set recorded in
+Table~\ref{tab:comparison}. In particular, the data from each scenario is scaled
+by the corresponding median value in the base case meaning that a metric having
+a value of 1 is `normal'.
 
 As mentioned in Section~\ref{sec:intro}, the source code used throughout this
 work is available online and has been archived. %TODO Add citation for repo
@@ -34,12 +35,12 @@ have been archived. %TODO archive and add citation
 
 Changes in overall patient arrivals to a queue reflect real-world scenarios
 where some stimulus is improving (or worsening) the condition of the patient
-population. Examples of positive stimuli include increased community care and
-campaigns against harmful behaviours such as smoking. Within this model, overall
-patient arrivals are altered using a scaling factor denoted by
-\(\sigma\in\mathbb{R}\). This scaling factor is applied to the model by
-multiplying each cluster's arrival rate by \(\sigma\). That is, for cluster
-\(i\), its new arrival rate, \(\hat\lambda_i\), is given by:
+population. Examples of stimuli could include an aging population or
+changes to deprivation. Within this model, overall patient arrivals are altered
+using a scaling factor denoted by \(\sigma\in\mathbb{R}\). This scaling factor
+is applied to the model by multiplying each cluster's arrival rate by
+\(\sigma\). That is, for cluster \(i\), its new arrival rate, \(\hat\lambda_i\),
+is given by:
 \begin{equation}\label{eq:lambda}
     \hat\lambda_{i} = \sigma\lambda_i
 \end{equation}
@@ -70,16 +71,19 @@ interquartile range (IQR) of each relative attribute. These metrics provide an
 insight into the experience of the average user (or server) in the system, and
 in the stability or variation of the body of users (servers).
 
-The overarching implication of these plots is that the system has some slack.
-Looking at Figure~\ref{fig:lambda_time}, for instance, the relative system times
-(i.e.\ the relative length of stay for patients) remains unchanged up to
-\(\sigma \approx 1.2\), or an approximate 20\% increase in arrivals of COPD
-patients. Beyond that, relative system times rise to an untenable point where
-the median time becomes orders of magnitude above the norm.
+What is evident from these plots is that things are happening as one might
+expect: as arrivals increase, the strain on the system increases. However, it
+should be noted that it also appears that the model has some amount of slack
+relative to the base case. Looking at Figure~\ref{fig:lambda_time}, for
+instance, the relative system times (i.e.\ the relative length of stay for
+patients) remains unchanged up to \(\sigma \approx 1.2\), or an approximate 20\%
+increase in arrivals of COPD patients. Beyond that, relative system times rise
+to an untenable point where the median time becomes orders of magnitude above
+the norm.
 
 However, Figure~\ref{fig:lambda_util} shows that the situation for the system's
-resources reaches its worst case near the start of that spike in relative system
-times (at \(\sigma \approx 1.4\)). That is, the median server utilisation
+resources reaches its worst case near to the start of that spike in relative
+system times (at \(\sigma \approx 1.4\)). That is, the median server utilisation
 reaches a maximum (this corresponds to constant utilisation) at this point and
 the variation in server utilisation disappears entirely.
 
@@ -123,36 +127,47 @@ number of servers took values from \input{tex/num_servers_change_min} to
 \input{tex/num_servers_change_max} at steps of
 \input{tex/num_servers_change_step} --- this is equivalent to a step size of 1
 in the actual number of servers. Overall, these figures fortify the
-claim from the previous scenario that there is some room to manoeuvre in the
-system but pressing on those boundaries results in massive changes to both
-resource requirements and system times.
+claim from the previous scenario that there is some room to manoeuvre so that
+the system runs `as normal' but pressing on those boundaries results in massive
+changes to both resource requirements and system times.
 
 In Figure~\ref{fig:servers_time} this amounts to a maximum of 20\% slack in
 resources before relative system times are affected; further reductions quickly
 result in a potentially tenfold increase in the median system time, and up to 50
 times once resource availability falls by 50\%. Moreover, the variation in the
 body of the relative times (i.e.\ the IQR) decreases as resource availability
-decreases. The reality of behaviour like that is that patients arriving at a
-hospital are forced to consume larger amounts of resources regardless of their
-condition, putting a strain on the system.
+decreases. The reality of this is that patients arriving at a hospital are
+forced to consume larger amounts of resources (simply by being in a hospital)
+regardless of their condition, putting added strains on the system.
 
 Meanwhile, it appears that there is no tangible change in relative system times
 given an increase in the number of servers. This indicates that the model
 carries sufficient resources to cater to the population under normal
-circumstances, and that adding service capacity will not improve system times.
+circumstances, and that adding service capacity will not necessarily improve
+system times.
 
 Again, Figure~\ref{fig:servers_util} shows that there is a substantial change in
-the variation in the utilisation of the servers. In this case, the variation
-dissipates as resource levels fall and increases as they increase. While the
-relationship between real hospital resources and the number of servers is not
-exact, having variation in server utilisation would suggest that parts of the
-system may be configured or partitioned away in the case of some significant
+the variation in the relative utilisation of the servers. In this case, the
+variation dissipates as resource levels fall and increases as they increase.
+While the relationship between real hospital resources and the number of servers
+is not exact, having variation in server utilisation would suggest that parts of
+the system may be configured or partitioned away in the case of some significant
 public health event (such as a global pandemic) without overloading the system.
 
 
-\subsection{Moving patients between clusters}\label{subsec:moving}
+\subsection{Moving arrivals between clusters}\label{subsec:moving}
 
-In order to model the effects of patients moving between two clusters, the
+This scenario is perhaps the most relevant to actionable public health research
+of those presented here. The clusters identified in this work could be
+characterised by their clinical complexities and resource requirements, as done
+in Section~\ref{subsec:overview}. Therefore, being able to model the movement of
+some proportion of patient spells from one cluster to another will reveal how
+those complexities and requirements affect the system itself. The reality is
+then that if some public health policy could be implemented to enact that
+movement informed by a model such as this then real change would be seen in the
+real system.
+
+In order to model the effects of spells moving between two clusters, the
 assumption is that services remain the same (and so does each cluster's \(p_i\))
 but their arrival rates are altered according to some transfer proportion.
 Consider two clusters indexed at \(i, j\), and their respective arrival rates,
@@ -170,6 +185,44 @@ By moving patient arrivals between clusters in this way, the overall arrivals
 are left the same since the sum of the arrival rates is the same. Hence, the
 (relative) effect on server utilisation and system time can be measured
 independently.
+
+Figures~\ref{fig:moving_time}~and~\ref{fig:moving_util} show the effect of
+moving patient arrivals between clusters on relative system time and relative
+server utilisation respectively. In each figure, the median and IQR for the
+corresponding attribute is shown, as in the previous scenarios. Each scenario
+was simulated using values of \(\delta\) from \input{tex/moving_clusters_min} to
+\input{tex/moving_clusters_max} at steps of \input{tex/moving_clusters_step}.
+
+Considering Figure~\ref{fig:moving_time}, it is clear that there are some cases
+where reducing particular types of spells (by making them like another type of
+spell) has no effect on overall system times. Namely, moving the high
+resource requirement spells that make up Cluster 0 and Cluster 3 to any other
+cluster. These clusters make up only 10\% of all arrivals and this figure shows
+that in terms of system times the model is able to handle them without concern
+under normal conditions. The concern comes when either of the other clusters
+moves to Cluster 0 or Cluster 3. Even as few as one in five of the low
+complexity, low resource needs arrivals in Cluster 2 moving to either cluster
+results in large jumps in the median system time for all arrivals, and soon
+after, as in the previous scenario, any variation in the system times
+disappears indicating an overborne system.
+
+With relative server utilisation, the story is much the same. The normal levels
+of high complexity, high resource arrivals from Cluster 3 are absorbed by the
+system and moving these arrivals to another cluster bears no effect on resource
+consumption levels. Likewise, either of the low resource need clusters moving
+even slightly toward high resource requirements completely overruns the system's
+resources. However, the relative utilisation levels of the system resources can
+be reduced by moving arrivals from Cluster 0 to either Cluster 1 or Cluster 2,
+i.e.\ by reducing the overall resource requirements of such spells.
+
+In essence, these figures offer two messages: that while some hard spells are
+inevitable, they are manageable under the current state of the system, and that
+public health policy informed by this model should be preventative in nature. If
+an effective policy could be implemented to reduce the resource requirements of
+COPD patients when they arrive at a hospital --- for instance, by increasing
+access to community care or campaigns against harmful behaviours such as smoking
+--- then lengths of stay and strains on the hospital's resources would be
+reduced, improving the system as a whole.
 
 \begin{figure}
     \centering
