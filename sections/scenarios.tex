@@ -1,13 +1,14 @@
 \section{Adjusting the queuing model}\label{sec:scenarios}
 
 With the queuing model established and validated in Section~\ref{sec:model}, an
-investigation into the parameters of the model can be conducted. This section is
-comprised of several `what-if' scenarios --- a classic component of healthcare
-operational research --- under this novel parameterisation. The outcomes of
-interest in this work are server (resource) utilisation and system times as
-these capture the driving forces of cost and flow as well as the overall state
-of the system, its staff and its patients.  Specifically, the objective of these
-experiments is to address the following questions:
+investigation into the capabilities of the system can be conducted by tweaking
+the parameters of the model. This section is comprised of several `what-if'
+scenarios --- a classic component of healthcare operational research --- under
+this novel parameterisation. The outcomes of interest in this work are server
+(resource) utilisation and system times as these capture the driving forces of
+cost and flow as well as the overall state of the system, its staff and its
+patients.  Specifically, the objective of these experiments is to address the
+following questions:
 \begin{itemize}
     \item How would the system be affected by a change in overall patient
         arrivals?
@@ -21,7 +22,7 @@ and its assumptions, the effects of each scenario are given in relative terms
 with respect to the base case. The base case being those results generated from
 the best parameter set recorded in Table~\ref{tab:comparison}. In particular,
 each piece of data in each scenario is simply scaled by the corresponding median
-value in the base case.
+value in the base case meaning that a value of 1 is `normal'.
 
 As mentioned in Section~\ref{sec:intro}, the source code used throughout this
 work is available online and has been archived. %TODO Add citation for repo
@@ -50,14 +51,37 @@ multiplying each cluster's arrival rate by \(\sigma\). That is, for cluster
         \caption{}\label{fig:lambda_time}
     \end{subfigure}\hfill%
     \begin{subfigure}{.5\imgwidth}
-        \includegraphics[width=\linewidth]{lambda_utilisation}
-        \caption{}\label{fig:lambda_utilisation}
+        \includegraphics[width=\linewidth]{lambda_util}
+        \caption{}\label{fig:lambda_util}
     \end{subfigure}
     \caption{%
-        Plots of \(\sigma\) against relative (\subref{fig:lambda_time}) system
-        time and (\subref{fig:lambda_utilisation}) server utilisation.
+        Plots of \(\sigma\) against relative (\subref{fig:lambda_time})~system
+        time and (\subref{fig:lambda_util})~server utilisation.
     }\label{fig:lambda}
 \end{figure}
+
+Figure~\ref{fig:lambda} shows the effects of changing patient arrivals on
+(\subref{fig:lambda_time})~relative system times and
+(\subref{fig:lambda_util})~relative server utilisation over values of \(\sigma\)
+from \input{tex/lambda_scaling_min} to \input{tex/lambda_scaling_max} at a
+precision of \input{tex/lambda_scaling_step}. Specifically, each plot in the
+figure (and the subsequent figures in this section) shows the median and
+interquartile range (IQR) of each relative attribute. These metrics provide an
+insight into the experience of the average user (or server) in the system, and
+in the stability or variation of the body of users (servers).
+
+The overarching implication of these plots is that the system has some slack.
+Looking at Figure~\ref{fig:lambda_time}, for instance, the relative system times
+(i.e.\ the relative length of stay for patients) remains unchanged up to
+\(\sigma \approx 1.2\), or an approximate 20\% increase in arrivals of COPD
+patients. Beyond that, relative system times rise to an untenable point where
+the median time becomes orders of magnitude above the norm.
+
+However, Figure~\ref{fig:lambda_util} shows that the situation for the system's
+resources reaches its worst case near the start of that spike in relative system
+times (at \(\sigma \approx 1.4\)). That is, the median server utilisation
+reaches a maximum (this corresponds to constant utilisation) at this point and
+the variation in server utilisation disappears entirely.
 
 
 \subsection{Changes to resource availability}\label{subsec:resources}
@@ -72,8 +96,9 @@ a budget?
 
 To reiterate the beginning of this section, all suitable parameters are given in
 relative terms. This includes the number of servers here. By doing this, the
-changes in resource availability are more easily seen, and overrule any concerns
-as to what a particular number of servers exactly reflects in the real world.
+changes in resource availability are more easily seen, and do away with any
+concerns as to what a particular number of servers exactly reflects in the real
+world.
 
 \begin{figure}
     \centering
@@ -82,15 +107,47 @@ as to what a particular number of servers exactly reflects in the real world.
         \caption{}\label{fig:servers_time}
     \end{subfigure}\hfill%
     \begin{subfigure}{.5\imgwidth}
-        \includegraphics[width=\linewidth]{servers_utilisation}
-        \caption{}\label{fig:servers_utilisation}
+        \includegraphics[width=\linewidth]{servers_util}
+        \caption{}\label{fig:servers_util}
     \end{subfigure}
     \caption{%
         Plots of the relative number of servers against relative
-        (\subref{fig:servers_time}) system time and
-        (\subref{fig:servers_utilisation}) server utilisation.
-    }
+        (\subref{fig:servers_time})~system time and
+        (\subref{fig:servers_util})~server utilisation.
+    }\label{fig:servers}
 \end{figure}
+
+Figure~\ref{fig:servers} shows how the relative resource availability affects
+relative system times and server utilisation. In this scenario, the relative
+number of servers took values from \input{tex/num_servers_change_min} to
+\input{tex/num_servers_change_max} at steps of
+\input{tex/num_servers_change_step} --- this is equivalent to a step size of 1
+in the actual number of servers. Overall, these figures fortify the
+claim from the previous scenario that there is some room to manoeuvre in the
+system but pressing on those boundaries results in massive changes to both
+resource requirements and system times.
+
+In Figure~\ref{fig:servers_time} this amounts to a maximum of 20\% slack in
+resources before relative system times are affected; further reductions quickly
+result in a potentially tenfold increase in the median system time, and up to 50
+times once resource availability falls by 50\%. Moreover, the variation in the
+body of the relative times (i.e.\ the IQR) decreases as resource availability
+decreases. The reality of behaviour like that is that patients arriving at a
+hospital are forced to consume larger amounts of resources regardless of their
+condition, putting a strain on the system.
+
+Meanwhile, it appears that there is no tangible change in relative system times
+given an increase in the number of servers. This indicates that the model
+carries sufficient resources to cater to the population under normal
+circumstances, and that adding service capacity will not improve system times.
+
+Again, Figure~\ref{fig:servers_util} shows that there is a substantial change in
+the variation in the utilisation of the servers. In this case, the variation
+dissipates as resource levels fall and increases as they increase. While the
+relationship between real hospital resources and the number of servers is not
+exact, having variation in server utilisation would suggest that parts of the
+system may be configured or partitioned away in the case of some significant
+public health event (such as a global pandemic) without overloading the system.
 
 
 \subsection{Moving patients between clusters}\label{subsec:moving}
@@ -125,9 +182,9 @@ independently.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\imgwidth]{moving_utilisation}
+    \includegraphics[width=\imgwidth]{moving_util}
     \caption{%
         Plots of proportions of each cluster moving to another on relative
         server utilisation.
-    }\label{fig:moving_utilisation}
+    }\label{fig:moving_util}
 \end{figure}
