@@ -37,7 +37,7 @@ its parameters; Section~\ref{sec:scenarios} presents a number of what-if
 scenarios with insight provided by the model parameterisation and the
 clustering; Section~\ref{sec:conclusion} concludes the paper. Although the data
 is confidential and may not be published, a synthetic analogue has been
-archived~\cite{Wilde2020dataset} and the source code used in this paper is
+archived~\cite{Wilde2020synthetic} and the source code used in this paper is
 available online at~\url{https://github.com/daffidwilde/copd-paper}.
 
 \subsection{Literature review}\label{subsec:review}
@@ -248,21 +248,23 @@ clustering over other initialisation methods.
         \input{tex/summary.tex}
     }\caption{%
         A summary of clinical and condition-specific characteristics for each
-        cluster and the population.
+        cluster and the population. A negative length of stay indicates that the
+        patient died prior to arriving at the hospital.
     }\label{tab:summary}
 \end{table}
 
 A summary of the spells in each cluster, and the overall dataset (referred to as
 the population), is provided in Table~\ref{tab:summary}. From this table, a
-number of helpful insights can be made. For instance, the needs of the spells in
-each cluster can be summarised succinctly:
+number of helpful insights can be made about the segments identified by the
+clustering. For instance, the needs of the spells in each cluster can be
+summarised succinctly:
 \begin{itemize}
     \item Cluster 0 represents those spells with relatively low clinical
         complexity but high resource requirements. The mean spell cost is almost
         four times the population average and the shortest spell is almost two
-        weeks long. Moreover, the mean number of COPD-related admissions in the
-        last year is higher for this cluster than any other indicating that the
-        patients therein require more interactions with the system.
+        weeks long. Moreover, the median number of COPD-related admissions in
+        the last year is elevated indicating that patients presenting in this
+        way require more interactions with the system.
     \item Cluster 1 is the next largest segment and represents the spells with
         complex clinical profiles despite lower resource requirements.
         Specifically, the spells in this cluster have the highest median CCI and
@@ -311,6 +313,22 @@ prescriptive framework.
     }\label{fig:los}
 \end{figure}
 
+\begin{figure}
+    \centering
+    \begin{subfigure}{.5\imgwidth}
+        \includegraphics[width=\linewidth]{cluster_spell_cost}
+        \caption{}\label{fig:cluster_cost}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{.5\imgwidth}
+        \includegraphics[width=\linewidth]{intervention_spell_cost}
+        \caption{}\label{fig:intervention_cost}
+    \end{subfigure}
+    \caption{%
+        Histograms for spell cost by (\subref{fig:cluster_cost}) cluster and
+        (\subref{fig:intervention_cost}) intervention.
+    }\label{fig:cost}
+\end{figure}
+
 Figure~\ref{fig:los} shows the length of stay distributions as histograms.
 Figure~\ref{fig:cluster_los} demonstrates the different bed resource
 requirements well for each cluster --- better than Table~\ref{tab:summary}
@@ -322,6 +340,13 @@ Figure~\ref{fig:intervention_los}, there is certainly some variety but the
 overall shapes of the distributions are very similar. This is except for the
 spells with no COPD intervention where binning could not improve the
 visualisation due to the widespread distribution of their lengths of stay.
+
+The same conclusions can be drawn about spell costs from Figure~\ref{fig:cost};
+there are distinct patterns between the clusters in terms of their costs, and
+they align with the patterns seen in Figure~\ref{fig:los}. This is expected
+given that length of stay is a driving force of costs. Equally, there is no
+immediately discernible difference in the distribution of costs even when
+splitting by intervention.
 
 \begin{figure}
     \centering
@@ -339,13 +364,13 @@ visualisation due to the widespread distribution of their lengths of stay.
     }\label{fig:charlson}
 \end{figure}
 
-In a similar vein, Figure~\ref{fig:charlson} shows that clustering has revealed
-distinct patterns in the CCI of the spells within each cluster where splitting
-by intervention does not. All clusters other than Cluster 2 show clear, heavy
-tails, and in the cases of Clusters 1 and 3 the body of the data exists far from
-the origin as indicated in Table~\ref{tab:summary}. In contrast, the plots in
-Figure~\ref{fig:intervention_charlson} all display very similar, highly skewed
-distributions regardless of intervention.
+Similarly to the previous figures, Figure~\ref{fig:charlson} shows that
+clustering has revealed distinct patterns in the CCI of the spells within each
+cluster where splitting by intervention does not. All clusters other than
+Cluster 2 show clear, heavy tails, and in the cases of Clusters 1 and 3 the body
+of the data exists far from the origin as indicated in Table~\ref{tab:summary}.
+In contrast, the plots in Figure~\ref{fig:intervention_charlson} all display
+very similar, highly skewed distributions regardless of intervention.
 
 \begin{figure}
     \centering
