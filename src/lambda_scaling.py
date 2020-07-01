@@ -3,11 +3,11 @@
 import itertools as it
 import sys
 
+import numpy as np
+import pandas as pd
 import tqdm
 
 import dask
-import numpy as np
-import pandas as pd
 from dask.diagnostics import ProgressBar
 from util import (
     COPD,

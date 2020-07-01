@@ -2,12 +2,13 @@
 
 from pathlib import Path
 
-import ciw
-import dask
 import numpy as np
 import pandas as pd
-from ciw.dists import Exponential
 from scipy import stats
+
+import ciw
+import dask
+from ciw.dists import Exponential
 
 DATA_DIR = Path("../data/")
 

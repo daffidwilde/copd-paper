@@ -3,12 +3,12 @@
 import itertools as it
 import sys
 
+import numpy as np
+import pandas as pd
 import tqdm
 
 import ciw
 import dask
-import numpy as np
-import pandas as pd
 from ciw.dists import Exponential
 from dask.diagnostics import ProgressBar
 from util import (
