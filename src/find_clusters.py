@@ -2,17 +2,17 @@
 
 import sys
 
-import ciw
-import dask
 import numpy as np
 import pandas as pd
-from ciw.dists import Exponential
 from scipy import special, stats
 from tqdm import tqdm
-from yellowbrick.utils import KneeLocator
 
+import ciw
+import dask
+from ciw.dists import Exponential
 from kmodes.kprototypes import KPrototypes
 from util import DATA_DIR
+from yellowbrick.utils import KneeLocator
 
 OUT_DIR = DATA_DIR / "clusters/"
 OUT_DIR.mkdir(exist_ok=True)
@@ -165,6 +165,7 @@ def main(cluster_lims, cores):
 
     COPD["cluster"] = pd.Series(data=labels, index=data.index)
     COPD.to_csv(OUT_DIR / "copd_clustered.csv", index=False)
+
 
 if __name__ == "__main__":
     main(CLUSTER_LIMS, NUM_CORES)

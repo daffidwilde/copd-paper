@@ -3,37 +3,43 @@
 import itertools as it
 import sys
 
-import ciw
-import dask
 import numpy as np
 import pandas as pd
+import tqdm
 
+import ciw
+import dask
 from ciw.dists import Exponential
 from dask.diagnostics import ProgressBar
-
 from util import (
+    COPD,
     DATA_DIR,
-    get_best_params,
+    MAX_TIME,
+    NUM_SERVERS,
+    PROPS,
     get_queue_params,
-    get_simulation_results,
+    get_results,
 )
 
 OUT_DIR = DATA_DIR / "moving_clusters/"
 OUT_DIR.mkdir(exist_ok=True)
 
-PROPS, NUM_SERVERS = get_best_params()
-COPD = pd.read_csv(
-    DATA_DIR / "clusters/copd_clustered.csv",
-    parse_dates=["admission_date", "discharge_date"],
-).dropna(subset=["cluster"])
-COPD["cluster"] = COPD["cluster"].astype(int)
-
 NUM_CORES = int(sys.argv[1])
 NUM_SEEDS = int(sys.argv[2])
-GRANULARITY = float(sys.argv[3])
+MOVE_GRANULARITY = float(sys.argv[3])
 
-PROP_TO_MOVE_RANGE = np.arange(0, 1, GRANULARITY)
-MAX_TIME = 365 * 4
+PROP_TO_MOVE_RANGE = np.arange(0, 1, MOVE_GRANULARITY).round(2)
+
+n_clusters = COPD["cluster"].nunique()
+combinations = lambda: (
+    labels
+    for labels in it.product(range(n_clusters), repeat=2)
+    if labels[0] != labels[1]
+)
+
+PARAMS = lambda: it.product(
+    combinations(), PROP_TO_MOVE_RANGE, range(NUM_SEEDS)
+)
 
 
 def update_arrival_params(all_queue_params, origin, destination, prop_to_move):
@@ -51,19 +57,24 @@ def update_arrival_params(all_queue_params, origin, destination, prop_to_move):
 
 
 @dask.delayed
-def simulate_moving_clusters_queue(
+def simulate_queue(
     data, props, num_servers, origin, destination, prop_to_move, seed, max_time
 ):
+    """ Build and simulate a queue under the provided parameters. """
+
+    ciw.seed(seed)
 
     all_queue_params = {}
-    for (label, cluster), service_prop in zip(data.groupby("cluster"), props):
-        all_queue_params[label] = get_queue_params(cluster, service_prop)
+    n_clusters = data["cluster"].nunique()
+    for label, prop in zip(range(n_clusters), props):
+
+        cluster = data[data["cluster"] == label]
+        all_queue_params[label] = get_queue_params(cluster, prop)
 
     all_queue_params = update_arrival_params(
         all_queue_params, origin, destination, prop_to_move
     )
 
-    ciw.seed(seed)
     N = ciw.create_network(
         arrival_distributions={
             f"Class {label}": [Exponential(params["arrival"])]
@@ -79,52 +90,49 @@ def simulate_moving_clusters_queue(
     Q = ciw.Simulation(N)
     Q.simulate_until_max_time(max_time)
 
-    results = get_simulation_results(Q, max_time, lambda_coeff=1)
-
-    results["utilisation"] = Q.transitive_nodes[0].server_utilisation
-    results["prop_to_move"] = prop_to_move
-    results["origin"] = origin
-    results["destination"] = destination
-    results["seed"] = seed
-
-    name = "_".join(
-        map(str, [round(prop_to_move, 2), origin, destination, seed])
-    )
-    results.to_csv(OUT_DIR / f"{name}.csv", index=False)
-
-    return results
+    return Q
 
 
-def main(
-    num_cores, props, num_servers, num_seeds, max_time, prop_to_move_range
-):
-
-    n_clusters = COPD["cluster"].nunique()
-    label_combinations = (
-        labels
-        for labels in it.product(range(n_clusters), repeat=2)
-        if labels[0] != labels[1]
-    )
+def main():
 
     tasks = (
-        simulate_moving_clusters_queue(
+        simulate_queue(
             COPD,
-            props,
-            num_servers,
+            PROPS,
+            NUM_SERVERS,
             origin,
             destination,
             prop_to_move,
             seed,
-            max_time,
+            MAX_TIME,
         )
-        for (origin, destination), prop_to_move, seed in it.product(
-            label_combinations, prop_to_move_range, range(num_seeds)
-        )
+        for (origin, destination), prop_to_move, seed in PARAMS()
     )
 
     with ProgressBar():
-        _ = dask.compute(*tasks, scheduler="processes", num_workers=num_cores)
+        queues = dask.compute(
+            *tasks, scheduler="processes", num_workers=NUM_CORES
+        )
+
+    util_dfs, time_dfs = [], []
+    for ((orgn, dest), move, seed), queue in tqdm.tqdm(zip(PARAMS(), queues)):
+        utilisations, system_times = get_results(
+            queue,
+            MAX_TIME,
+            origin=orgn,
+            destination=dest,
+            prop_to_move=move,
+            seed=seed,
+        )
+        util_dfs.append(utilisations)
+        time_dfs.append(system_times)
+
+    utilisations = pd.concat(util_dfs)
+    system_times = pd.concat(time_dfs)
+
+    utilisations.to_csv(OUT_DIR / "utilisations.csv", index=False)
+    system_times.to_csv(OUT_DIR / "system_times.csv", index=False)
 
 
 if __name__ == "__main__":
-    main(NUM_CORES, PROPS, NUM_SERVERS, NUM_SEEDS, MAX_TIME, PROP_TO_MOVE_RANGE)
+    main()

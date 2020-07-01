@@ -4,16 +4,15 @@ import itertools as it
 import sys
 from collections import defaultdict
 
-import ciw
-import dask
 import numpy as np
 import pandas as pd
-from ciw.dists import Exponential
-from dask.diagnostics import ProgressBar
 from scipy import stats
 
+import ciw
+import dask
+from ciw.dists import Exponential
+from dask.diagnostics import ProgressBar
 from util import DATA_DIR, get_queue_params
-
 
 OUT_DIR = DATA_DIR / "wasserstein/"
 
@@ -93,7 +92,7 @@ def get_case(data, case):
     maximal_distance = data.groupby(
         ["p_0", "p_1", "p_2", "p_3", "num_servers"]
     )["distance"].max()
-    
+
     if case == "best":
         *ps, c = maximal_distance.idxmin()
         distance = maximal_distance.min()
@@ -116,9 +115,7 @@ def get_case(data, case):
     with ProgressBar():
         _ = dask.compute(*tasks, scheduler="processes", num_workers=NUM_CORES)
 
-    dfs = (
-        pd.read_csv(CASE_DIR / f"{seed}.csv") for seed in range(NUM_SEEDS)
-    )
+    dfs = (pd.read_csv(CASE_DIR / f"{seed}.csv") for seed in range(NUM_SEEDS))
 
     df = pd.concat(dfs)
     df.to_csv(CASE_DIR / "main.csv", index=False)
