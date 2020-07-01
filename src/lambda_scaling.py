@@ -3,54 +3,61 @@
 import itertools as it
 import sys
 
+import tqdm
+
 import dask
 import numpy as np
+import pandas as pd
 from dask.diagnostics import ProgressBar
-
-from .util import DATA_DIR, get_best_params, simulate_queue
+from util import (
+    COPD,
+    DATA_DIR,
+    MAX_TIME,
+    NUM_SERVERS,
+    PROPS,
+    get_results,
+    simulate_queue,
+)
 
 OUT_DIR = DATA_DIR / "lambda_scaling/"
 OUT_DIR.mkdir(exist_ok=True)
 
-PROPS, NUM_SERVERS = get_best_params()
-COPD = pd.read_csv(
-    DATA_DIR / "copd_clustered.csv",
-    parse_dates=["admission_date", "discharge_date"],
-)
-
 NUM_CORES = int(sys.argv[1])
 NUM_SEEDS = int(sys.argv[2])
-LAMBDA_GRANULARITY = float(sys.argv[3])
+SIGMA_GRANULARITY = float(sys.argv[3])
 
-LAMBDA_COEFF_RANGE = np.arange(0.5, 2, LAMBDA_GRANULARITY)
-MAX_TIME = 365 * 4
+SIGMA_RANGE = np.arange(0.5, 2.01, SIGMA_GRANULARITY).round(2)
+
+PARAMS = lambda: it.product(SIGMA_RANGE, range(NUM_SEEDS))
 
 
-def main(
-    num_cores, props, num_servers, num_seeds, max_time, lambda_coeff_range
-):
+def main():
 
     tasks = (
-        simulate_queue(
-            COPD, "cluster", props, num_servers, seed, max_time, lambda_coeff
-        )
-        for lambda_coeff, seed in it.product(
-            lambda_coeff_range, range(num_seeds)
-        )
+        simulate_queue(COPD, PROPS, NUM_SERVERS, seed, MAX_TIME, sigma)
+        for sigma, seed in PARAMS()
     )
 
     with ProgressBar():
-        results = dask.compute(
-            *tasks, scheduler="processes", num_workers=num_cores
+        queues = dask.compute(
+            *tasks, scheduler="processes", num_workers=NUM_CORES
         )
 
-    for result in results:
-        lambda_coeff = result["lambda_coeff"].first()
-        seed = result["seed"].first()
+    util_dfs, time_dfs = [], []
+    for (sigma, seed), queue in tqdm.tqdm(zip(PARAMS(), queues)):
+        utilisations, system_times = get_results(
+            queue, MAX_TIME, sigma=sigma, seed=seed
+        )
 
-        filename = OUT_DIR / f"{lambda_coeff}_{seed}.csv"
-        result.to_csv(filename, index=False)
+        util_dfs.append(utilisations)
+        time_dfs.append(system_times)
+
+    utilisations = pd.concat(util_dfs)
+    system_times = pd.concat(time_dfs)
+
+    utilisations.to_csv(OUT_DIR / "utilisations.csv", index=False)
+    system_times.to_csv(OUT_DIR / "system_times.csv", index=False)
 
 
 if __name__ == "__main__":
-    main(NUM_CORES, PROPS, NUM_SERVERS, NUM_SEEDS, MAX_TIME, LAMBDA_COEFF_RANGE)
+    main()

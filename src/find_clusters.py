@@ -2,17 +2,17 @@
 
 import sys
 
+from tqdm import tqdm
+
 import ciw
 import dask
 import numpy as np
 import pandas as pd
 from ciw.dists import Exponential
-from scipy import special, stats
-from tqdm import tqdm
-from yellowbrick.utils import KneeLocator
-
 from kmodes.kprototypes import KPrototypes
+from scipy import special, stats
 from util import DATA_DIR
+from yellowbrick.utils import KneeLocator
 
 OUT_DIR = DATA_DIR / "clusters/"
 OUT_DIR.mkdir(exist_ok=True)

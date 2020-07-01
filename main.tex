@@ -1,22 +1,38 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 
 % Setting up the page
-\usepackage{fullpage}
+\usepackage[margin=20mm,includefoot,footskip=10mm]{geometry}
 \usepackage{setspace}
-    \doublespacing%
+    \onehalfspacing%
 
-% Bibliography and referencing
+% Bibliography, referencing
 \usepackage[numbers]{natbib}
+    \bibliographystyle{abbrvurl}
 \usepackage{hyperref}
+
+% Mathematics, symbols
+\usepackage{amssymb}
+\usepackage{amsmath}
+    \DeclareMathOperator*{\argmin}{arg\,min}
+\usepackage{pgf, interval}
+    \intervalconfig{soft open fences}
 
 % Images, tables
 \usepackage{graphicx}
+    \graphicspath{{img/}}
 \usepackage{booktabs}
+    \renewcommand{\arraystretch}{1.3}
+\usepackage{caption}
+\usepackage{subcaption}
 
+% Mathematics
+\usepackage{amssymb}
 
 % Custom lengths
-\newcommand{\imgwidth}{.85\textwidth}
-\newcommand{\tablewidth}{.9\textwidth}
+\newlength{\imgwidth}
+\setlength{\imgwidth}{.9\textwidth}
+\newlength{\tabwidth}
+\setlength{\tabwidth}{.9\textwidth}
 
 \title{%
     Segmentation analysis and recovering queuing parameters via the
@@ -28,11 +44,11 @@
 
 
 \begin{document}
-\maketitle
+\maketitle%
 
 \input{sections/abstract}
 \input{sections/intro}
-\input{sections/wasserstein}
+\input{sections/model}
 \input{sections/scenarios}
 \input{sections/conclusion}
 
