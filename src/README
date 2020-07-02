@@ -1,0 +1,6 @@
+This directory contains all of the source code used in the paper.
+
+The clustering cannot be recreated due to the original data's confidentiality
+but the remaining work in the paper can be by using the synthetic analogues of
+the data archived at https://zenodo.org/record/3908167 and minor editing to the
+source code here.
