@@ -3,26 +3,31 @@
 Population health research is becoming increasingly based on data-driven methods
 (as opposed to those designed solely by clinical experts) for patient-centred
 care through the advent of accessible software and a relative abundance of
-electronic data. A vital part of such research is to better understand the
-healthcare needs and behaviours of a population, and it can be beneficial to
-find an appropriate segmentation of that population; such a segmentation allows
-for finer-grained analysis of groups in the population that share some form of
-homogeneity. One commonly used method for such patient-centred analysis is that
-of patient flow and their interaction with the healthcare system.
+electronic data. However, many of such methods rely heavily on detailed data ---
+about both the healthcare system and its population --- which may limit research
+where sophisticated data pipelines are not yet in place.
 
-However, this process relies heavily on detailed data --- about both the system
-and the population within that system --- which may limit research where
-sophisticated data pipelines are not yet in place. This work demonstrates how
-this issue may be overcome using administrative, spell-level, hospital data,
-i.e.\ a dataset that summarises patient spells. This data is then used to build
-a patient clustering that feeds into a multi-class queuing model. Specifically,
-this work examines records of patient spells from the National Health Service
-(NHS) Wales Cwm Taf Morgannwg University Health Board (UHB) that present chronic
-obstructive pulmonary disease (COPD).  COPD is of particular interest to Cwm Taf
-Morgannwg UHB as the condition is known to often present as a comorbidity in
-patients~\cite{Houben2019} and it was found that they had the highest prevalence
-of the condition across all the Welsh health boards in an internal report by NHS
-Wales.
+This work demonstrates how this issue may be overcome using only administrative
+hospital data. This data is used to build a clustering that feeds into a
+multi-class queuing model. This approach allows for the better understanding of
+the healthcare population and the system they are interacting with.
+Specifically, this work examines records of patient spells from the National
+Health Service (NHS) Wales Cwm Taf Morgannwg University Health Board (UHB) that
+present chronic obstructive pulmonary disease (COPD). COPD is a condition of
+particular interest to population health research, and to Cwm Taf Morgannwg UHB,
+as it is known to often present as a comorbidity in patients~\cite{Houben2019},
+increasing the complexity of those suffering with the condition. In addition, it
+was found that the Cwm Taf Morgannwg UHB had the highest prevalence of the
+condition across all the Welsh health boards in an internal report by NHS Wales.
+
+The contents of this work has been drawn from several overlapping sources within
+mathematical research, and this work contributes to the literature in three
+ways: to theoretic queuing research by the estimation of missing queuing
+parameters with the Wasserstein distance; to operational healthcare research
+through the weaving together of the combination of methods used in this work
+despite data constraints; and to public health research by adding to the growing
+body of mathematical and operational work around a condition that is vital to
+understand.
 
 The remainder of the paper is structured as follows: Section~\ref{sec:intro}
 provides a literature review, and an overview of the data and its clustering;
