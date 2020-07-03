@@ -117,26 +117,26 @@ of hospital systems over their theoretic counterparts. Example areas include the
 construction and simulation of Markov processes via process
 mining~\cite{Arnolds2018,Rebuge2012}, and patient flow~\cite{Bhattacharjee2014}.
 Regardless of the advantages of simulation models, a prerequisite is reliable
-software with which to construct those simulations. A popular tool for building
-queues --- both in industry and academia --- is Simul8. This piece of software
-is based on processes and is highly visual which makes it attractive to
-organisations looking to implement queuing models without necessary technical
-expertise, including the NHS.~\cite{Brailsford2013} discusses the issues around
-operational research and simulation being taken up in the NHS despite the
-availability of intuitive software like Simul8. However, it does not address a
-core principle of good simulation work: reproducibility. The ability to reliably
-reproduce a set of results is a matter of great importance to scientific
-research but this remains an issue in simulation research
-generally~\cite{Fitzpatrick2019}. When considering issues with reproducibility
-in scientific computing (simulation included), the buck often ends with the
-software used~\cite{Ivie2018}. The use of well-developed, open source software
-can alleviate issues around reproducibility and reliability as the processes by
-which they are used involve less uncertainty and require more rigour than
-`drag-and-drop' software. One example of such a piece of software is
-Ciw~\cite{Palmer2019}. Ciw is a discrete event simulation library written in
-Python that is fully documented and tested. The simulations constructed and
-studied in Sections~\ref{sec:model}~and~\ref{sec:scenarios} utilise this library
-and aid the overall reproducibility of this work.
+software with which to construct those simulations. A popular approach to
+building simulation models of queues is to use a graphical user interface such
+as Simul8. These tools have the benefits of being highly visual making them
+attractive to organisations looking to implement queuing models without
+necessary technical expertise, including the NHS.~\cite{Brailsford2013}
+discusses the issues around operational research and simulation being taken up
+in the NHS despite the availability of intuitive software packages like Simul8.
+However, they do not address a core principle of good simulation work:
+reproducibility. The ability to reliably reproduce a set of results is a matter
+of great importance to scientific research but this remains an issue in
+simulation research generally~\cite{Fitzpatrick2019}. When considering issues
+with reproducibility in scientific computing (simulation included), the buck
+often ends with the software used~\cite{Ivie2018}. The use of well-developed,
+open source software can alleviate issues around reproducibility and reliability
+as the processes by which they are used involve less uncertainty and require
+more rigour than `drag-and-drop' software. One example of such a piece of
+software is Ciw~\cite{Palmer2019}. Ciw is a discrete event simulation library
+written in Python that is fully documented and tested. The simulations
+constructed and studied in Sections~\ref{sec:model}~and~\ref{sec:scenarios}
+utilise this library and aid the overall reproducibility of this work.
 
 \subsubsection{Handling incomplete queue data}
 
