@@ -28,13 +28,18 @@
                 \draw[thick] ([xshift=-\val*5mm] 40mm, 20mm) -- ++(0, -20mm);
             };
 
-            \foreach \val/\lab in {0/1, 1/2, 3/c-1, 4/c}{%
-                \node[draw, circle, thick, minimum size=10.5mm] (\lab)
-                    at (55mm, 30mm - \val * 10.5mm) {\tiny$\lab$};
+            \foreach \val/\lab/\size in {%
+                0/1/\footnotesize,
+                1/2/\footnotesize,
+                3/c-1/\scriptsize,
+                4/c/\footnotesize%
+            }{%
+                \node[draw, circle, thick, minimum size=11mm] (\lab)
+                    at (55mm, 32mm - \val * 11mm) {\size$\lab$};
                 \draw[-latex, thick] (rect.east) -- (\lab.west);
             };
             
-            \node at (55mm, 10mm) {$\vdots$};
+            \node at (55mm, 11mm) {$\vdots$};
             \node at (5mm, 10mm) {$\cdots$};
         };
     }
