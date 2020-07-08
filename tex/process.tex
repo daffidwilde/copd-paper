@@ -6,49 +6,71 @@
 
 \begin{tikzpicture}
 
-    \large%
-
     %%%%%%%%%%%%
-    % Data
-    \node[fill=gray!50, minimum width=20mm, rounded corners] (obs)
-    at (-110mm, 10mm) {%
-        \begin{tabular}{c}
-            Observed\\
-            data
-        \end{tabular}
+    % Clusters %
+    %%%%%%%%%%%%
+
+    \node[%
+        draw,
+        fill=gray!5,
+        rounded corners,
+        minimum width=90mm,
+        minimum height=55mm,
+    ] (clustering) at (-85mm, 10mm) {};
+    \node at ([xshift=-15mm, yshift=-7mm] clustering.north) {%
+        \scriptsize\color{black!75}\textbf{%
+            \begin{tabular}{rl}
+                1. & Identify clusters and extract\\
+                {} & their parameters
+            \end{tabular}
+        }
     };
 
-    \draw[decorate, decoration={brace, amplitude=5mm}]
-        (-85mm, -10mm) -- (-85mm, 30mm);
-
-    \node[fill=blue!50, minimum width=20mm, rounded corners] (c0) at (-70mm, 25mm)
-        {Cluster 0};
-    \node[fill=green!50, minimum width=20mm, rounded corners] (c1) at (-70mm, 15mm)
-        {Cluster 1};
-    \node[fill=orange!50, minimum width=20mm, rounded corners] (c2) at (-70mm, 5mm)
-        {Cluster 2};
-    \node[fill=pink!50, minimum width=20mm, rounded corners] (c3) at (-70mm, -5mm)
-        {Cluster 3};
+    \node[fill=gray!50, minimum width=20mm, rounded corners]
+        (obs) at (-110mm, 5mm) {%
+            \begin{tabular}{c}
+                Observed\\
+                spell data
+            \end{tabular}
+        };
+    \node[fill=blue!50, minimum width=20mm, rounded corners]
+        (c0) at (-80mm, 20mm) {Cluster 0};
+    \node[fill=green!50, minimum width=20mm, rounded corners]
+        (c1) at (-80mm, 10mm) {Cluster 1};
+    \node[fill=orange!50, minimum width=20mm, rounded corners]
+        (c2) at (-80mm, 0mm) {Cluster 2};
+    \node[fill=pink!50, minimum width=20mm, rounded corners]
+        (c3) at (-80mm, -10mm) {Cluster 3};
 
     % Params
     \foreach \i/\colour/\cluster in {%
         0/blue/c0, 1/green/c1, 2/orange/c2, 3/pink/c3%
     }{%
         \node (params-\i) at ([xshift=20mm] \cluster.east)
-            {\color{\colour}\(\lambda_{\i} \quad \phi_{\i}\)};
-        \draw[-latex, thick, \colour] (\cluster.east) -- (params-\i);
+            {\color{\colour}\(\lambda_{\i}, \ \phi_{\i}\)};
+        \draw[-latex, thick, \colour] ([xshift=3mm] \cluster.east) -- (params-\i);
     };
-    \node at ([yshift=6mm] params-0.north) {%
-        \footnotesize\color{gray}{%
-            \begin{tabular}{c}
-                Known\\
-                parameters
+
+    %%%%%%%%%
+    % Queue %
+    %%%%%%%%%
+
+    \node[%
+        draw,
+        fill=gray!5,
+        rounded corners,
+        minimum width=100mm,
+        minimum height=60mm,
+    ] (queuing) at (30mm, 10mm) {};
+    \node at ([xshift=-20mm, yshift=-8mm] queuing.north) {%
+        \scriptsize\color{black!75}\textbf{%
+            \begin{tabular}{rl}
+                2. & Run simulations with values\\
+                {} & of \(c\) and \(p = \left(p_0, p_1, p_2, p_3\right)\)
             \end{tabular}
         }
     };
 
-    %%%%%%%%%%%%
-    % Queue
     \fill[orange!30] (30mm, 0) rectangle (40mm, 20mm);
     \fill[blue!30] (25mm, 0) rectangle (30mm, 20mm);
     \fill[pink!30] (20mm, 0) rectangle (25mm, 20mm);
@@ -69,7 +91,7 @@
 
     % Services
     \foreach \val in {0, 1, 3, 4}{%
-        \draw[-latex, thick] (62mm, 30mm - \val * 11mm) -- ++(15mm, 0);
+        \draw[-latex, thick] (62mm, 32mm - \val * 11mm) -- ++(15mm, 0);
     };
     \draw[decorate, decoration={brace, amplitude=2mm}]
         (62mm, 35mm) -- ++(15mm, 0) node[midway, above=2mm] {%
@@ -81,6 +103,20 @@
                 \color{pink}{\(\mu_3 \approx p_3\phi_3\)}\\
             \end{tabular}
         };
+
+
+    %%%%%%%%%%
+    % Output %
+    %%%%%%%%%%
+
+    \node (out) at (100mm, 10mm) {%
+        \begin{tabular}{c}
+            \color{blue}\(T_{0,c,p}\)\\
+            \color{green}\(T_{1,c,p}\)\\
+            \color{orange}\(T_{2,c,p}\)\\
+            \color{pink}\(T_{3,c,p}\)
+        \end{tabular}
+    };
 
 \end{tikzpicture}
 

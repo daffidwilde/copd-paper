@@ -29,13 +29,13 @@
             };
 
             \foreach \val/\lab/\size in {%
-                0/1/\footnotesize,
-                1/2/\footnotesize,
-                3/c-1/\scriptsize,
-                4/c/\footnotesize%
+                0/1/\scriptsize,
+                1/2/\scriptsize,
+                3/c-1/\tiny,
+                4/c/\scriptsize%
             }{%
-                \node[draw, circle, thick, minimum size=11mm] (\lab)
-                    at (55mm, 32mm - \val * 11mm) {\size$\lab$};
+                \node[draw, circle, thick, minimum size=9.5mm] (\lab)
+                    at (55mm, 29mm - \val * 9.5mm) {\size$\lab$};
                 \draw[-latex, thick] (rect.east) -- (\lab.west);
             };
             
