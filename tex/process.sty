@@ -1,0 +1,41 @@
+\usepackage{tikz}
+    \usetikzlibrary{%
+        arrows.meta,
+        decorations.pathreplacing,
+        decorations.text,
+        patterns,
+        shapes.arrows,
+        shapes.geometric
+    }
+
+\definecolor{blue}{HTML}{0072B2}
+\definecolor{green}{HTML}{009E73}
+\definecolor{orange}{HTML}{D55E00}
+\definecolor{pink}{HTML}{CC79A7}
+
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\tikzstyle{every picture} += [remember picture]
+\tikzstyle{na} = [baseline=-.5ex]
+
+\tikzset{%
+    queue/.pic={%
+        code{%
+            \node (rect) at (38.5mm, 10mm) {};
+            \draw[thick] (0, 0) -- ++(40mm, 0) -- ++(0, 20mm) -- ++(-40mm, 0);
+            \foreach \val in {0, ..., #1}{%
+                \draw[thick] ([xshift=-\val*5mm] 40mm, 20mm) -- ++(0, -20mm);
+            };
+
+            \foreach \val/\lab in {0/1, 1/2, 3/c-1, 4/c}{%
+                \node[draw, circle, thick, minimum size=10.5mm] (\lab)
+                    at (55mm, 30mm - \val * 10.5mm) {\tiny$\lab$};
+                \draw[-latex, thick] (rect.east) -- (\lab.west);
+            };
+            
+            \node at (55mm, 10mm) {$\vdots$};
+            \node at (5mm, 10mm) {$\cdots$};
+        };
+    }
+}
