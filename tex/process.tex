@@ -1,0 +1,44 @@
+\documentclass[border=5pt]{standalone}
+
+\usepackage{tikz}
+    \usetikzlibrary{%
+        arrows.meta,
+        decorations.pathreplacing,
+        decorations.text,
+        patterns,
+        shapes.arrows,
+        shapes.geometric
+    }
+
+\definecolor{cyan}{RGB}{0, 164, 216}
+\definecolor{magenta}{RGB}{226, 62, 138}
+
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\tikzstyle{every picture} += [remember picture]
+\tikzstyle{na} = [baseline=-.5ex]
+
+\tikzset{%
+    queue/.pic={%
+        code{%
+            \draw[line width=1pt] (50mm, 10mm) circle (1);
+            \draw[line width=1pt] (0, 0) rectangle (40mm, 20mm);
+            \node at (0+7.5mm, 0+10mm) {$\cdots$};
+            \foreach \val in {0, ..., #1}{%
+                \draw[line width=1pt] ([xshift=-\val*5mm] 40mm, 20mm) -- ++(0, -20mm);
+            };
+            };
+        }
+    }
+
+\begin{document}
+
+\begin{tikzpicture}
+
+    \large%
+    \path (0, 0) pic {queue=5};
+
+\end{tikzpicture}
+
+\end{document}
