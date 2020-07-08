@@ -90,9 +90,8 @@ and \(V\) respectively. A proof of~\eqref{eq:wasserstein} is presented
 in~\cite{Ramdas2017}. The parameter set with the smallest maximum distance
 between any cluster's simulated system time distribution and the overall
 observed length of stay distribution is then taken to be the most appropriate.
-
-To be specific, let \(T\) denote the system time distribution of all of the
-observed data and let \(T_{i,c,p}\) denote the system time distribution for
+To be specific, let \(T\) denote the system time distribution of all of
+the observed data and let \(T_{i,c,p}\) denote the system time distribution for
 cluster \(i\) obtained from a simulation with \(c\) servers and
 \(p := \left(p_0, p_1, p_2, p_3\right)\). Then the optimal parameter set
 \(\left(c^*, p^*\right)\) is given by:
@@ -101,6 +100,15 @@ cluster \(i\) obtained from a simulation with \(c\) servers and
         \max_{i} \left\{ W\left(T_{i,c,p}, T\right) \right\}%
     \right\}
 \end{equation}
+
+\begin{figure}
+    \resizebox{\imgwidth}{!}{%
+        \includestandalone{tex/process}
+    }
+    \caption{%
+        A diagrammatic depiction of the queuing parameter recovery process.
+    }\label{fig:process}
+\end{figure}
 
 The parameter sweep included values of each \(p_i\) from \(0.5\)
 to \(1.0\) with a granularity of \(5.0 \times 10^{-2}\) and values of \(c\) from
