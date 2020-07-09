@@ -57,7 +57,8 @@ One of the few ground truths available in the provided data is the distribution
 of the total length of stay. Given that the length of stay and resource
 availability are connected, the approach here will be to simulate the length of
 stay distribution for a range of values \(p_i\) and \(c\) in order to find the
-parameters that best match the observed data.
+parameters that best match the observed data. A diagram depicting the process
+described in this section is provided in Figure~\ref{fig:process}.
 
 The statistical comparison of two or more distributions can be done in a number
 of ways. Such methods include the Kolmogorov-Smirnov test, a variety of
@@ -90,9 +91,8 @@ and \(V\) respectively. A proof of~\eqref{eq:wasserstein} is presented
 in~\cite{Ramdas2017}. The parameter set with the smallest maximum distance
 between any cluster's simulated system time distribution and the overall
 observed length of stay distribution is then taken to be the most appropriate.
-
-To be specific, let \(T\) denote the system time distribution of all of the
-observed data and let \(T_{i,c,p}\) denote the system time distribution for
+To be specific, let \(T\) denote the system time distribution of all of
+the observed data and let \(T_{i,c,p}\) denote the system time distribution for
 cluster \(i\) obtained from a simulation with \(c\) servers and
 \(p := \left(p_0, p_1, p_2, p_3\right)\). Then the optimal parameter set
 \(\left(c^*, p^*\right)\) is given by:
@@ -101,6 +101,16 @@ cluster \(i\) obtained from a simulation with \(c\) servers and
         \max_{i} \left\{ W\left(T_{i,c,p}, T\right) \right\}%
     \right\}
 \end{equation}
+
+\begin{figure}
+    \centering%
+    \resizebox{\imgwidth}{!}{%
+        \includestandalone{tex/process}
+    }
+    \caption{%
+        A diagrammatic depiction of the queuing parameter recovery process.
+    }\label{fig:process}
+\end{figure}
 
 The parameter sweep included values of each \(p_i\) from \(0.5\)
 to \(1.0\) with a granularity of \(5.0 \times 10^{-2}\) and values of \(c\) from

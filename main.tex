@@ -12,8 +12,6 @@
 
 % Mathematics, symbols
 \usepackage{amssymb}
-\usepackage{amsmath}
-    \DeclareMathOperator*{\argmin}{arg\,min}
 \usepackage{pgf, interval}
     \intervalconfig{soft open fences}
 
@@ -23,10 +21,14 @@
 \usepackage{booktabs}
     \renewcommand{\arraystretch}{1.3}
 \usepackage{caption}
+\usepackage{standalone}
 \usepackage{subcaption}
 
 % Mathematics
 \usepackage{amssymb}
+
+% TiKz (and argmin)
+\usepackage{tex/process}
 
 % Custom lengths
 \newlength{\imgwidth}
