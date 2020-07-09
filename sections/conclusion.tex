@@ -5,7 +5,7 @@ that encompasses the topics of segmentation analysis, queuing models, and the
 recovery of queuing parameters from incomplete data. This is done despite common
 limitations in operational research with regard to the availability of
 fine-grained data, and this work only uses administrative hospital spell data
-from patients presenting COPD in the South Wales area.\
+from patients presenting COPD from the Cwm Taf Morgannwg UHB.\
 
 By considering a variety of attributes present in the data, and engineering
 some, an effective clustering of the spell population is identified that
@@ -27,5 +27,14 @@ cluster, and a common number of servers to emulate resource availability. The
 parameterisation itself offers its strengths by being simple and effective.
 Despite its simplicity, a good fit to the observed data is found, and --- as is
 evident from the closing section of this work --- substantial and useful
-insights can be gained into the needs of the COPD patient population being
-studied.
+insights can be gained into the needs of the population being studied.
+
+This analysis, and the formation of the entire model, in effect, considers all
+types of patient arrivals and how they each impact the system in terms of
+resource capacity and length of stay. By investigating scenarios into changes in
+both overall patient arrivals and resource capacity, it is clear that there is
+no quick solution to be employed from within the hospital to improve COPD
+patient spells.  The only effective, non-trivial intervention is to improve the
+overall health of the patients arriving at the hospital. This is shown by moving
+patient arrivals between clusters. In reality, this would correspond to an
+external, preventative policy that improves the overall health of COPD patients.

@@ -1,0 +1,70 @@
+\usepackage{amsmath}
+    \DeclareMathOperator*{\argmin}{arg\,min}
+
+\usepackage{tikz}
+    \usetikzlibrary{%
+        arrows,
+        backgrounds,
+        decorations.pathreplacing,
+        shapes.geometric,
+        positioning,
+    }
+
+\definecolor{blue}{HTML}{0072B2}
+\definecolor{green}{HTML}{009E73}
+\definecolor{orange}{HTML}{D55E00}
+\definecolor{pink}{HTML}{CC79A7}
+
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\tikzstyle{every picture} += [remember picture]
+\tikzstyle{na} = [baseline=-.5ex]
+
+\tikzset{%
+    queue/.pic={%
+        code{%
+            \node (rect) at (38.5mm, 10mm) {};
+            \draw[thick] (0, 0) -- ++(40mm, 0) -- ++(0, 20mm) -- ++(-40mm, 0);
+            \foreach \val in {0, ..., #1}{%
+                \draw[thick] ([xshift=-\val*5mm] 40mm, 20mm) -- ++(0, -20mm);
+            };
+
+            \foreach \val/\lab/\size in {%
+                0/1/\scriptsize,
+                1/2/\scriptsize,
+                3/c-1/\tiny,
+                4/c/\scriptsize%
+            }{%
+                \node[draw, circle, thick, minimum size=9.5mm] (\lab)
+                    at (55mm, 29mm - \val * 9.5mm) {\size$\lab$};
+                \draw[-latex, thick] (rect.east) -- (\lab.west);
+            };
+            
+            \node at (55mm, 11mm) {$\vdots$};
+            \node at (5mm, 10mm) {$\cdots$};
+        };
+    },
+    myarrow/.style={%
+        line width=2mm,
+        draw=gray!50,
+        -triangle 60,
+        postaction={draw=gray!50, line width=4mm, shorten >=6mm, -},
+    },
+    double -latex/.style args={#1 colored by #2 and #3}{%
+        -latex,
+        line width=#1,
+        #2,
+        postaction={%
+            draw,
+            -latex,
+            #3,
+            line width=(#1)/3,
+            shorten <=(#1)/4,
+            shorten >=4.5*(#1)/3
+        },
+    },
+    mypointer/.style={%
+        double -latex=1mm colored by gray!50 and gray!50,
+    }
+}
