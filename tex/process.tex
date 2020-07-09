@@ -148,10 +148,7 @@
 
     \node[label={[below] \scriptsize\(0\)}]
         (zero) at (165mm, 10mm) {};
-    \draw[-latex, thick] (zero.east) -- ++(30mm, 0);
-    \foreach \val in {0, ..., 8}{%
-        \draw[thick] ([xshift=\val * 3mm, yshift=-.5mm] zero.east) -- ++(0, 1mm);
-    };
+    \draw[|-latex, thick] (zero.east) -- ++(30mm, 0);
     \foreach \val in {3.2mm, 5.1mm, 7.7mm, 10.3mm, 13mm, 19.4mm, 23mm}{%
         \draw[fill] ([xshift=\val] zero.east) circle (.5mm);
     };
