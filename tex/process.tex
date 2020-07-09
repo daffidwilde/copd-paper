@@ -1,4 +1,4 @@
-\documentclass[border=5pt]{standalone}
+\documentclass[border=2mm]{standalone}
 
 \usepackage{process}
 
@@ -6,41 +6,44 @@
 
 \begin{tikzpicture}
 
+    \color{black!75}
     %%%%%%%%%%%%
     % Clusters %
     %%%%%%%%%%%%
-
     \node[%
         draw,
         fill=gray!5,
         rounded corners,
-        minimum width=90mm,
+        minimum width=110mm,
         minimum height=55mm,
-    ] (clustering) at (-85mm, 10mm) {};
-    \node at ([xshift=-15mm, yshift=-7mm] clustering.north) {%
-        \scriptsize\color{black!75}\textbf{%
+    ] (clustering) at (-95mm, 17mm) {};
+    \node at ([xshift=-26mm, yshift=-7mm] clustering.north) {%
+        \scriptsize\textbf{%
             \begin{tabular}{rl}
-                1. & Identify clusters and extract\\
-                {} & their parameters
+                1. & Identify clusters and\\
+                {} & calculate their parameters
             \end{tabular}
         }
     };
 
     \node[fill=gray!50, minimum width=20mm, rounded corners]
-        (obs) at (-110mm, 5mm) {%
+        (obs) at (-130mm, 11mm) {%
             \begin{tabular}{c}
                 Observed\\
                 spell data
             \end{tabular}
         };
     \node[fill=blue!50, minimum width=20mm, rounded corners]
-        (c0) at (-80mm, 20mm) {Cluster 0};
+        (c0) at (-80mm, 26mm) {Cluster 0};
     \node[fill=green!50, minimum width=20mm, rounded corners]
-        (c1) at (-80mm, 10mm) {Cluster 1};
+        (c1) at (-80mm, 16mm) {Cluster 1};
     \node[fill=orange!50, minimum width=20mm, rounded corners]
-        (c2) at (-80mm, 0mm) {Cluster 2};
+        (c2) at (-80mm, 6mm) {Cluster 2};
     \node[fill=pink!50, minimum width=20mm, rounded corners]
-        (c3) at (-80mm, -10mm) {Cluster 3};
+        (c3) at (-80mm, -4mm) {Cluster 3};
+
+    \draw[-latex, ultra thick] ([xshift=3mm] obs.east) -- ++(22mm, 0)
+        node[xshift=-1mm, midway, above] {\scriptsize\(k\)-prototypes};
 
     % Params
     \foreach \i/\colour/\cluster in {%
@@ -48,22 +51,22 @@
     }{%
         \node (params-\i) at ([xshift=20mm] \cluster.east)
             {\color{\colour}\(\lambda_{\i}, \ \phi_{\i}\)};
-        \draw[-latex, thick, \colour] ([xshift=3mm] \cluster.east) -- (params-\i);
+        \draw[-latex, thick, \colour]
+            ([xshift=3mm] \cluster.east) -- (params-\i);
     };
 
     %%%%%%%%%
     % Queue %
     %%%%%%%%%
-
     \node[%
         draw,
         fill=gray!5,
         rounded corners,
-        minimum width=100mm,
-        minimum height=60mm,
-    ] (queuing) at (30mm, 10mm) {};
-    \node at ([xshift=-20mm, yshift=-8mm] queuing.north) {%
-        \scriptsize\color{black!75}\textbf{%
+        minimum width=110mm,
+        minimum height=70mm,
+    ] (queuing) at (35mm, 17mm) {};
+    \node at ([xshift=-25mm, yshift=-8mm] queuing.north) {%
+        \scriptsize\textbf{%
             \begin{tabular}{rl}
                 2. & Run simulations with values\\
                 {} & of \(c\) and \(p = \left(p_0, p_1, p_2, p_3\right)\)
@@ -91,7 +94,7 @@
 
     % Services
     \foreach \val in {0, 1, 3, 4}{%
-        \draw[-latex, thick] (62mm, 32mm - \val * 11mm) -- ++(15mm, 0);
+        \draw[-latex, thick] (62mm, 29mm - \val * 9.5mm) -- ++(15mm, 0);
     };
     \draw[decorate, decoration={brace, amplitude=2mm}]
         (62mm, 35mm) -- ++(15mm, 0) node[midway, above=2mm] {%
@@ -104,19 +107,75 @@
             \end{tabular}
         };
 
-
     %%%%%%%%%%
     % Output %
     %%%%%%%%%%
+    \node[%
+        draw,
+        fill=gray!5,
+        rounded corners,
+        minimum width=105mm,
+        minimum height=60mm,
+    ] (output) at (160mm, 17mm) {};
+    \node at ([xshift=-18mm, yshift=-8mm] output.north) {%
+        \scriptsize\textbf{%
+            \begin{tabular}{rl}
+                3. & Extract cluster LOS distributions\\
+                {} & and evaluate parameter set
+            \end{tabular}
+        }
+    };
 
-    \node (out) at (100mm, 10mm) {%
-        \begin{tabular}{c}
-            \color{blue}\(T_{0,c,p}\)\\
+    \node[ellipse, fill=gray!15, minimum width=30mm, minimum height=40mm]
+        (times) at (130mm, 10mm) {};
+    \node (top) at ([yshift=7mm] times) {%
+        \tiny\begin{tabular}{cc}
+            \color{blue}\(T_{0,c,p}\) &
             \color{green}\(T_{1,c,p}\)\\
-            \color{orange}\(T_{2,c,p}\)\\
+            \color{orange}\(T_{2,c,p}\) &
             \color{pink}\(T_{3,c,p}\)
         \end{tabular}
     };
+    \node at ([yshift=1mm] times) {\(\vdots\)};
+    \node (bottom) at ([yshift=-7mm] times) {%
+        \tiny\begin{tabular}{cc}
+            \color{blue}\(T_{0,c',p'}\) &
+            \color{green}\(T_{1,c',p'}\)\\
+            \color{orange}\(T_{2,c',p'}\) &
+            \color{pink}\(T_{3,c',p'}\)
+        \end{tabular}
+    };
+
+    \node[label={[below] \scriptsize\(0\)}]
+        (zero) at (165mm, 10mm) {};
+    \draw[-latex, thick] (zero.east) -- ++(30mm, 0);
+    \foreach \val in {0, ..., 8}{%
+        \draw[thick] ([xshift=\val * 3mm, yshift=-.5mm] zero.east) -- ++(0, 1mm);
+    };
+    \foreach \val in {3.2mm, 5.1mm, 7.7mm, 10.3mm, 13mm, 19.4mm, 23mm}{%
+        \draw[fill] ([xshift=\val] zero.east) circle (.5mm);
+    };
+
+    \draw[mypointer]
+        (times.north east) to [out=30, in=130]
+        ([xshift=15mm, yshift=2mm] zero.north)
+        node[xshift=10mm, above=8mm] {%
+            \color{black!75}\(\bullet = \max_{i} W\left(T_{i,c,p}, T\right)\)
+        };
+
+    \node (params) at ([xshift=15mm, yshift=-15mm] zero.south) {%
+        \large\(c^*, p^*\)
+    };
+
+    \draw[mypointer]
+        ([yshift=10mm] params.north) -- (params.north)
+        node[xshift=12mm, yshift=5mm] {\color{black!75}\(\argmin_{c,p}\)};
+
+    %%%%%%%%%%
+    % Arrows %
+    %%%%%%%%%%
+    \draw[myarrow] (clustering.east) -- (queuing.west);
+    \draw[myarrow] (queuing.east) -- (output.west);
 
 \end{tikzpicture}
 
