@@ -1,7 +1,7 @@
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 
 % Setting up the page
-\usepackage[margin=20mm,includefoot,footskip=10mm]{geometry}
+\usepackage[margin=25mm]{geometry}
 \usepackage{setspace}
     \onehalfspacing%
 
@@ -9,6 +9,10 @@
 \usepackage[numbers]{natbib}
     \bibliographystyle{abbrvurl}
 \usepackage{hyperref}
+\usepackage{authblk}
+    \renewcommand\Affilfont{\footnotesize\itshape}
+    \newcommand\CorresAuth{\footnotemark[\arabic{footnote}]}
+    \renewcommand*{\Authands}{, }
 
 % Mathematics, symbols
 \usepackage{amssymb}
@@ -28,7 +32,7 @@
 \usepackage{amssymb}
 
 % TiKz (and argmin)
-\usepackage{tex/process}
+\usepackage{process}
 
 % Custom lengths
 \newlength{\imgwidth}
@@ -38,9 +42,20 @@
 
 \title{%
     Segmentation analysis and the recovery of queuing parameters via the
-    Wasserstein distance: a study of administrative data for COPD patients
+    Wasserstein distance: a study of administrative data for patients with
+    chronic obstructive pulmonary disease
 }
-\author{Henry Wilde, Jonathan Gillard, Vincent Knight, Kendal Smith}
+
+\author[a]{%
+    Henry Wilde \footnote{Corresponding author: \url{wildehd@cardiff.ac.uk}}%
+}
+\author[a]{Vincent Knight}
+\author[a]{Jonathan Gillard}
+\author[b]{Kendal Smith}
+
+\affil[a]{School of Mathematics, Cardiff University}
+\affil[b]{Cwm Taf Morgannwg University Health Board}
+
 \date{}
 
 
@@ -52,6 +67,11 @@
 \input{sections/model}
 \input{sections/scenarios}
 \input{sections/conclusion}
+
+\section*{Acknowledgements}
+
+The authors wish to thank the Cwm Taf Morgannwg University Health Board for
+their funding and support of the Ph.D. of which this work has formed a part.
 
 \bibliography{bibliography}
 
