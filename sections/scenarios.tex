@@ -34,12 +34,12 @@ sweep~\cite{Wilde2020results}.
 
 Changes in overall patient arrivals to a queue reflect real-world scenarios
 where some stimulus is improving (or worsening) the condition of the patient
-population. Examples of stimuli could include an aging population or
-changes to deprivation. Within this model, overall patient arrivals are altered
-using a scaling factor denoted by \(\sigma\in\mathbb{R}\). This scaling factor
-is applied to the model by multiplying each cluster's arrival rate by
-\(\sigma\). That is, for cluster \(i\), its new arrival rate, \(\hat\lambda_i\),
-is given by:
+population. Examples of stimuli could include an aging population or independent
+life events that lead to a change in deprivation such as an accident or job
+loss. Within this model, overall patient arrivals are altered using a scaling
+factor denoted by \(\sigma\in\mathbb{R}\). This scaling factor is applied to the
+model by multiplying each cluster's arrival rate by \(\sigma\). That is, for
+cluster \(i\), its new arrival rate, \(\hat\lambda_i\), is given by:
 \begin{equation}\label{eq:lambda}
     \hat\lambda_{i} = \sigma\lambda_i
 \end{equation}
