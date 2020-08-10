@@ -7,18 +7,19 @@ electronic data. However, many such methods rely heavily on detailed data ---
 about both the healthcare system and its population --- which may limit research
 where sophisticated data pipelines are not yet in place.
 
-This work demonstrates how this issue may be overcome using only administrative
-hospital data. This data is used to build a clustering that feeds into a
-multi-class queuing model. This approach allows for the better understanding of
-the healthcare population and the system they are interacting with.
-Specifically, this work examines records of patient spells from the National
-Health Service (NHS) Wales Cwm Taf Morgannwg University Health Board (UHB) that
-present chronic obstructive pulmonary disease (COPD). COPD is a condition of
-particular interest to population health research, and to Cwm Taf Morgannwg UHB,
-as it is known to often present as a comorbidity in patients~\cite{Houben2019},
-increasing the complexity of those suffering with the condition. In addition, it
-was found that the Cwm Taf Morgannwg UHB had the highest prevalence of the
-condition across all the Welsh health boards in an internal report by NHS Wales.
+This work demonstrates how this issue may be overcome using routinely gathered,
+administrative hospital data. This data is used to build a clustering that feeds
+into a multi-class queuing model. This approach allows for the better
+understanding of the healthcare population and the system they are interacting
+with.  Specifically, this work examines records of patient spells from the
+National Health Service (NHS) Wales Cwm Taf Morgannwg University Health Board
+(UHB) that present chronic obstructive pulmonary disease (COPD). COPD is a
+condition of particular interest to population health research, and to Cwm Taf
+Morgannwg UHB, as it is known to often present as a comorbidity in
+patients~\cite{Houben2019}, increasing the complexity of those suffering with
+the condition. In addition, it was found that the Cwm Taf Morgannwg UHB had the
+highest prevalence of the condition across all the Welsh health boards in an
+internal report by NHS Wales.
 
 The contents of this work has been drawn from several overlapping sources within
 mathematical research, and this work contributes to the literature in three
@@ -129,13 +130,13 @@ However, they do not address a core principle of good simulation work:
 reproducibility. The ability to reliably reproduce a set of results is a matter
 of great importance to scientific research but this remains an issue in
 simulation research generally~\cite{Fitzpatrick2019}. When considering issues
-with reproducibility in scientific computing (simulation included), the buck
-often ends with the software used~\cite{Ivie2018}. The use of well-developed,
-open source software can alleviate issues around reproducibility and reliability
-as the processes by which they are used involve less uncertainty and require
-more rigour than `drag-and-drop' software. One example of such a piece of
-software is Ciw~\cite{Palmer2019}. Ciw is a discrete event simulation library
-written in Python that is fully documented and tested. The simulations
+with reproducibility in scientific computing (simulation included), the source
+of any concerns is often with the software used~\cite{Ivie2018}. The use of
+well-developed, open source software can alleviate issues around reproducibility
+and reliability as the processes by which they are used involve less uncertainty
+and require more rigour than `drag-and-drop' software. One example of such a
+piece of software is Ciw~\cite{Palmer2019}. Ciw is a discrete event simulation
+library written in Python that is fully documented and tested. The simulations
 constructed and studied in Sections~\ref{sec:model}~and~\ref{sec:scenarios}
 utilise this library and aid the overall reproducibility of this work.
 
@@ -190,9 +191,9 @@ The spells included in the dataset are described by the following attributes:
         wards in the spell.
     \item International Classification of Diseases (ICD) codes and primary
         Healthcare Resource Group (HRG) codes from each episode.
-    \item Indicators for any COPD intervention. The value for any given spell is
-        one of no intervention, pulmonary rehabilitation (PR), specialist
-        nursing (SN), and both interventions.
+    \item Indicators for any COPD intervention. The value for any given instance
+        in the dataset (i.e. a spell) is one of no intervention, pulmonary
+        rehabilitation (PR), specialist nursing (SN), and both interventions.
     \item Charlson Comorbidity Index (CCI) contributions from several long term
         conditions (LTCs) as well as indicators for some other conditions such
         as sepsis and obesity. CCI has been shown to be useful in anticipating
@@ -212,7 +213,8 @@ spell:
         the Cwm Taf Morgannwg UHB.\
     \item The presenting ICD codes were generalised to their categories
         according to NHS documentation and counts for each category were
-        attached.
+        attached. This reduced the number of values from
+        \input{tex/total_icds}codes to \input{tex/total_cats}categories.
     \item The number of COPD-related admissions in the last twelve months based
         on the associated patient ID number.
 \end{itemize}
@@ -344,8 +346,8 @@ visualisation due to the widespread distribution of their lengths of stay.
 The same conclusions can be drawn about spell costs from Figure~\ref{fig:cost};
 there are distinct patterns between the clusters in terms of their costs, and
 they align with the patterns seen in Figure~\ref{fig:los}. This is expected
-given that length of stay is a driving force of costs. Equally, there is no
-immediately discernible difference in the distribution of costs even when
+given that length of stay is a driving force of healthcare costs. Equally, there
+is no immediately discernible difference in the distribution of costs even when
 splitting by intervention.
 
 \begin{figure}
