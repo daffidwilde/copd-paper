@@ -134,14 +134,14 @@
 \begin{abstract}
     This work uses a data-driven approach to analyse how the resource
     requirements of patients with chronic obstructive pulmonary disease (COPD)
-    may change, and quantifies how those changes affect the strains of the
-    hospital system the patients interact with. This is done using a novel
-    combination of often distinct modes of analysis: segmentation, operational
-    queuing theory, and the recovery of parameters from incomplete data. By
-    combining these methods as presented here, it is demonstrated how the
-    potential limitations around the availability of fine-grained data can be
-    overcome in operational research. That is, despite using only administrative
-    data, useful operational results are found.
+    may change, quantifying how those changes impact the hospital system the
+    patients interact with. This is achieved by a novel combination of often
+    distinct modes of analysis: segmentation, operational queuing theory, and
+    the recovery of parameters from incomplete data. By combining these methods
+    as presented here, it is demonstrated that potential limitations around the
+    availability of fine-grained data can be overcome in operational research.
+    Thus, useful operational results are found despite using only administrative
+    data.
 
     The paper begins by finding an effective clustering of the population from
     this granular data that feeds into a multi-class \(M/M/c\) model, whose
@@ -150,13 +150,14 @@
     analysis of the underlying queuing system and the needs of the population
     under study through several `what-if' scenarios.
 
-    The particular analyses used to form and study this model considers, in
-    effect, all types of patient arrivals and how those types impact the system.
-    With that, this study finds that there are no quick solutions to reduce the
-    impact of COPD patients on the system, including adding capacity to the
-    system. The only effective intervention to reduce the strain caused by those
-    presenting with COPD is, in fact, to enact external policies which directly
-    improve the health of the COPD population before their arrival in hospital.
+    The analyses used to form and study this model consider, in effect, all
+    types of patient arrivals and how those types impact the system.  With that,
+    this study finds that there are no quick solutions to reduce the impact of
+    COPD patients on the system, including adding capacity to the system. On
+    this analysis, the only effective intervention to reduce the strain caused
+    by those presenting with COPD is to enact external policies which directly
+    improve the overall health of the COPD population before their arrival at
+    the hospital.
 \end{abstract}
 
 \section{Introduction}\label{sec:intro}
@@ -168,20 +169,20 @@ data. However, many such methods rely heavily on detailed data --- about both
 the healthcare system and its population --- which may limit research where
 sophisticated data pipelines are not yet in place.
 
-This work demonstrates how this issue may be overcome, by using routinely
-gathered, administrative, hospital data to build a clustering that feeds into a
-multi-class queuing model. This approach allows for the better understanding of
-the healthcare population and the system with which they interact. Specifically,
-this work examines records of patient spells from the National Health Service
-(NHS) Wales Cwm Taf Morgannwg University Health Board (UHB) which present
-chronic obstructive pulmonary disease (COPD). COPD is a condition of particular
-interest to population health research, and to Cwm Taf Morgannwg UHB, as it
-often presents as a comorbidity in patients~\cite{Houben2019}, increasing the
-complexity for those suffering with the condition. In addition, it was found
-that the Cwm Taf Morgannwg UHB had the highest prevalence of the condition
-across all the Welsh health boards in an internal report by NHS Wales.
+This work demonstrates a method of overcoming this, using routinely gathered,
+administrative hospital data to build a clustering that feeds into a multi-class
+queuing model, allowing for better understanding of the healthcare population
+and the system with which they interact. Specifically, this work examines
+records of patient spells from the National Health Service (NHS) Wales Cwm Taf
+Morgannwg University Health Board (UHB) presenting chronic obstructive pulmonary
+disease (COPD). COPD is a condition of particular interest to population health
+research, and to Cwm Taf Morgannwg UHB, as it is known to often present as a
+comorbidity in patients~\cite{Houben2019}, increasing the complexity of
+treatments among those with the condition. Moreover, an internal report by NHS
+Wales found the Cwm Taf Morgannwg UHB had the highest prevalence of the
+condition across all the Welsh health boards.
 
-The contents of this work has been drawn from several overlapping sources within
+This work draws upon several overlapping sources within
 mathematical research, and this work contributes to the literature in three
 ways: to theoretic queuing research by the estimation of missing queuing
 parameters with the Wasserstein distance; to operational healthcare research
@@ -215,27 +216,26 @@ heterogeneous datasets and encompasses several techniques from operational
 research, statistics and machine learning. One of the most desirable qualities
 of this kind of analysis is the ability to glean and communicate simplified
 summaries of patient needs to stakeholders within a healthcare
-system~\cite{Vuik2016b, Yoon2020}. For instance, clinical profiling often
-forms part of the wider analysis where each segment can be summarised in a
-phrase or infographic~\cite{Vuik2016a, Yan2019}.
+system~\cite{Vuik2016b, Yoon2020}. For instance, clinical profiling often forms
+part of the wider analysis where each segment can be summarised in a phrase or
+infographic~\cite{Vuik2016a, Yan2019}.
 
 The review for this work identified three commonplace groups of patient
-characteristics used to segment a patient population: their system
-utilisation metrics, their clinical attributes and their pathway. The latter
-is not used to segment the patients directly but rather groups their movements
-through a healthcare system. This is typically done via process
-mining.~\cite{Arnolds2018}~and~\cite{Delias2015} demonstrate how this technique
-can be used to improve the efficiency of a hospital system as opposed to
-tackling the more relevant issue of patient-centred care. The remaining
-characteristics can be segmented with a number of techniques but recent works
-tend to use unsupervised methods --- typically latent class analysis (LCA) or
-clustering~\cite{Yan2018}.
+characteristics used to segment a patient population: system utilisation
+metrics; clinical attributes; and the pathway. The last is not used to segment
+the patients directly, rather grouping their movements through a healthcare
+system, typically via process mining.~\cite{Arnolds2018}~and~\cite{Delias2015}
+demonstrate how this technique can be used to improve the efficiency of a
+hospital system as opposed to tackling the more relevant issue of
+patient-centred care. The remaining characteristics can be segmented in a
+variety of ways but recent works tend to favour unsupervised methods ---
+typically latent class analysis (LCA) or clustering~\cite{Yan2018}.
 
 LCA is a statistical, model-based method used to identify groups (called latent
 classes) in data by relating its observations to some unobserved (latent),
-categorical attribute. This attribute has multiple categories, each
-corresponding to a latent class. The discovered relations are then used to
-separate the observations into latent classes according to their maximum
+categorical attribute. This attribute has multiple possible categories, each
+corresponding to a latent class. The discovered relations enable the
+observations to be separated into latent classes according to their maximum
 likelihood class membership~\cite{Hagenaars2002,Lazarsfeld1968}. This method has
 proved useful in the study of comorbidity patterns as
 in~\cite{Kuwornu2014,Larsen2017} where combinations of demographic and clinical
@@ -250,9 +250,9 @@ partitions numerical data into \(k \in \mathbb{N}\) distinct parts where \(k\)
 is fixed a priori. This method has proved popular as it is easily scalable and
 its implementations are concise~\cite{Olafsson2008,Wu2009}. In addition to
 \(k\)-means, hierarchical clustering methods can be effective if a suitable
-number of parts cannot be found initially~\cite{Vuik2016a}. Although, supervised
+number of parts cannot be found initially~\cite{Vuik2016a}. However, supervised
 hierarchical segmentation methods such as classification and regression trees
-(as in~\cite{Harper2006}) have been used where an existing, well-defined label
+(as in~\cite{Harper2006}) have been used where an existing, well-defined, label
 is of particular significance.
 
 \subsubsection{Queuing models}
@@ -274,8 +274,8 @@ measure and understand satisfaction amongst patients and staff.
 
 In addition to these theoretic models, healthcare queuing research has expanded
 to include computer simulation models. The simulation of queues, or networks
-thereof, have the benefit of being able to easily capture the stochastic nuances
-of hospital systems over their theoretic counterparts. Example areas include the
+thereof, have the benefit of easily capturing the stochastic nuances of hospital
+systems over their theoretic counterparts. Example areas include the
 construction and simulation of Markov processes via process
 mining~\cite{Arnolds2018,Rebuge2012}, and patient flow~\cite{Bhattacharjee2014}.
 Regardless of the advantages of simulation models, a prerequisite is reliable
@@ -287,78 +287,77 @@ necessary technical expertise, including the NHS.~\cite{Brailsford2013}
 discusses the issues around operational research and simulation being taken up
 in the NHS despite the availability of intuitive software packages like Simul8.
 However, they do not address a core principle of good simulation work:
-reproducibility. The ability to reliably reproduce a set of results is a matter
-of great importance to scientific research but this remains an issue in
-simulation research generally~\cite{Fitzpatrick2019}. When considering issues
-with reproducibility in scientific computing (simulation included), the source
-of any concerns is often with the software used~\cite{Ivie2018}. The use of
-well-developed, open source software can alleviate issues around reproducibility
-and reliability as the processes by which they are used involve less uncertainty
-and require more rigour than `drag-and-drop' software. One example of such a
-piece of software is Ciw~\cite{Palmer2019}. Ciw is a discrete event simulation
-library written in Python that is fully documented and tested. The simulations
-constructed and studied in Sections~\ref{sec:model}~and~\ref{sec:scenarios}
-utilise this library and aid the overall reproducibility of this work.
+reproducibility. The ability to reliably reproduce a set of results is of great
+importance to scientific research but remains an issue in simulation research
+generally~\cite{Fitzpatrick2019}. When considering issues with reproducibility
+in scientific computing (simulation included), the source of any concerns is
+often with the software used~\cite{Ivie2018}. Using well-developed, open source
+software can alleviate issues around reproducibility and reliability as the ways
+in which they are used involve less uncertainty and require more rigour than
+`drag-and-drop' software. One example of such a piece of software is
+Ciw~\cite{Palmer2019}. Ciw is a discrete event simulation library written in
+Python that is fully documented and tested. The simulations constructed and
+studied in Sections~\ref{sec:model}~and~\ref{sec:scenarios} utilise this library
+and aid the overall reproducibility of this work.
 
 \subsubsection{Handling incomplete queue data}
 
 As is discussed in other parts of this section, the data available in this work
 is not as fine as in other comparative works. Without access to such distinct
 and detailed data --- but with the aim of gaining insight from what is available
---- it is imperative that the gap left by the incomplete data be bridged.
+--- it is imperative to bridge the gap left by the incomplete data.
 
-Indeed, it is often the case that in practical situations where suitable data is
-not (immediately) available, further inquiry will stop in that particular line
-of research. Queuing models in healthcare settings appear to be such a case
-where the line ends at incomplete queue data.~\cite{Asanjarani2017} is a
-bibliographic work that collates articles on the estimation of queuing system
-characteristics --- including their parameters.  Despite its breadth of almost
-300 publications from 1955, only two articles have been identified as being
-applied to healthcare:~\cite{Mohammadi2012,Yom2014}.  Both works are concerned
-with customers that can re-enter services during their time in the queuing
-system. This is particularly of value when considering the effect of
-unpredictable behaviour in intensive care units, for
-instance.~\cite{Mohammadi2012} seeks to approximate service and re-service
-densities through a Bayesian approach and by separating out those customers
-seeking to be serviced again. On the other hand,~\cite{Yom2014} considers an
-extension to the \(M/M/c\) queue with direct re-entries. The devised model is
-then used to determine resource requirements in two healthcare settings.
+Moreover, it is often the case that in practical situations where suitable data
+is not (immediately) available, further inquiry in that line of research will
+stop.  Queuing models in healthcare settings appear to be such a case; the line
+ends at incomplete queue data.~\cite{Asanjarani2017} is a bibliographic work
+that collates articles on the estimation of queuing system characteristics ---
+including their parameters.  Despite its breadth of almost 300 publications from
+1955, only two articles have been identified as being applied to
+healthcare:~\cite{Mohammadi2012,Yom2014}. Both works are concerned with
+customers who can re-enter services during their time in the queuing system.
+This is particularly of value when considering the effect of unpredictable
+behaviour in intensive care units, for instance.~\cite{Mohammadi2012} seeks to
+approximate service and re-service densities through a Bayesian approach and by
+filtering out those customers seeking to be serviced again. On the other
+hand,~\cite{Yom2014} considers an extension to the \(M/M/c\) queue with direct
+re-entries. The devised model is then used to determine resource requirements in
+two healthcare settings.
 
-Aside from healthcare-specific works, the approximation of
-queue parameters has formed a part of relevant modern queuing research. However,
-the scope is largely focused on theoretic approximations rather than by
-simulation.~\cite{Djabali2018,Goldenshluger2016} are two such recent
-works that consider an underlying process to estimate a general service time
-distribution in single server and infinite server queues respectively.
+Aside from healthcare-specific works, the approximation of queue parameters has
+formed a part of relevant modern queuing research. However, the scope is largely
+focused on theoretic approximations rather than by
+simulation.~\cite{Djabali2018,Goldenshluger2016} are two such recent works that
+consider an underlying process to estimate a general service time distribution
+in single server and infinite server queues respectively.
 
 \subsection{Overview of the dataset and its clustering}\label{subsec:overview}
 
 The dataset used in this work was provided by the Cwm Taf Morgannwg UHB.\ The
-dataset contains an administrative summary of 5,231 patients
-presenting COPD from February 2011 through March 2019 totalling
-10,861 spells. A patient (hospital) spell is defined as the
-continuous stay of a patient using a hospital bed on premises controlled by a
-health care provider and is made up of one or more patient
-episodes~\cite{NHS2020}.
+dataset contains an administrative summary of 5,231 patients presenting COPD
+from February 2011 through March 2019 totalling 10,861 spells. A patient
+(hospital) spell is defined as the continuous stay of a patient using a hospital
+bed on premises controlled by a health care provider and is made up of one or
+more patient episodes~\cite{NHS2020}.
 
 The spells included in the dataset are described by the following attributes:
 \begin{itemize}
     \item Personal identifiers and information, i.e.\ patient and spell ID
-        numbers, and gender.
-    \item Admission/discharge dates and approximate times.
+        numbers, and identified gender;
+    \item Admission/discharge dates and approximate times;
     \item Attributes summarising the clinical path of the spell including
         admission/discharge methods, and the number of episodes, consultants and
-        wards in the spell.
+        wards in the spell;
     \item International Classification of Diseases (ICD) codes and primary
-        Healthcare Resource Group (HRG) codes from each episode.
+        Healthcare Resource Group (HRG) codes from each episode;
     \item Indicators for any COPD intervention. The value for any given instance
         in the dataset (i.e. a spell) is one of no intervention, pulmonary
-        rehabilitation (PR), specialist nursing (SN), and both interventions.
+        rehabilitation (PR), specialist nursing (SN), and both interventions;
     \item Charlson Comorbidity Index (CCI) contributions from several long term
         conditions (LTCs) as well as indicators for some other conditions such
         as sepsis and obesity. CCI has been shown to be useful in anticipating
         hospital utilisation as a measure for the burdens associated with
-        comorbidity~\cite{Simon2011}.
+        comorbidity~\cite{Simon2011};
     \item Rank under the 2019 Welsh Index of Multiple Deprivation (WIMD)
         indicating relative deprivation of the postcode area the patient lives
         in which is known to be linked to COPD prevalence and
@@ -370,16 +369,17 @@ spell:
 \begin{itemize}
     \item Age and spell cost data were linked to approximately half of the
         spells in the dataset from another administrative dataset provided by
-        the Cwm Taf Morgannwg UHB.\
+        the Cwm Taf Morgannwg UHB;
     \item The presenting ICD codes were generalised to their categories
         according to NHS documentation and counts for each category were
         attached. This reduced the number of values from
-        1,926 codes to 21 categories.
-    \item The number of COPD-related admissions in the last twelve months based
-        on the associated patient ID number.
+        1,926 codes to 21 categories;
+    \item A measure of admission frequency was calculated by taking the number
+        of COPD-related admissions in the last twelve months linked to the
+        associated patient ID number.
 \end{itemize}
 
-Due to a lack of information about the patients themselves --- beyond their
+Given the lack of information about the patients themselves --- beyond their
 COPD-related admissions --- the spells of the dataset were segmented using a
 variant of the \(k\)-means algorithm. This variant, called \(k\)-prototypes,
 allows for the clustering of mixed-type data by performing \(k\)-means on the
@@ -387,10 +387,10 @@ numeric attributes and \(k\)-modes on the categoric. Both \(k\)-prototypes and
 \(k\)-modes were presented in~\cite{Huang1998}.
 
 The attributes included in the clustering encompass both utilisation metrics and
-clinical attributes relating to the spell. They were as follows: the summative
-clinical path attributes, the CCI contributions and condition indicators, the
-WIMD rank, length of stay (LOS), COPD intervention status, and the engineered
-attributes (not including age and costs due to lack of coverage).
+clinical attributes relating to the spell, and comprise the summative clinical
+path attributes, the CCI contributions and condition indicators, the WIMD rank,
+length of stay (LOS), COPD intervention status, and the engineered attributes
+(not including age and costs due to lack of coverage).
 
 To determine the optimal number of clusters, \(k\), the knee point detection
 algorithm introduced in~\cite{Satopaa2011} was used with a range of potential
@@ -398,10 +398,10 @@ values for \(k\) from 2 to 10. This range was chosen based on what may be
 considered feasibly informative to stakeholders. The knee point detection
 algorithm can be considered a deterministic version of the popular `elbow
 method' for determining a number of clusters. This revealed an optimal value for
-\(k\) of 4 but both 3 and 5 clusters were considered. Each case was eliminated
-due to a lack of clear separation in the characteristics of the clusters.
-Additionally, the initialisation method used for \(k\)-prototypes was that
-presented in~\cite{Wilde2020} as it was found to give an improvement in the
+\(k\) of 4 but both 3 and 5 clusters were considered. Both of these cases were
+eliminated due to a lack of clear separation in the characteristics of the
+clusters. Additionally, the initialisation method used for \(k\)-prototypes was
+that presented in~\cite{Wilde2020} as it was found to give an improvement in the
 clustering over other initialisation methods.
 
 \begin{table}
@@ -458,10 +458,10 @@ clustering over other initialisation methods.
 \end{table}
 
 A summary of the spells in each cluster, and the overall dataset (referred to as
-the population), is provided in Table~\ref{tab:summary}. From this table, a
-number of helpful insights can be made about the segments identified by the
-clustering. For instance, the needs of the spells in each cluster can be
-summarised succinctly:
+the population), is provided in Table~\ref{tab:summary}. From this table,
+helpful insights can be gained about the segments identified by the clustering.
+For instance, the needs of the spells in each cluster can be summarised
+succinctly:
 \begin{itemize}
     \item Cluster 0 represents those spells with relatively low clinical
         complexity but high resource requirements. The mean spell cost is almost
@@ -469,17 +469,17 @@ summarised succinctly:
         weeks long. Moreover, the median number of COPD-related admissions in
         the last year is elevated indicating that patients presenting in this
         way require more interactions with the system.
-    \item Cluster 1 is the second largest segment and represents the spells with
+    \item Cluster 1, the second largest segment, represents the spells with
         complex clinical profiles despite lower resource requirements.
         Specifically, the spells in this cluster have the highest median CCI and
-        number of LTCs, and the highest condition prevalences across all
-        clusters but they have the second lowest length of stay and spell costs.
+        number of LTCs, and the highest condition prevalence across all clusters
+        but the second lowest length of stay and spell costs.
     \item Cluster 2 represents the majority of spells and those where resource
         requirements and clinical complexities are minimal; these spells have
         the shortest lengths, and the patients present with fewer diagnoses and
         a lower median CCI than any other cluster. In addition to this, the
-        spells in Cluster 2 have the highest intervention prevalences and the
-        lowest condition prevalences across all clusters.
+        spells in Cluster 2 have the highest intervention prevalence and the
+        lowest condition prevalence across all clusters.
     \item Cluster 3 represents the smallest section of the population but
         perhaps the most critical: spells with high complexity and high resource
         needs. The patients within Cluster 3 are the oldest in the population
@@ -491,8 +491,8 @@ summarised succinctly:
 \end{itemize}
 
 The attributes listed in Table~\ref{tab:summary} can be studied beyond summaries
-such as these, however. Figures~\ref{fig:los}~through~\ref{fig:icds} show
-the distributions for some of the clinical characteristics for each cluster. In
+such as these, however. Figures~\ref{fig:los}~through~\ref{fig:icds} show the
+distributions for some of the clinical characteristics for each cluster. In
 addition to this, each of these figures also shows the distribution for the same
 attributes but by splitting the spell population by intervention rather than
 cluster. While this classical approach --- of splitting a population based on a
@@ -535,13 +535,13 @@ prescriptive framework.
 
 Figure~\ref{fig:los} shows the length of stay distributions as histograms.
 Figure~\ref{fig:cluster_los} demonstrates the different bed resource
-requirements well for each cluster --- better than Table~\ref{tab:summary}
-might --- in that the difference between the clusters is not just a matter of
+requirements well for each cluster --- better than Table~\ref{tab:summary} might
+--- in that the difference between the clusters is not just a matter of
 varying means and ranges, but entirely different shapes to their respective
 distributions. Indeed, they are all positively skewed but there is no real
 consistency beyond that. When comparing this to
 Figure~\ref{fig:intervention_los}, there is certainly some variety but the
-overall shapes of the distributions are very similar. This is except for the
+overall shapes of the distributions are generally similar. The exception is the
 spells with no COPD intervention where binning could not improve the
 visualisation due to the widespread distribution of their lengths of stay.
 
@@ -574,7 +574,7 @@ cluster where splitting by intervention does not. All clusters other than
 Cluster 2 show clear, heavy tails, and in the cases of Clusters 1 and 3 the body
 of the data exists far from the origin as indicated in Table~\ref{tab:summary}.
 In contrast, the plots in Figure~\ref{fig:intervention_charlson} all display
-very similar, highly skewed distributions regardless of intervention.
+similar, highly skewed distributions regardless of intervention.
 
 \begin{figure}
     \centering
@@ -619,7 +619,7 @@ profiles amongst the clusters: Cluster 0 is typical of the population; Cluster 1
 shows that no patient presented solely COPD as an LTC in their spells, and more
 than half presented at least three; Cluster 2 is similar in form to the
 population but is severely biased towards patients presenting COPD as the only
-LTC;\ Cluster 3 is the most uniformly spread amongst the four bins despite
+LTC; Cluster 3 is the most uniformly spread amongst the four bins despite
 increased length of stay and CCI suggesting a disparate array of patients in
 terms of their long term medical needs.
 
@@ -630,19 +630,18 @@ the high rates of LTCs, and that the vast majority of spells in Cluster 3
 present with at least nine ICDs suggesting a likely wide range of conditions and
 comorbidities beyond the LTCs used to calculate CCI.\
 
-When considering the intervention counterparts to these figures (i.e.\
-Figures~\ref{fig:intervention_ltcs}~and~\ref{fig:intervention_icds}), very
-little can be drawn with regards to the corresponding spells. One thing of note
-is that patients receiving both interventions for their COPD (or either, in
-fact) have disproportionately fewer LTCs and concurrent ICDs when compared to
-the population. Aside from this, the profiles of each intervention are all very
-similar to one another.
+However, little can be drawn from the intervention counterparts to these figures
+(i.e.\ Figures~\ref{fig:intervention_ltcs}~and~\ref{fig:intervention_icds}),
+with regards to the corresponding spells. One thing of note is that patients
+receiving both interventions for their COPD (or either, in fact) have
+disproportionately fewer LTCs and concurrent ICDs when compared to the
+population. Aside from this, the profiles of each intervention are all similar
+to one another.
 
 As discussed earlier, the purpose of this work is to construct a queuing model
 for the data described here. Insights have already been gained into the needs of
-the segments that have been identified in this section but in order to glean
-further insights, some parameters of the queuing model must be recovered from
-the data.
+the segments that have been identified in this section but to glean further
+insights, some parameters of the queuing model must be recovered from the data.
 
 \section{Constructing the queuing model}\label{sec:model}
 
@@ -690,8 +689,8 @@ assumption must be made about the true `service' time of a patient in hospital.
 It is assumed here that the mean service time of a group of patients may be
 approximated via their mean length of stay, i.e.\ the mean time spent in the
 system. For simplicity, this work assumes that for each cluster, \(i\), the mean
-service time of that cluster, \(\frac{1}{\mu_i}\), is directly proportional
-to the mean total system time of that cluster, \(\frac{1}{\phi_i}\), such that:
+service time of that cluster, \(\frac{1}{\mu_i}\), is directly proportional to
+the mean total system time of that cluster, \(\frac{1}{\phi_i}\), such that:
 \begin{equation}\label{eq:services}
     \mu_i = p_i \phi_i
 \end{equation}
@@ -702,32 +701,31 @@ determined for each group.
 One of the few ground truths available in the provided data is the distribution
 of the total length of stay. Given that the length of stay and resource
 availability are connected, the approach here will be to simulate the length of
-stay distribution for a range of values \(p_i\) and \(c\) in order to find the
+stay distribution for a range of values \(p_i\) and \(c\), to find the
 parameters that best match the observed data. A diagram depicting the process
 described in this section is provided in Figure~\ref{fig:process}.
 
-The statistical comparison of two or more distributions can be done in a number
-of ways. Such methods include the Kolmogorov-Smirnov test, a variety of
-discrepancy approaches such as summed mean-squared error, and \(f\)-divergences.
-A popular choice amongst the latter group (which may be considered
-distance-like) is the Kullback-Leibler divergence which measures relative
-information entropy from one probability distribution to
-another~\cite{Kullback1951}. The key issue with many of these methods is that
-they lack interpretability which is paramount when conveying information to
-stakeholders. Interpretability not just from explaining how something works but
-how its results may be explained also.
+Several methods are available for the statistical comparison of two or more
+distributions, such as the Kolmogorov-Smirnov test, a variety of discrepancy
+approaches such as summed mean-squared error, and \(f\)-divergences.  A popular
+choice amongst the last group (which may be considered distance-like) is the
+Kullback-Leibler divergence which measures relative information entropy from one
+probability distribution to another~\cite{Kullback1951}. A key issue with many
+of these methods is that they lack interpretability, something which is
+paramount when conveying information to stakeholders, not just from explaining
+how something works but also how its results may be explained.
 
 As such, a reasonable candidate is the (first) Wasserstein metric, also known as
 the `earth mover' or `digger' distance~\cite{Vaserstein1969}. The Wasserstein
 metric satisfies the conditions of a formal mathematical metric (like the
 typical Euclidean distance), and its values take the units of the distributions
-under comparison (in this case: days). Both of these characteristics can aid
+under comparison (in this case: days). These characteristics can aid
 understanding and explanation. In simple terms, the distance measures the
 approximate `minimal work' required to move between two probability
 distributions where `work' can be loosely defined as the product of how much of
-the distribution's mass is to be moved and the distance it must be moved
-by. More formally, the Wasserstein distance between two probability
-distributions \(U\) and \(V\) is defined as:
+the distribution's mass is to be moved and the distance it must be moved by.
+More formally, the Wasserstein distance between two probability distributions
+\(U\) and \(V\) is defined as:
 \begin{equation}\label{eq:wasserstein}
     W(U, V) = \int_{0}^{1} \left\vert F^{-1}(t) - G^{-1}(t) \right\vert dt
 \end{equation}
@@ -737,11 +735,11 @@ and \(V\) respectively. A proof of~\eqref{eq:wasserstein} is presented
 in~\cite{Ramdas2017}. The parameter set with the smallest maximum distance
 between any cluster's simulated system time distribution and the overall
 observed length of stay distribution is then taken to be the most appropriate.
-To be specific, let \(T\) denote the system time distribution of all of
-the observed data and let \(T_{i,c,p}\) denote the system time distribution for
-cluster \(i\) obtained from a simulation with \(c\) servers and
-\(p := \left(p_0, p_1, p_2, p_3\right)\). Then the optimal parameter set
-\(\left(c^*, p^*\right)\) is given by:
+To be specific, let \(T\) denote the system time distribution of all of the
+observed data and let \(T_{i,c,p}\) denote the system time distribution for
+cluster \(i\) obtained from a simulation with \(c\) servers and \(p :=
+\left(p_0, p_1, p_2, p_3\right)\). Then the optimal parameter set \(\left(c^*,
+p^*\right)\) is given by:
 \begin{equation}\label{eq:parameters}
     \left(c^*, p^*\right) = \argmin_{c, p} \left\{%
         \max_{i} \left\{ W\left(T_{i,c,p}, T\right) \right\}%
@@ -954,14 +952,14 @@ repetition.
 \end{figure}
 
 The results of this parameter sweep can be summarised in
-Figure~\ref{fig:params}. Each plot shows a comparison of the observed lengths
-of stay across all groups and the newly simulated data with the best and worst
-parameter sets respectively. It can be seen that, in the best case, a very close
-fit has been found. Meanwhile, Figure~\ref{fig:worst_params} highlights the
-importance of good parameter estimation under this model since the likelihood of
-short-stay patient arrivals has been inflated disproportionately against the
-tail of the distribution. Table~\ref{tab:comparison} reinforces these results
-numerically, showing a clear fit by the best parameters across the board.
+Figure~\ref{fig:params}. Each plot shows a comparison of the observed lengths of
+stay across all groups and the newly simulated data with the best and worst
+parameter sets respectively. In the best case, a very close fit has been
+found.  Meanwhile, Figure~\ref{fig:worst_params} highlights the importance of
+good parameter estimation under this model since the likelihood of short-stay
+patient arrivals has been inflated disproportionately against the tail of the
+distribution. Table~\ref{tab:comparison} reinforces these results numerically,
+showing a clear fit by the best parameters across the board.
 
 \begin{table}
     \centering
@@ -984,7 +982,7 @@ numerically, showing a clear fit by the best parameters across the board.
 
 In this section, the clustering has been used to enrich the overall queuing
 model and to recover the parameters for several classes within that queue to a
-high standard. Now, using this model, the next section conducts an investigation
+high standard. Now, using this model, the next section details an investigation
 into the underlying system by adjusting the parameters of the queue with the
 clustering.
 
