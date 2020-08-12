@@ -30,6 +30,7 @@ __pycache__
 *.pdf
 !main.pdf
 !img/*.pdf
+!submission/*.pdf
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
