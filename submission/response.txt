@@ -1,0 +1,7 @@
+Response to Technical Check Results
+===================================
+
+> Please add the keyword section between abstract and introduction.
+
+An unnumbered section "Keywords" has been added between the abstract and
+introduction.
