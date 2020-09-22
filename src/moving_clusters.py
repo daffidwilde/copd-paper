@@ -3,14 +3,14 @@
 import itertools as it
 import sys
 
+import ciw
+import dask
 import numpy as np
 import pandas as pd
 import tqdm
-
-import ciw
-import dask
 from ciw.dists import Exponential
 from dask.diagnostics import ProgressBar
+
 from util import (
     COPD,
     DATA_DIR,
@@ -31,15 +31,18 @@ MOVE_GRANULARITY = float(sys.argv[3])
 PROP_TO_MOVE_RANGE = np.arange(0, 1, MOVE_GRANULARITY).round(2)
 
 n_clusters = COPD["cluster"].nunique()
-combinations = lambda: (
-    labels
-    for labels in it.product(range(n_clusters), repeat=2)
-    if labels[0] != labels[1]
-)
 
-PARAMS = lambda: it.product(
-    combinations(), PROP_TO_MOVE_RANGE, range(NUM_SEEDS)
-)
+
+def get_combinations():
+    return (
+        labels
+        for labels in it.product(range(n_clusters), repeat=2)
+        if labels[0] != labels[1]
+    )
+
+
+def get_params():
+    return it.product(get_combinations(), PROP_TO_MOVE_RANGE, range(NUM_SEEDS))
 
 
 def update_arrival_params(all_queue_params, origin, destination, prop_to_move):
@@ -106,7 +109,7 @@ def main():
             seed,
             MAX_TIME,
         )
-        for (origin, destination), prop_to_move, seed in PARAMS()
+        for (origin, destination), prop_to_move, seed in get_params()
     )
 
     with ProgressBar():
@@ -115,7 +118,9 @@ def main():
         )
 
     util_dfs, time_dfs = [], []
-    for ((orgn, dest), move, seed), queue in tqdm.tqdm(zip(PARAMS(), queues)):
+    for ((orgn, dest), move, seed), queue in tqdm.tqdm(
+        zip(get_params(), queues)
+    ):
         utilisations, system_times = get_results(
             queue,
             MAX_TIME,

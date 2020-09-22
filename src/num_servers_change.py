@@ -3,12 +3,12 @@
 import itertools as it
 import sys
 
+import dask
 import numpy as np
 import pandas as pd
 import tqdm
-
-import dask
 from dask.diagnostics import ProgressBar
+
 from util import (
     COPD,
     DATA_DIR,
@@ -31,14 +31,16 @@ SERVER_RANGE = np.arange(
     int(MIN_SERVER_LEVEL * NUM_SERVERS), int(MAX_SERVER_LEVEL * NUM_SERVERS) + 1
 )
 
-PARAMS = lambda: it.product(SERVER_RANGE, range(NUM_SEEDS))
+
+def get_params():
+    return it.product(SERVER_RANGE, range(NUM_SEEDS))
 
 
 def main():
 
     tasks = (
         simulate_queue(COPD, PROPS, num_servers, seed, MAX_TIME)
-        for num_servers, seed in PARAMS()
+        for num_servers, seed in get_params()
     )
 
     with ProgressBar():
@@ -47,7 +49,7 @@ def main():
         )
 
     util_dfs, time_dfs = [], []
-    for (num_servers, seed), queue in tqdm.tqdm(zip(PARAMS(), queues)):
+    for (num_servers, seed), queue in tqdm.tqdm(zip(get_params(), queues)):
         utilisations, system_times = get_results(
             queue, MAX_TIME, num_servers=num_servers, seed=seed
         )
