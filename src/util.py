@@ -1,14 +1,13 @@
 """ Functions to produce data for the what-if scenarios. """
 
 from pathlib import Path
-
-import numpy as np
-import pandas as pd
-from scipy import stats
+from random import expovariate
 
 import ciw
 import dask
-from ciw.dists import Exponential
+import numpy as np
+import pandas as pd
+from ciw.dists import Distribution, Exponential
 
 DATA_DIR = Path("../data/")
 
@@ -26,6 +25,20 @@ with open(DATA_DIR / "wasserstein/best/params.txt", "r") as f:
     NUM_SERVERS = int(parts[-2])
 
 
+class ShiftedExponential(Distribution):
+    """ An exponential distribution with a `rate` parameter shifted by some
+    constant `shift`. """
+
+    def __init__(self, rate, shift):
+
+        self.rate = rate
+        self.shift = shift
+
+    def sample(self, t=None, ind=None):
+
+        return self.shift + expovariate(self.rate)
+
+
 def get_times(diff):
 
     times = diff.dt.total_seconds().div(24 * 60 * 60, fill_value=0)
@@ -41,10 +54,15 @@ def get_queue_params(data, prop=1, sigma=1):
     interarrival_times = get_times(inter_arrivals)
     arrival_rate = sigma / np.mean(interarrival_times)
 
-    mean_system_time = np.mean(data["true_los"])
-    mu_estimate = mean_system_time * prop
+    minimum_length = max(0, data["true_los"].min())
+    shifted_lengths = data["true_los"] - minimum_length
+    mean_shifted_length = shifted_lengths.mean()
+    service_rate = 1 / (mean_shifted_length * prop)
 
-    queue_params = {"arrival": arrival_rate, "service": 1 / mu_estimate}
+    queue_params = {
+        "arrival": arrival_rate,
+        "service": [service_rate, minimum_length],
+    }
 
     return queue_params
 
@@ -68,7 +86,7 @@ def simulate_queue(data, props, num_servers, seed, max_time, sigma=1):
             for label, params in all_queue_params.items()
         },
         service_distributions={
-            f"Class {label}": [Exponential(params["service"])]
+            f"Class {label}": [ShiftedExponential(*params["service"])]
             for label, params in all_queue_params.items()
         },
         number_of_servers=[num_servers],

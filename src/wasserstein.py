@@ -4,15 +4,15 @@ import itertools as it
 import sys
 from collections import defaultdict
 
-import numpy as np
-import pandas as pd
-from scipy import stats
-
 import ciw
 import dask
+import numpy as np
+import pandas as pd
 from ciw.dists import Exponential
 from dask.diagnostics import ProgressBar
-from util import DATA_DIR, get_queue_params
+from scipy import stats
+
+from util import DATA_DIR, ShiftedExponential, get_queue_params
 
 OUT_DIR = DATA_DIR / "wasserstein/"
 
@@ -38,8 +38,8 @@ COPD["cluster"] = COPD["cluster"].astype(int)
 
 NUM_CLUSTERS = COPD["cluster"].nunique()
 MAX_TIME = 365 * 4
-PROP_LIMS = (0.5, 1.01, GRANULARITY)
-SERVER_LIMS = (40, 56, 5)
+PROP_LIMS = (0.7, 1.01, GRANULARITY)
+SERVER_LIMS = (10, 41, 5)
 
 
 @dask.delayed
@@ -58,7 +58,7 @@ def run_multiple_class_trial(
             for label, params in all_queue_params.items()
         },
         service_distributions={
-            f"Class {label}": [Exponential(params["service"])]
+            f"Class {label}": [ShiftedExponential(*params["service"])]
             for label, params in all_queue_params.items()
         },
         number_of_servers=[num_servers],
