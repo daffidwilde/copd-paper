@@ -1,11 +1,11 @@
-\begin{tabular}{llllllllllllllllll}
+\begin{tabular}{lrrrrrrrrrrrrr}
 \toprule
-{} & \multicolumn{5}{l}{Model parameter} & \multicolumn{5}{l}{Wasserstein distance} & \multicolumn{7}{l}{LOS statistic} \\
-{} &         \(p_0\) & \(p_1\) & \(p_2\) & \(p_3\) & \(c\) &        \(W_\{0,c,p\}\) & \(W_\{1,c,p\}\) & \(W_\{2,c,p\}\) & \(W_\{3,c,p\}\) &     Max. &          Mean &   Std. &    Min. &     25\% &    Med. &     75\% &    Max. \\
+{} & \multicolumn{6}{l}{Model characteristic} & \multicolumn{7}{l}{LOS statistic} \\
+{} &              \(p_0\) & \(p_1\) & \(p_2\) & \(p_3\) & \(c\) & Max. distance &          Mean &   Std. &    Min. &     25\% &    Med. &     75\% &    Max. \\
 \midrule
-Observed         &             NaN &     NaN &     NaN &     NaN &   NaN &                    0 &             0 &             0 &             0 &        0 &           7.7 &  11.86 &   -0.02 &    1.49 &     4.2 &    8.93 &  224.93 \\
-Best simulated   &               1 &     0.8 &       1 &     0.9 &    30 &                    - &             - &             - &             - &  4.44904 &         10.34 &  12.87 &       0 &    2.62 &    6.56 &   13.83 &  149.88 \\
-Median simulated &               1 &       1 &       1 &     0.7 &    30 &                    - &             - &             - &             - &   6.8059 &         11.27 &   12.6 &       0 &    2.97 &    7.61 &   15.15 &  127.42 \\
-Worst simulated  &               1 &       1 &       1 &       1 &    20 &                    - &             - &             - &             - &  288.852 &        309.42 &  85.16 &  161.45 &  233.29 &  300.03 &  393.95 &  486.27 \\
+Observed         &                  NaN &     NaN &     NaN &     NaN &   NaN &      0.000000 &          7.70 &  11.86 &   -0.02 &    1.49 &    4.20 &    8.93 &  224.93 \\
+Best simulated   &                  1.0 &     0.5 &    0.75 &     1.0 &  30.0 &      4.145915 &          6.26 &  11.96 &    0.00 &    1.08 &    2.66 &    5.92 &  187.16 \\
+Median simulated &                  0.5 &     0.5 &    0.50 &     0.5 &  40.0 &     13.306859 &          4.79 &   8.99 &    0.00 &    0.73 &    1.88 &    4.25 &  101.30 \\
+Worst simulated  &                  1.0 &     1.0 &    1.00 &     0.5 &  20.0 &    347.283289 &        297.66 &  82.99 &  131.13 &  231.59 &  301.46 &  367.43 &  496.33 \\
 \bottomrule
 \end{tabular}
