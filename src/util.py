@@ -26,8 +26,8 @@ with open(DATA_DIR / "wasserstein/best/params.txt", "r") as f:
 
 
 class ShiftedExponential(Distribution):
-    """ An exponential distribution with a `rate` parameter shifted by some
-    constant `shift`. """
+    """An exponential distribution with a `rate` parameter shifted by some
+    constant `shift`."""
 
     def __init__(self, rate, shift):
 
@@ -39,19 +39,15 @@ class ShiftedExponential(Distribution):
         return self.shift + expovariate(self.rate)
 
 
-def get_times(diff):
-
-    times = diff.dt.total_seconds().div(24 * 60 * 60, fill_value=0)
-    return times
-
-
 def get_queue_params(data, prop=1, sigma=1):
     """ Get the arrival and service parameters from `data`. """
 
     inter_arrivals = (
         data.set_index("admission_date").sort_index().index.to_series().diff()
     )
-    interarrival_times = get_times(inter_arrivals)
+    interarrival_times = inter_arrivals.dt.total_seconds().div(
+        24 * 60 * 60, fill_value=0
+    )
     arrival_rate = sigma / np.mean(interarrival_times)
 
     minimum_length = max(0, data["true_los"].min())
@@ -117,8 +113,8 @@ def get_utilisations(queue, **kwargs):
 
 
 def get_system_times(queue, max_time, **kwargs):
-    """ Get the system times for every patient to pass through the queue within
-    the centre 50% of the `max_time` period. """
+    """Get the system times for every patient to pass through the queue within
+    the centre 50% of the `max_time` period."""
 
     records = queue.get_all_records()
     results = pd.DataFrame(

@@ -15,7 +15,7 @@ OUT_DIR.mkdir(exist_ok=True)
 PATH = str(sys.argv[1])
 NUM_CORES = int(sys.argv[2])
 
-CLUSTER_LIMS = (2, 10)
+CLUSTER_LIMS = (2, 11)
 COPD = pd.read_csv(PATH, parse_dates=["admission_date", "discharge_date"])
 
 clinicals = [
@@ -87,14 +87,14 @@ DATA = COPD[cols].copy()
 
 
 def clean_data(data, missing_prop=0.25, max_stay=365):
-    """ Get rid of the columns where enough data is missing, and remove records
-    that last too long or have any missing data. """
+    """Get rid of the columns where enough data is missing, and remove records
+    that last too long or have any missing data."""
 
     for col in data.columns:
         if data[col].isnull().sum() > missing_prop * len(data):
             data = data.drop(col, axis=1)
 
-    data = data[data["true_los"] <= max_stay]
+    data = data[(data["true_los"] >= 0) & (data["true_los"] <= max_stay)]
     data = data.dropna()
 
     return data

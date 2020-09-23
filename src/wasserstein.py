@@ -2,7 +2,6 @@
 
 import itertools as it
 import sys
-from collections import defaultdict
 
 import ciw
 import dask
@@ -38,19 +37,27 @@ COPD["cluster"] = COPD["cluster"].astype(int)
 
 NUM_CLUSTERS = COPD["cluster"].nunique()
 MAX_TIME = 365 * 4
-PROP_LIMS = (0.7, 1.01, GRANULARITY)
-SERVER_LIMS = (10, 41, 5)
+PROP_LIMS = (0.5, 1.01, GRANULARITY)
+# SERVER_LIMS = (20, 61, 5)
+SERVER_LIMS = (20, 41, 10)
 
 
 @dask.delayed
 def run_multiple_class_trial(
-    data, column, props, num_servers, seed, max_time, write=None
+    data, props, num_servers, seed, max_time, write=None
 ):
+    """Run a single trial with multiple customer classes (clusters). This means
+    calculating the queuing parameters for our M/(S)M/c queue and simulating it
+    for a fixed amount of time. Record everything if needed, return the model
+    parameters and the Wasserstein distance."""
 
     ciw.seed(seed)
-    all_queue_params = defaultdict(dict)
-    for (label, subdata), service_prop in zip(data.groupby(column), props):
-        all_queue_params[label] = get_queue_params(subdata, service_prop)
+
+    all_queue_params = {}
+    for label, prop in zip(range(NUM_CLUSTERS), props):
+
+        cluster = data[data["cluster"] == label]
+        all_queue_params[label] = get_queue_params(cluster, prop)
 
     N = ciw.create_network(
         arrival_distributions={
@@ -80,18 +87,27 @@ def run_multiple_class_trial(
     if write is not None:
         results.to_csv(OUT_DIR / write / f"{seed}.csv", index=False)
 
-    distance = stats.wasserstein_distance(
-        results["system_time"], data["true_los"]
-    )
+    distances = [
+        stats.wasserstein_distance(
+            results[results["customer_class"] == label]["system_time"],
+            data[data["cluster"] == label]["true_los"],
+        )
+        for label in range(NUM_CLUSTERS)
+    ]
 
-    return (*props, num_servers, seed, distance)
+    return (*props, num_servers, seed, *distances)
 
 
 def get_case(data, case):
+    """ Get the best, median or worst case from the data. """
+
+    data["max_distance"] = data[
+        [f"distance_{i}" for i in range(NUM_CLUSTERS)]
+    ].max(axis=1)
 
     maximal_distance = data.groupby(
-        ["p_0", "p_1", "p_2", "p_3", "num_servers"]
-    )["distance"].max()
+        [f"p_{i}" for i in range(NUM_CLUSTERS)] + ["num_servers"]
+    )["max_distance"].max()
 
     if case == "best":
         *ps, c = maximal_distance.idxmin()
@@ -99,16 +115,20 @@ def get_case(data, case):
     elif case == "worst":
         *ps, c = maximal_distance.idxmax()
         distance = maximal_distance.max()
+    elif case == "median":
+        diffs = (maximal_distance - maximal_distance.median()).abs()
+        *ps, c = diffs.idxmin()
+        distance = maximal_distance.median()
     else:
-        raise NotImplementedError("Case must be one of `'best'` or `'worst'`.")
+        raise NotImplementedError(
+            "Case must be one of `'best'`, `'median'` or `'worst'`."
+        )
 
     CASE_DIR = OUT_DIR / case
     CASE_DIR.mkdir(exist_ok=True)
 
     tasks = (
-        run_multiple_class_trial(
-            COPD, "cluster", ps, c, seed, MAX_TIME, write=case
-        )
+        run_multiple_class_trial(COPD, ps, c, seed, MAX_TIME, write=case)
         for seed in range(NUM_SEEDS)
     )
 
@@ -125,34 +145,35 @@ def get_case(data, case):
         f.write(string)
 
 
-def main(prop_lims, n_clusters, server_lims, seeds, cores):
+def main():
+    """ The main function for running and writing. """
 
     tasks = (
-        run_multiple_class_trial(
-            COPD, "cluster", props, num_servers, seed, MAX_TIME
-        )
+        run_multiple_class_trial(COPD, props, num_servers, seed, MAX_TIME)
         for props, num_servers, seed in it.product(
-            it.product(np.arange(*prop_lims), repeat=n_clusters),
-            range(*server_lims),
-            range(seeds),
+            it.product(np.arange(*PROP_LIMS), repeat=NUM_CLUSTERS),
+            range(*SERVER_LIMS),
+            range(NUM_SEEDS),
         )
     )
 
     with ProgressBar():
-        results = dask.compute(*tasks, scheduler="processes", num_workers=cores)
+        results = dask.compute(
+            *tasks, scheduler="processes", num_workers=NUM_CORES
+        )
 
     columns = [
-        *(f"p_{i}" for i in range(n_clusters)),
+        *(f"p_{i}" for i in range(NUM_CLUSTERS)),
         "num_servers",
         "seed",
-        "distance",
+        *(f"distance_{i}" for i in range(NUM_CLUSTERS)),
     ]
     df = pd.DataFrame(results, columns=columns)
     df.to_csv(OUT_DIR / "main.csv", index=False)
 
-    for case in ["best", "worst"]:
+    for case in ["best", "median", "worst"]:
         get_case(df, case)
 
 
 if __name__ == "__main__":
-    main(PROP_LIMS, NUM_CLUSTERS, SERVER_LIMS, NUM_SEEDS, NUM_CORES)
+    main()
