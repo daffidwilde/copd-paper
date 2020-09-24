@@ -35,10 +35,12 @@ COPD = pd.read_csv(
 COPD = COPD.dropna(subset=["cluster"])
 COPD["cluster"] = COPD["cluster"].astype(int)
 
+print("Data read in...")
+
 NUM_CLUSTERS = COPD["cluster"].nunique()
 MAX_TIME = 365 * 4
 PROP_LIMS = (0.5, 1.01, GRANULARITY)
-SERVER_LIMS = (30, 61, 5)
+SERVER_LIMS = (30, 51, 5)
 # SERVER_LIMS = (20, 41, 10)
 
 
@@ -148,6 +150,8 @@ def get_case(data, case):
 def main():
     """ The main function for running and writing. """
 
+    print("Generating task objects...")
+
     tasks = (
         run_multiple_class_trial(COPD, props, num_servers, seed, MAX_TIME)
         for props, num_servers, seed in it.product(
@@ -157,10 +161,14 @@ def main():
         )
     )
 
+    print("Tasks created. Computing...")
+
     with ProgressBar():
         results = dask.compute(
             *tasks, scheduler="processes", num_workers=NUM_CORES
         )
+
+    print("Computation complete. Writing to file...")
 
     columns = [
         *(f"p_{i}" for i in range(NUM_CLUSTERS)),
@@ -171,9 +179,12 @@ def main():
     df = pd.DataFrame(results, columns=columns)
     df.to_csv(OUT_DIR / "main.csv", index=False)
 
+    print("Extracting best, median and worst cases...")
+
     for case in ["best", "median", "worst"]:
         get_case(df, case)
 
+    print("Done.")
 
 if __name__ == "__main__":
     main()
