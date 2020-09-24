@@ -15,7 +15,7 @@ OUT_DIR.mkdir(exist_ok=True)
 PATH = str(sys.argv[1])
 NUM_CORES = int(sys.argv[2])
 
-CLUSTER_LIMS = (2, 11)
+CLUSTER_LIMS = (2, 10)
 COPD = pd.read_csv(PATH, parse_dates=["admission_date", "discharge_date"])
 
 clinicals = [
