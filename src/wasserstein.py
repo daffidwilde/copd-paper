@@ -38,8 +38,8 @@ COPD["cluster"] = COPD["cluster"].astype(int)
 NUM_CLUSTERS = COPD["cluster"].nunique()
 MAX_TIME = 365 * 4
 PROP_LIMS = (0.5, 1.01, GRANULARITY)
-# SERVER_LIMS = (20, 61, 5)
-SERVER_LIMS = (20, 41, 10)
+SERVER_LIMS = (30, 61, 5)
+# SERVER_LIMS = (20, 41, 10)
 
 
 @dask.delayed
