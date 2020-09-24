@@ -89,27 +89,19 @@ def run_multiple_class_trial(
     if write is not None:
         results.to_csv(OUT_DIR / write / f"{seed}.csv", index=False)
 
-    distances = [
-        stats.wasserstein_distance(
-            results[results["customer_class"] == label]["system_time"],
-            data[data["cluster"] == label]["true_los"],
-        )
-        for label in range(NUM_CLUSTERS)
-    ]
+    distance = stats.wasserstein_distance(
+        results["system_time"], data["true_los"]
+    )
 
-    return (*props, num_servers, seed, *distances)
+    return (*props, num_servers, seed, distance)
 
 
 def get_case(data, case):
     """ Get the best, median or worst case from the data. """
 
-    data["max_distance"] = data[
-        [f"distance_{i}" for i in range(NUM_CLUSTERS)]
-    ].max(axis=1)
-
     maximal_distance = data.groupby(
         [f"p_{i}" for i in range(NUM_CLUSTERS)] + ["num_servers"]
-    )["max_distance"].max()
+    )["distance"].max()
 
     if case == "best":
         *ps, c = maximal_distance.idxmin()
@@ -174,7 +166,7 @@ def main():
         *(f"p_{i}" for i in range(NUM_CLUSTERS)),
         "num_servers",
         "seed",
-        *(f"distance_{i}" for i in range(NUM_CLUSTERS)),
+        "distance",
     ]
     df = pd.DataFrame(results, columns=columns)
     df.to_csv(OUT_DIR / "main.csv", index=False)
