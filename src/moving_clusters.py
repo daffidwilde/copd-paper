@@ -68,7 +68,6 @@ def simulate_queue(
     ciw.seed(seed)
 
     all_queue_params = {}
-    n_clusters = data["cluster"].nunique()
     for label, prop in zip(range(n_clusters), props):
 
         cluster = data[data["cluster"] == label]
