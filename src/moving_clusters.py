@@ -17,6 +17,7 @@ from util import (
     MAX_TIME,
     NUM_SERVERS,
     PROPS,
+    ShiftedExponential,
     get_queue_params,
     get_results,
 )
@@ -83,7 +84,7 @@ def simulate_queue(
             for label, params in all_queue_params.items()
         },
         service_distributions={
-            f"Class {label}": [Exponential(params["service"])]
+            f"Class {label}": [ShiftedExponential(*params["service"])]
             for label, params in all_queue_params.items()
         },
         number_of_servers=[num_servers],
