@@ -1,0 +1,36 @@
+\documentclass[border=5pt]{standalone}
+
+\usepackage{garamondx}
+\usepackage[garamondx,cmbraces]{newtxmath}
+
+\usepackage{tikz}
+
+\begin{document}
+
+\begin{tikzpicture}
+
+    \tikzstyle{state} = [ellipse, minimum width=4em, minimum height=3em]
+
+    \foreach \val/\lab in {0/0, 1/1, 2/2, 4/n-1, 5/n, 6/n+1} {%
+        \node[state, draw, thick] (\lab) at (\val * 2.5, 0) {\(\lab\)};
+    };
+
+    \node[state] (mid) at (3 * 2.5, 0) {\large\(\cdots\)};
+    \node[state] (end) at (7 * 2.5, 0) {\large\(\cdots\)};
+
+    \foreach \start/\end in {0/1, 1/2, 2/mid, mid/n-1, n-1/n, n/n+1, n+1/end} {%
+        \draw[-latex, thick]
+            (\start.north east)
+            to[out=30, in=150]
+            node[midway, above=1ex] {\(\lambda\)}
+            (\end.north west);
+        \draw[-latex, thick]
+            (\end.south west)
+            to[out=210, in=330]
+            node[midway, below=1ex] {\(\mu\)}
+            (\start.south east);
+    };
+
+\end{tikzpicture}
+
+\end{document}
