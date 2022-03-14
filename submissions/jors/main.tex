@@ -221,12 +221,10 @@ operationally, socially and medically.
 The remainder of this manuscript is structured as follows:
 
 \begin{itemize}
-    \item Section~\ref{sec:intro} provides a brief literature review, followed
-        by an overview of the dataset and its clustering;
-    \item Section~\ref{sec:queuing} offers a concise introduction to queuing
-        theory;
-    \item Section~\ref{sec:model} describes the queuing model and the
-        estimation of its parameters;
+    \item Section~\ref{sec:intro} provides a literature review, followed by an
+        overview of the dataset and its clustering;
+    \item Section~\ref{sec:model} describes the queuing model and the estimation
+        of its parameters;
     \item Section~\ref{sec:scenarios} presents several what-if scenarios with
         insight provided by the model parameterisation and the clustering;
     \item Section~\ref{sec:summary} summarises the manuscript and its findings.
@@ -273,63 +271,90 @@ in~\cite{Kuwornu2014,Larsen2017} where combinations of demographic and clinical
 attributes are related to various subgroups of chronic diseases.
 
 Similarly to LCA, clustering identifies groups (clusters) in data to produce
-labels for its instances. However, clustering includes a wide variety of methods
+labels for its instances. Clustering includes a wide variety of methods
 where the common theme is to maximise homogeneity within, and heterogeneity
-between, each cluster~\cite{Everitt2011}. The \(k\)-means paradigm is the most
-popular form of clustering in literature. The method iteratively partitions
-numerical data into \(k \in \mathbb N\) distinct parts where \(k\) is fixed a
-priori. This method has proved popular as it is easily scalable, and its
-implementations are concise~\cite{Olafsson2008,Wu2009}. In addition to
-\(k\)-means, hierarchical clustering methods can be useful if a suitable number
-of parts cannot be found initially~\cite{Vuik2016a}. However, supervised
-hierarchical segmentation methods such as classification and regression trees
-(as in~\cite{Harper2006}) have been used where an existing, well-defined, label
-is of particular significance.
+between, each cluster~\cite{Everitt2011}. Of these methods, the \(k\)-means
+paradigm is the most popular form of clustering in healthcare modelling
+literature~\cite{%
+    Elbattah2017,Haraty2015,Ogbuabor2018,Santhi2010,Silitonga2018,Vuik2016a%
+}. The \(k\)-means method iteratively partitions numerical data into
+\(k \in \mathbb N\) distinct parts where \(k\) is fixed a priori, according to a
+heterogeneity function. This method's popularity is likely due to its
+simplicity, scalability, and that its implementations are
+concise~\cite{Olafsson2008,Wu2009}.
+
+In addition to \(k\)-means, hierarchical clustering methods have proven useful
+in healthcare applications. In~\cite{Vuik2016a}, hierarchical clustering is used
+as part of the formative analysis to identify a suitable number of patient
+clusters. Likewise, hierarchical clustering has been used to profile broader
+healthcare metrics such as patient utilisation patterns~\cite{Zayas2016} or
+mapping out effective leadership models~\cite{Hargett2017}. Furthermore,
+supervised hierarchical segmentation methods such as classification and
+regression trees (as in~\cite{Harper2006} or~\cite{Kumar2019}) have been used
+where an existing, well-defined, label is of particular significance.
 
 \subsubsection{Queuing models}
 
 Since the seminal works by Erlang~\cite{Erlang1917,Erlang1920} established the
 core concepts of queuing theory, the application of queues and queuing networks
-to real services has become abundant, including the healthcare service. By
-applying these models to healthcare settings, many aspects of the underlying
+to real services has become abundant, including the healthcare service. Queuing
+theory is a mature discipline with many facets that extend beyond the needs of
+this manuscript. Comprehensive and informative introductions to queuing models,
+queuing theory, and the simulating of queues can be found
+in~\cite{Bhat2015,Shortle2018,Stewart2009}.
+
+By applying these models to healthcare settings, many aspects of the underlying
 system can be studied. A common area of study in healthcare settings is of
 service capacity.~\cite{McClain1976} is an early example of such work where
 acute bed capacity was determined using hospital occupancy data. Meanwhile, more
-modern works such as~\cite{Palvannan2012,Pinto2014} consider more extensive
-sources of data to build their queuing models.  Moreover, the output of a model
-is catered more towards being actionable --- as is the prerogative of
-operational research. For instance,~\cite{Pinto2014} devises new categorisations
-for both hospital beds and arrivals that are informed by the queuing model. A
-further example is~\cite{Komashie2015} where queuing models are used to measure
-and understand satisfaction among patients and staff.
+modern works such as~\cite{Bittencourt2018,Palvannan2012,Pinto2014} consider
+more extensive sources of data to build their queuing models. Moreover, the
+output of a model is catered more towards being actionable --- as is the
+prerogative of operational research. For instance,~\cite{Pinto2014} devises new
+categorisations for both hospital beds and arrivals that are informed by the
+queuing model. A further example is~\cite{Komashie2015} where queuing models are
+used to measure and understand satisfaction among patients and staff.
 
 In addition to these theoretic models, healthcare queuing research has expanded
 to include computer simulation models. The simulation of queues, or networks
 thereof, have the benefit of adeptly capturing the stochastic nuances of
 hospital systems over their theoretic counterparts. Example areas include the
 construction and simulation of Markov processes via process
-mining~\cite{Arnolds2018,Rebuge2012}, and patient flow~\cite{Bhattacharjee2014}.
-Regardless of the advantages of simulation models, a prerequisite is reliable
-software with which to construct those simulations. A common approach to
-building simulation models of queues is to use a graphical user interface such
-as Simul8. These tools have the benefits of being highly visual, making them
-attractive to organisations looking to implement queuing models without
-necessary technical expertise, including the NHS.~\cite{Brailsford2013}
-discusses the issues around operational research and simulation being taken up
-in the NHS despite the availability of intuitive software packages like Simul8.
-However, they do not address a core principle of good simulation work:
-reproducibility. The ability to reliably reproduce a set of results is of great
-importance to scientific research but remains an issue in simulation research
+mining~\cite{Arnolds2018,Rebuge2012}, multi-class queuing
+networks~\cite{Cochran2009}, and patient flow~\cite{Bhattacharjee2014}.
+
+There are numerous tools available for simulating queues, but many leave the
+associated research prone to issues like reproducibility. \cite{Dagkakis2016}
+provides a review on the subject. One of the defining features of a simulation
+tool is whether it has a graphical user interface (GUI) or not. GUIs provide
+accessibility to the non-technical members of a simulation project, but can also
+foster poor simulation practices~\cite{Bell1987}.
+
+A common approach to building simulation models of queues is to use a graphical
+user interface such as Simul8. These tools have the benefits of being highly
+visual, making them attractive to organisations looking to implement queuing
+models without necessary technical expertise, including the NHS.
+\cite{Brailsford2013} discusses the issues around operational research and
+simulation being taken up in the NHS despite the availability of intuitive
+software packages like Simul8. However, they do not address the issue of
+reproducibility.
+
+The ability to reliably reproduce a set of results is of great importance to
+scientific research but remains an issue in simulation research
 generally~\cite{Fitzpatrick2019}. When considering issues with reproducibility
 in scientific computing (simulation included), the source of any concerns is
 often with the software used~\cite{Ivie2018}. Using well-developed, open-source
 software can alleviate issues around reproducibility and reliability as how they
 are used involve less uncertainty and require more rigour than `drag-and-drop'
-software. One example of such a piece of software is Ciw~\cite{Palmer2019}. Ciw
-is a discrete event simulation library written in Python that is fully
-documented and tested. The simulations constructed and studied in
-Sections~\ref{sec:model}~and~\ref{sec:scenarios} utilise this library and aid
-the overall reproducibility of this work.
+software.
+
+The simulation framework of choice for this manuscript is the discrete event
+simulation library, Ciw~\cite{Palmer2019}. Ciw is written in Python, and is a
+well-developed piece of open-source software, adhering to best practices in
+research software development. In~\cite{Palmer2019}, the authors stress how
+% TODO: Add reference or two for RSD
+ensuring sustainable and reproducible simulation work are at the core of their
+development process.
 
 \subsubsection{Handling incomplete queue data}
 
@@ -386,10 +411,8 @@ and an X-ray. Following this, they are referred to a physiotherapist for
 specialist treatment; this is their second episode, and concludes their spell.
 The second patient spell consists of consultation, an MRI, and monitoring on a
 ward. These are all overseen by the same consultant, and so they form one
-episode. The analysis in Appendix~\ref{app:data} considers another dataset
-consisting of patient episodes. However, as is often the case with
-administrative datasets, the order of procedures within the same episode is not
-recorded.
+episode. However, as is often the case with administrative datasets, the order
+of procedures within the same episode is not recorded.
 
 The following attributes describe the spells included in the dataset studied in
 this work:
@@ -422,8 +445,7 @@ spell:
 
 \begin{itemize}
     \item Age and spell cost data were linked to approximately half of the
-        spells in the dataset from the administrative dataset analysed in
-        Appendix~\ref{app:data};
+        spells in the dataset from another administrative dataset;
     \item The presenting ICD codes were generalised to their categories
         according to NHS documentation and counts for each category were
         attached. This reduced the number of values from
@@ -445,63 +467,32 @@ length of stay (LOS), COPD intervention status, and the engineered attributes
 
 With these attributes selected, a clustering algorithm must be chosen. Two
 critical specifications of the algorithm used are that it must handle mixed-type
-data, and that it should be interpretable by stakeholders. As such, the
-\(k\)-prototypes algorithm is a strong candidate. The \(k\)-prototypes algorithm
-was mentioned in Chapter~\ref{chp:kmodes} and is a mixed-type extension to the
-\(k\)-modes and \(k\)-means algorithms; in effect, the \(k\)-prototypes
-algorithm separates the given dataset into its numeric and categorical
-attributes before applying \(k\)-means and \(k\)-modes on the respective parts.
-The statement of the \(k\)-prototypes algorithm has been omitted since it is
-equivalent to that of \(k\)-modes (given in Algorithm~\ref{alg:kmodes}) with the
-exceptions that:
+data, and that it should be interpretable by stakeholders. The authors
+of~\cite{Jahangirian2015} present an analysis of the factors that result in a
+low level of engagement from stakeholders with healthcare simulation work. The
+key findings indicate that complexity and communication are the limiting factors
+for stakeholders, and so the onus resides on researchers to make their models
+informative, effective and transferable.
 
-\begin{itemize}
-    \item The \textsc{SelectClosest} function uses the dissimilarity measure
-        given in~\eqref{eq:kprototypes};
-    \item The \textsc{Update} function is as given in
-        Algorithm~\ref{alg:kprototypes_update}.
-\end{itemize}
-
-These parts are combined using a modified dissimilarity function, defined
-in~\eqref{eq:kprototypes}. This function is a linear combination of the squared
-Euclidean distance and the dissimilarity function defined in~\eqref{eq:dissim}
-according to a weight, \(\gamma \in \mathbb R\). The notation and terminology
-for clustering mixed-type data is much the same as in Chapter~\ref{chp:kmodes}.
-However, there are substantial differences: first, representative points are
-referred to as \emph{prototypes}; and, second, an attribute space \(\mathcal A\)
-of \(m\) mixed-type attributes can be written as the product of its numeric and
-categorical components:
-
-\begin{equation}
-    \mathcal A
-    = \prod_{j=1}^{p} A^{(n)}_j \times \prod_{j=p+1}^{m} A^{(c)}_j
-    = \mathcal A^{(n)} \times \mathcal A^{(c)}
-\end{equation}
-
-Here, \(A^{(n)}\) and \(A^{(c)}\) denote individual numeric and categorical
-attributes, respectively. Meanwhile, \(\mathcal A^{(n)}\) and \(\mathcal
-A^{(c)}\) denote the numeric and categorical components of the space. With this
-notation, the dissimilarity between two points, \(X, Y \in \mathcal A\), is
-defined to be:
+Given these constraints, the \(k\)-prototypes algorithm is a strong candidate.
+Presented in~\cite{Huang1997a} alongside the \(k\)-modes algorithm for
+categorical clustering, the \(k\)-prototypes algorithm is a mixed-type
+extension to the \(k\)-modes and \(k\)-means algorithms; in effect, the
+\(k\)-prototypes algorithm separates the dataset it acts on into its numeric and
+categorical attributes before applying \(k\)-means and \(k\)-modes on the
+respective parts. The cost functions for each of these parts are then combined
+to give a single cost function according to a weight, \(\gamma \in \mathbb R\).
+This weight is also used to define the dissimilarity between two points, \(X\)
+and \(Y\), in a dataset:
 
 \begin{equation}\label{eq:kprototypes}
     d(X, Y) = \sum_{j=1}^{p} \left(x_j - y_j\right)^2 + \gamma \sum_{j=p+1}^{m}
     \delta \left(x_j, y_j\right)
 \end{equation}
 
-\input{kprototypes}
-
-In addition to this dissimilarity function, \(k\)-prototypes has a cost function
-that uses the same linear combination as its dissimilarity function to consider
-the numeric and categorical attributes. This function combines the categorical
-cost function (defined in~\eqref{eq:cost}) and inertia (defined
-in~\eqref{eq:inertia}) according to the same value of \(\gamma\). A proof that
-minimising this linear combination also minimises the intra-cluster
-\(k\)-prototypes dissimilarity is given in~\cite{Huang1997a}.
-
 The choice of \(\gamma\) is of particular importance as it balances the
-contribution of each data type to the objective function. The seminal work by
-Huang~\cite{Huang1997a} investigated the effect of various \(\gamma\) values
+contribution of each data type to the objective function. The seminal
+work~\cite{Huang1997a} investigated the effect of various \(\gamma\) values
 when clustering with \(k\)-prototypes. This investigation determined that a
 sensible and robust value for \(\gamma\) is the average of the standard
 deviations for the numeric attributes. The analysis that informed the clustering
@@ -509,9 +500,9 @@ in this work found that this value for \(\gamma\) provided a useful
 clustering; as such, no further modifications were made.
 
 To determine the optimal number of clusters, \(k\), the knee point detection
-algorithm used at the end of Chapter~\ref{chp:kmodes} was used with a range of
-potential values for \(k\) from two to ten. This range was chosen based on what
-may be considered feasibly informative to stakeholders. Applying this algorithm
+algorithm presented in~\cite{Satopaa2011} was used with a range of potential
+values for \(k\) from two to ten. This range was chosen based on what may be
+considered feasibly informative to stakeholders. Applying this algorithm
 revealed an optimal value for \(k\) of four, but both three and five clusters
 were considered. Both of these cases were eliminated due to a lack of clear
 separation in the characteristics of the clusters.
@@ -734,205 +725,8 @@ As discussed earlier, the purpose of this manuscript is to construct a queuing
 model for the data described here. Insights have already been gained into the
 needs of the segments that have been identified in this section. However, to
 glean further insights, some parameters of the queuing model must be recovered
-from the data. The following two sections briefly introduce queues, and describe
-how these parameters are derived using the dataset at hand, respectively.
-
-
-\section{An introduction to queues}\label{sec:queuing}
-
-Queues facilitate the orderly provision of services. Examples include lining up
-to board a bus, assembly lines in a factory, or patients arriving at a hospital.
-In all queues there are two types of agent: those providing the
-service (a bus driver), and those demanding it (the passengers). The generic
-terminology for these agents are \emph{servers} and \emph{customers},
-respectively.
-
-As well as individual queues, networks of interconnecting queues can be
-described in a similar manner. In a \emph{queuing network}, each individual
-queue is called a \emph{node}. For instance, a hospital could be considered a
-network of queues, where patients arrive into triage, are processed, and are
-redirected throughout their spell.
-
-The observed characteristics of a queuing system can be used to construct a
-mathematical model. Such a model would describe things like the process by which
-customers arrive to a queue, the rules that allow customers to be served, and
-the time taken to serve a customer. Queuing theory is the branch of mathematics
-concerned with the analysis of these models. Queuing theory is a mature
-discipline with many facets that extend beyond the needs of this manuscript.
-Comprehensive and informative introductions to queuing models, queuing theory,
-and the simulating of queues can be found
-in~\cite{Bhat2015,Shortle2018,Stewart2009}.
-Further, applications of queuing models to healthcare systems are plentiful, but
-examples include~\cite{%
-    Bittencourt2018,Cochran2009,Mohammadi2012,Steins2013,Williams2015,Yom2014%
-}.
-
-\subsection{Elements of a queue}\label{subsec:elements}
-
-A queue is made up several components: the service facility, a number of servers
-within that facility, a line in which customers wait to be served, and a stream
-of arriving customers. Figure~\ref{fig:queue} shows a diagram of a queue. The
-characteristics associated with the components of a queue are often summarised
-using Kendall's notation~\cite{Stewart2009}. The exact notation varies somewhat,
-but here it shall be denoted \(A/S/c/m/K/Q\). This notation also defines the
-\emph{parameters} of the queue. The process in Section~\ref{sec:model} estimates
-some unknown parameters of a queue.
-
-Kendall's notation acts as a shorthand to fully describe a queue, and is as
-follows. Customers arrive to the queue according to an \emph{inter-arrival time
-distribution}, \(A\), and wait in line to be served according to a \emph{queuing
-discipline}, \(Q\). Typically, customers are served as they arrive. This
-discipline is called FIFO (first in first out). Other disciplines include LIFO
-(last in first out) and priority scheduling --- as used in emergency triage. At
-the service facility there are \(c\) parallel servers, who each serve customers
-according to the \emph{service time distribution}, \(S\). Sometimes it is
-beneficial to attach a capacity to the system, denoted by \(K \ge c\). If
-omitted, an unlimited system capacity is presumed. The \emph{system capacity}
-can also be distinguished from an optional \emph{queue capacity}, \(m < K\),
-which limits the number of customers allowed to wait in line. Again, this is
-assumed to be \(\infty\), unless specified.
-
-\begin{figure}[htbp]
-    \centering%
-    \resizebox{\imgwidth}{!}{\input{queue}}
-    \caption{The anatomy of a queue}\label{fig:queue}
-\end{figure}
-
-The distributions used to model inter-arrival and service times are numerous,
-but some commonly studied examples are:
-
-\begin{itemize}
-    \item Markovian (denoted \(M\)). Customers arrive according to a Poisson
-        process. The inter-arrival or service times follow an exponential
-        distribution with rate \(\alpha > 0\), i.e. they have probability
-        density function:
-        \begin{equation}\label{eq:exponential}
-            f(t) = \alpha e^{-\alpha t}; \quad t \ge 0
-        \end{equation}
-    \item Deterministic (denoted \(D\)). Inter-arrival or service times are
-        non-stochastic and are of fixed length.
-    \item General (denoted \(G\)). Arrivals are random, and inter-arrival or
-        service times follow a general probability distribution.
-\end{itemize}
-
-\subsection{Some classical queues}\label{subsec:known}
-
-\subsubsection{The \(M/M/1\) queue}
-
-One of the best-known queues is the \(M/M/1\) queue. In this queue, customers
-arrive according to a Poisson process at a rate of \(\lambda\). The customers
-are served by a single server exponentially, at a rate of \(\mu\). Owing to the
-memoryless property of the exponential distribution, this queue can be
-represented as a continuous-time Markov chain over the state space
-\(\mathbb{N}_0 = \left\{0, 1, 2, \ldots\right\}\).
-
-A stochastic process, \(\left(X_t\right)\), which is defined over a countable
-state space, \(\mathcal S\), is considered a \emph{Markov chain} if and only if
-for all \(n \in \mathbb N\) and for any \((n+1)\)-tuple of states, \(s_0,
-\ldots, s_n \in \mathcal S^n\), the process satisfies:
-
-\begin{equation}
-    \mathbb P \left(X_n = s_n \ | \ X_{n-1} = s_{n-1}, \ldots, X_0 = s_0\right)
-    = \mathbb P \left(X_n = s_n \ | \ X_{n-1} = s_{n-1}\right)
-\end{equation}
-
-That is, the probability of being in state \(s_n\) is dependent only on the
-previous state, \(s_{n-1}\). The Markov chain underlying an \(M/M/1\) queue is
-also known as a \emph{birth-death process}. Figure~\ref{fig:birth_death_mm1}
-shows a diagram of the birth-death process of an \(M/M/1\) queue.
-
-\begin{figure}[htbp]
-    \centering
-    \resizebox{\imgwidth}{!}{\input{birth_death_mm1}}
-    \caption{
-        A state space diagram for an \(M/M/1\) queue%
-    }\label{fig:birth_death_mm1}
-\end{figure}
-
-An important property of the \(M/M/1\) queue is its \emph{traffic intensity},
-which is defined as \(\rho = \frac{\lambda}{\mu}\). This quantity also
-represents the proportion of time that the server spends serving customers, and
-so measures their \emph{utilisation}. The \(M/M/1\) queue is considered
-\emph{stable} (i.e. the underlying process will become stationary eventually) if
-\(\rho < 1\). In an unstable queue, customers arrive at a faster rate than they
-are served, and so the line grows indefinitely.
-
-Many other properties of the \(M/M/1\) queue can be explicitly derived from this
-representation, including steady-state solutions, the expected size of the
-system, and average response times. The calculation of these quantities also
-makes use of Little's Law~\cite{Little1961}, which relates average system size,
-\(L\), with average waiting time, \(W\), in stationary processes such that:
-\begin{equation}
-    L = \lambda W
-\end{equation}
-
-\subsubsection{The \(M/M/c\) queue}
-
-The \(M/M/c\) queue is an extension of the \(M/M/1\) queue where there are \(c
-\in \mathbb N\) independent servers working in parallel. Customers still arrive
-according to a Poisson process with rate \(\lambda\), and customer service times
-follow an exponential distribution with a mean of \(\frac{1}{\mu}\). The traffic
-intensity of the \(M/M/c\) queue is also \(\rho = \frac{\lambda}{\mu}\), but
-server utilisation is measured as the mean traffic intensity across the servers,
-i.e.  \(\frac{\rho}{c}\). The stability condition for the \(M/M/c\) queue is
-\(\rho < c\). 
-
-As with the \(M/M/1\) queue, the \(M/M/c\) queue can be represented as a
-birth-death process on the state space \(\mathbb N_0\), as shown in
-Figure~\ref{fig:birth_death_mmc}. Since there are multiple servers, some servers
-may be idle when there are customers in the system. Once all servers are active,
-arriving customers join the line and wait for service. 
-
-\begin{figure}[htbp]
-    \centering
-    \resizebox{\imgwidth}{!}{\input{birth_death_mmc}}
-    \caption{
-        A state space diagram for an \(M/M/c\) queue%
-    }\label{fig:birth_death_mmc}
-\end{figure}
-
-\subsubsection{The \(M/G/c\) queue}
-
-As useful as memoryless service times are in deriving properties of queues, they
-are not always representative of real systems. The \(M/G/c\) queue extends the
-\(M/M/c\) queue to allow for a general service time distribution. Again, there
-are \(c\) parallel servers, and customers arrive randomly at a rate of
-\(\lambda\).
-
-The \(M/G/c\) queue cannot be represented as a Markov chain, but it is a
-stochastic process on the same state space as the other queues in this section.
-Given the generic nature of customer departure times, a lot of the structure of
-the underlying process is lost. As such, deriving exact values for many
-properties of the \(M/G/c\) queue continues to be an open
-problem~\cite{Kingman2009}. Despite the theoretical challenges posed by the
-\(M/G/c\) queue, simulating these generic queues can still be of great benefit
---- as is done in Section~\ref{sec:model}. 
-
-\subsection{Simulation tools}\label{subsec:tools}
-
-As well as theoretical results, queues provide a valuable basis for computer
-simulation. Theoretical models are limited when studying complex queuing
-systems, where the parameterisation of a system requires complicated notation or
-derivations to produce useful results. When properly utilising computer
-simulation, the stochastic intricacies of a system may be more readily observed.
-Examples of such systems include the multi-class queuing networks studied
-in~\cite{Cochran2009}.
-
-There are numerous tools available for simulating queues, but many leave the
-associated research prone to issues like reproducibility --- as mentioned in
-Section~\ref{subsec:queuing}. A recent review on the subject and its tools
-is~\cite{Dagkakis2016}. One of the defining features of a simulation tool is
-whether it has a \emph{graphical user interface} (GUI) or not. GUIs provide
-accessibility to the non-technical members of a simulation project, but can also
-foster poor simulation practices~\cite{Bell1987}.
-
-The simulation framework of choice for this manuscript is the discrete event
-simulation library, Ciw~\cite{Palmer2019}. Ciw is written in Python, and is a
-well-developed piece of open-source software, adhering to best practices in
-research software development. In~\cite{Palmer2019}, the authors stress how
-% TODO: Add reference or two for RSD
-ensuring sustainable and reproducible simulation work are at the core of their
-development process.
+from the data. The following section describes how these parameters are derived
+using the dataset at hand.
 
 
 \section{Constructing the queuing model}\label{sec:model}
@@ -986,11 +780,19 @@ critical care unit using administrative data.
     }\label{fig:process}
 \end{figure}
 
+The \(M/G/c\) queue cannot be represented as a Markov chain, but it is a
+stochastic process on the same state space as the other queues in this section.
+Given the generic nature of customer departure times, a lot of the structure of
+the underlying process is lost. As such, deriving exact values for many
+properties of the \(M/G/c\) queue continues to be an open
+problem~\cite{Kingman2009}. Despite the theoretical challenges posed by the
+\(M/G/c\) queue, simulating these generic queues can still be of great benefit
+--- as is done in Section~\ref{sec:model}. 
 
 \subsection{Deriving the model parameters}\label{subsec:derive}
 
 Following in the suit of recent literature~\cite{Steins2013,Williams2015}, this
-work employs a single node using the \(M/M/c\) queue to model a hypothetical
+work employs a single node using the \(M/G/c\) queue to model a hypothetical
 ward of patients presenting COPD.\ In addition to this, the grouping found in
 Section~\ref{subsec:overview} provides a set of patient classes in the queue.
 Under this model, the following assumptions are made:
@@ -1209,7 +1011,7 @@ generated from the best parameter set recorded in Table~\ref{tab:comparison}. In
 particular, the data from each scenario is scaled by the corresponding median
 value in the base case, meaning that a metric having a value of 1 is `normal'.
 
-As mentioned in Section~\ref{sec:copd:intro}, the source code used throughout
+As mentioned in Section~\ref{sec:intro}, the source code used throughout
 this manuscript has been archived online under~\doi{10.5281/zenodo.4457902}.
 Also, the datasets generated from the simulations in this section, and the
 parameter sweep, have been archived online~\doi{10.5281/zenodo.4457808}.
@@ -1231,25 +1033,25 @@ by:
     \hat\lambda_{l} = \sigma\lambda_l
 \end{equation}
 
-% \begin{figure}
-%     \centering
-%     \subfloat[]{%
-%         \resizebox*{\imgwidth}{!}{%
-%             \includegraphics[width=\linewidth]{lambda_time}
-%         }\label{fig:lambda_time}
-%     }
+\begin{figure}
+    \centering
+    \subfloat[]{%
+        \resizebox*{\imgwidth}{!}{%
+            \includegraphics[width=\linewidth]{lambda_time}
+        }\label{fig:lambda_time}
+    }
 
-%     \subfloat[]{%
-%         \resizebox*{\imgwidth}{!}{%
-%             \includegraphics[width=\linewidth]{lambda_util}
-%         }\label{fig:lambda_util}
-%     }
-%     \caption{%
-%         Plots of \(\sigma\) against relative
-%         \subref{fig:lambda_time}~system~time and
-%         \subref{fig:lambda_util}~server~utilisation
-%     }\label{fig:lambda}
-% \end{figure}
+    \subfloat[]{%
+        \resizebox*{\imgwidth}{!}{%
+            \includegraphics[width=\linewidth]{lambda_util}
+        }\label{fig:lambda_util}
+    }
+    \caption{%
+        Plots of \(\sigma\) against relative
+        \subref{fig:lambda_time}~system~time and
+        \subref{fig:lambda_util}~server~utilisation
+    }\label{fig:lambda}
+\end{figure}
 
 Figure~\ref{fig:lambda} shows the effects of changing patient arrivals on
 (\subref{fig:lambda_time})~relative system times and
