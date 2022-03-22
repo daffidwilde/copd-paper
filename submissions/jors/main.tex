@@ -939,43 +939,44 @@ each, leaving two years of simulated data from each repetition.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\imgwidth]{best_params}
+    \subfloat[]{%
+        \resizebox*{0.49\linewidth}{!}{%
+            \includegraphics[width=\linewidth]{best_params}
+        }\label{fig:best_params}
+    }\hfill%
+    \subfloat[]{%
+        \resizebox*{0.49\linewidth}{!}{%
+            \includegraphics[width=\linewidth]{median_params}
+        }\label{fig:median_params}
+    }
+
+    \subfloat[]{%
+        \resizebox*{0.49\linewidth}{!}{%
+            \includegraphics[width=\linewidth]{worst_params}
+        }\label{fig:worst_params}
+    }
     \caption{%
-        Histograms of the best-simulated and observed LOS data
-    }\label{fig:best_params}
+        Histograms of the observed LOS data and the
+        \subref{fig:best_params}~best-simulated,
+        \subref{fig:median_params}~median-simulated, and
+        \subref{fig:worst_params}~worst-simulated LOS data.
+    }\label{fig:params}
 \end{figure}
 
-\begin{figure}
-    \centering
-    \includegraphics[width=\imgwidth]{median_params}
-    \caption{%
-        Histograms of the median-simulated and observed LOS data
-    }\label{fig:median_params}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\imgwidth]{worst_params}
-    \caption{%
-        Histograms of the worst-simulated and observed LOS data
-    }\label{fig:worst_params}
-\end{figure}
-
-The results of this parameter sweep are summarised in
-Figures~\ref{fig:best_params}~through~\ref{fig:worst_params}. Each plot shows a
-comparison of the observed lengths of stay across all groups and the newly
-simulated data with the best, median and worst parameter sets, respectively.
-These figures highlight the importance of choosing good parameters under this
-model as the differences in the quality of the fits are stark. In the best case
-the fit is uncanny, whereas the median case shows a distribution that inflates
-the presence of short-stay patients despite an otherwise good fit. Meanwhile,
-Figure~\ref{fig:worst_params} displays a distribution that only resembles the
-observed distribution in its positive skew; the worst-case distribution lacks
-the distinctive `exponential' nose and has a considerably heavier tail
-corresponding to a disproportionate amount of long-stay patients.
+The results of this parameter sweep are summarised in Figure~\ref{fig:params}.
+Each plot shows a comparison of the observed lengths of stay across all groups
+and the newly simulated data with the best, median and worst parameter sets,
+respectively. These figures highlight the importance of choosing good parameters
+under this model as the differences in the quality of the fits are stark. In the
+best case the fit is uncanny, whereas the median case shows a distribution that
+inflates the presence of short-stay patients despite an otherwise good fit.
+Meanwhile, Figure~\ref{fig:worst_params} displays a distribution that only
+resembles the observed distribution in its positive skew; the worst-case
+distribution lacks the distinctive `exponential' nose and has a considerably
+heavier tail corresponding to a disproportionate amount of long-stay patients.
 Table~\ref{tab:comparison} reinforces these results numerically, showing a
-precise fit by the best parameter set across all measures, except the maximum
-recorded stay.
+precise fit by the best parameter set across all measures except the maximum
+recorded stay, where the fit is still good.
 
 \begin{table}
     \centering
@@ -1200,7 +1201,7 @@ was simulated using values of \(\delta\) from 0.0 to 0.98 at steps of \(2.0
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{moving_time}
+    \includegraphics[width=\imgwidth]{moving_time}
     \caption{%
         Plots of proportions of each cluster moving to another against relative
         system time
@@ -1209,7 +1210,7 @@ was simulated using values of \(\delta\) from 0.0 to 0.98 at steps of \(2.0
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{moving_util}
+    \includegraphics[width=\imgwidth]{moving_util}
     \caption{%
         Plots of proportions of each cluster moving to another on relative
         server utilisation
