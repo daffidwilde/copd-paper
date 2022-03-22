@@ -1101,23 +1101,25 @@ in resource availability are more evident, and do away with any concerns as to
 what a particular number of servers precisely reflects in the real world, be it
 any combination of hospital beds, equipment availability and medical staff.
 
-% \begin{figure}
-%     \centering
-%     \begin{subfigure}{\imgwidth}
-%         \includegraphics[width=\linewidth]{servers_time}
-%         \caption{}\label{fig:servers_time}
-%     \end{subfigure}
+\begin{figure}
+    \centering
+    \subfloat[]{%
+        \resizebox*{\imgwidth}{!}{%
+            \includegraphics[width=\linewidth]{servers_time}
+        }\label{fig:servers_time}
+    }
 
-%     \begin{subfigure}{\imgwidth}
-%         \includegraphics[width=\linewidth]{servers_util}
-%         \caption{}\label{fig:servers_util}
-%     \end{subfigure}
-%     \caption{%
-%         Plots of the relative number of servers against relative
-%         (\subref{fig:servers_time})~system time and
-%         (\subref{fig:servers_util})~server utilisation
-%     }\label{fig:servers}
-% \end{figure}
+    \subfloat[]{%
+        \resizebox*{\imgwidth}{!}{%
+            \includegraphics[width=\linewidth]{servers_util}
+        }\label{fig:servers_util}
+    }
+    \caption{%
+        Plots of the relative number of servers against relative
+        \subref{fig:servers_time}~system~time and
+        \subref{fig:servers_util}~server~utilisation
+    }\label{fig:servers}
+\end{figure}
 
 Figure~\ref{fig:servers} shows how the relative resource availability affects
 relative system times and server utilisation. In this scenario, the relative
