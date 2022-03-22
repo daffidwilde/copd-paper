@@ -1299,21 +1299,16 @@ administrative hospital spell data from patients presenting COPD from \ctmuhb.
 By considering a variety of attributes present in the data, and engineering
 some, a useful clustering of the spell population is identified that
 successfully feeds into a multi-class \(M/G/c\) queue to model a hypothetical
-COPD ward. This clustering was generated using the initialisation presented in
-Chapter~\ref{chp:kmodes}, which in turn was effectively evaluated using the
-EDO method from Chapter~\ref{chp:edo}. The culmination of these three features
-from this thesis fulfil its objective: to utilise machine learning through
-creation, evaluation and, finally, application.
-
-With this model, several insights are gained by investigating purposeful changes
-in the parameters of the model that have the potential to inform actual public
-health policy. In particular, since neither the resource capacity of the system
-nor the clinical processes of the spells are evident in the data, service times
-and resource levels are not available. However, the length of stay is. Using
-what is available, this work assumes that mean service times can be
-parameterised using mean lengths of stay. By using the Wasserstein distance to
-compare the distribution of the simulated lengths of stay data with the observed
-data, a best performing parameter set is found via a parameter sweep.
+COPD ward. With this model, several insights are gained by investigating
+purposeful changes in the parameters of the model that have the potential to
+inform actual public health policy. In particular, since neither the resource
+capacity of the system nor the clinical processes of the spells are evident in
+the data, service times and resource levels are not available. However, the
+length of stay is. Using what is available, this work assumes that mean service
+times can be parameterised using mean lengths of stay. By using the Wasserstein
+distance to compare the distribution of the simulated lengths of stay data with
+the observed data, a best performing parameter set is found via a parameter
+sweep.
 
 This parameterisation ultimately recovers a surrogate for service times for each
 cluster, and a universal number of servers to emulate resource availability. The
