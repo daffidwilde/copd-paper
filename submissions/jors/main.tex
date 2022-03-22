@@ -204,7 +204,7 @@ administrative hospital data to build a clustering which feeds into a
 multi-class queuing model, allowing for better understanding of the healthcare
 population and the system with which they interact. COPD is a condition of
 particular interest to population health research, and to \ctmuhb, as it is
-known to often present as a comorbidity in patients~\cite{Houben2019},
+known to often present as a comorbidity in patients~\citep{Houben2019},
 increasing the complexity of treatments among those with the condition.
 Moreover, an internal report by NHS Wales found \ctmuhb\ had the highest
 prevalence of the condition across all the Welsh health boards.
@@ -221,8 +221,9 @@ operationally, socially and medically.
 The remainder of this manuscript is structured as follows:
 
 \begin{itemize}
-    \item Section~\ref{sec:intro} provides a literature review, followed by an
-        overview of the dataset and its clustering;
+    \item Section~\ref{sec:intro} introduces the paper and provides a literature
+        review, followed by an overview of the case study dataset and its
+        clustering;
     \item Section~\ref{sec:model} describes the queuing model and the estimation
         of its parameters;
     \item Section~\ref{sec:scenarios} presents several what-if scenarios with
@@ -245,9 +246,9 @@ heterogeneous datasets and encompasses several techniques from operational
 research, statistics and machine learning. One of the most desirable qualities
 of this kind of analysis is the ability to glean and communicate simplified
 summaries of patient needs to stakeholders within a healthcare
-system~\cite{Vuik2016b, Yoon2020}. For instance, clinical profiling often forms
+system~\citep{Vuik2016b, Yoon2020}. For instance, clinical profiling often forms
 part of the broader analysis where each segment is summarised in a phrase or
-infographic~\cite{Vuik2016a,Yan2019}.
+infographic~\citep{Vuik2016a,Yan2019}.
 
 The review for this work identified three commonplace groups of patient
 characteristics used to segment a patient population: system utilisation
@@ -258,36 +259,36 @@ demonstrate how this technique can be used to improve the efficiency of a
 hospital system as opposed to tackling the more relevant issue of
 patient-centred care. The remaining characteristics can be segmented in a
 variety of ways, but recent works tend to favour unsupervised methods —--
-typically latent class analysis (LCA) or clustering~\cite{Yan2018}.
+typically latent class analysis (LCA) or clustering~\citep{Yan2018}.
 
 LCA is a statistical, model-based method used to identify groups (called latent
 classes) in data by relating its observations to some unobserved (latent),
 categorical attribute. This attribute has multiple possible categories, each
 corresponding to a latent class. The discovered relations enable the
 observations to be separated into latent classes according to their maximum
-likelihood class membership~\cite{Hagenaars2002,Lazarsfeld1968}. This method has
-proved useful in the study of comorbidity patterns as
-in~\cite{Kuwornu2014,Larsen2017} where combinations of demographic and clinical
-attributes are related to various subgroups of chronic diseases.
+likelihood class membership~\citep{Hagenaars2002,Lazarsfeld1968}. This method
+has proved useful in the study of comorbidity patterns as
+in~\cite{Kuwornu2014}~or~\cite{Larsen2017}, where combinations of demographic
+and clinical attributes are related to various subgroups of chronic diseases.
 
 Similarly to LCA, clustering identifies groups (clusters) in data to produce
 labels for its instances. Clustering includes a wide variety of methods
 where the common theme is to maximise homogeneity within, and heterogeneity
-between, each cluster~\cite{Everitt2011}. Of these methods, the \(k\)-means
+between, each cluster~\citep{Everitt2011}. Of these methods, the \(k\)-means
 paradigm is the most popular form of clustering in healthcare modelling
-literature~\cite{%
+literature. Some recent examples include:~\cite{%
     Elbattah2017,Haraty2015,Ogbuabor2018,Santhi2010,Silitonga2018,Vuik2016a%
 }. The \(k\)-means method iteratively partitions numerical data into
 \(k \in \mathbb N\) distinct parts where \(k\) is fixed a priori, according to a
 heterogeneity function. This method's popularity is likely due to its
 simplicity, scalability, and that its implementations are
-concise~\cite{Olafsson2008,Wu2009}.
+concise~\citep{Olafsson2008,Wu2009}.
 
 In addition to \(k\)-means, hierarchical clustering methods have proven useful
 in healthcare applications. In~\cite{Vuik2016a}, hierarchical clustering is used
 as part of the formative analysis to identify a suitable number of patient
 clusters. Likewise, hierarchical clustering has been used to profile broader
-healthcare metrics such as patient utilisation patterns~\cite{Zayas2016} or
+healthcare metrics such as patient utilisation patterns~\citep{Zayas2016} or
 mapping out effective leadership models~\cite{Hargett2017}. Furthermore,
 supervised hierarchical segmentation methods such as classification and
 regression trees (as in~\cite{Harper2006} or~\cite{Kumar2019}) have been used
@@ -295,13 +296,13 @@ where an existing, well-defined, label is of particular significance.
 
 \subsubsection{Queuing models}
 
-Since the seminal works by Erlang~\cite{Erlang1917,Erlang1920} established the
+Since the seminal works of~\cite{Erlang1917,Erlang1920} established the
 core concepts of queuing theory, the application of queues and queuing networks
 to real services has become abundant, including the healthcare service. Queuing
 theory is a mature discipline with many facets that extend beyond the needs of
 this manuscript. Comprehensive and informative introductions to queuing models,
 queuing theory, and the simulating of queues can be found
-in~\cite{Bhat2015,Shortle2018,Stewart2009}.
+in~\citep{Bhat2015,Shortle2018,Stewart2009}.
 
 By applying these models to healthcare settings, many aspects of the underlying
 system can be studied. A common area of study in healthcare settings is of
@@ -320,36 +321,36 @@ to include computer simulation models. The simulation of queues, or networks
 thereof, have the benefit of adeptly capturing the stochastic nuances of
 hospital systems over their theoretic counterparts. Example areas include the
 construction and simulation of Markov processes via process
-mining~\cite{Arnolds2018,Rebuge2012}, multi-class queuing
-networks~\cite{Cochran2009}, and patient flow~\cite{Bhattacharjee2014}.
+mining~\citep{Arnolds2018,Rebuge2012}, multi-class queuing
+networks~\citep{Cochran2009}, and patient flow~\citep{Bhattacharjee2014}.
 
 There are numerous tools available for simulating queues, but many leave the
-associated research prone to issues like reproducibility. \cite{Dagkakis2016}
+associated research prone to issues like reproducibility.~\cite{Dagkakis2016}
 provides a review on the subject. One of the defining features of a simulation
 tool is whether it has a graphical user interface (GUI) or not. GUIs provide
 accessibility to the non-technical members of a simulation project, but can also
-foster poor simulation practices~\cite{Bell1987}.
+foster poor simulation practices~\citep{Bell1987}.
 
 A common approach to building simulation models of queues is to use a graphical
 user interface such as Simul8. These tools have the benefits of being highly
 visual, making them attractive to organisations looking to implement queuing
-models without necessary technical expertise, including the NHS.
-\cite{Brailsford2013} discusses the issues around operational research and
+models without necessary technical expertise, including the
+NHS.~\cite{Brailsford2013} discusses the issues around operational research and
 simulation being taken up in the NHS despite the availability of intuitive
 software packages like Simul8. However, they do not address the issue of
 reproducibility.
 
 The ability to reliably reproduce a set of results is of great importance to
 scientific research but remains an issue in simulation research
-generally~\cite{Fitzpatrick2019}. When considering issues with reproducibility
+generally~\citep{Fitzpatrick2019}. When considering issues with reproducibility
 in scientific computing (simulation included), the source of any concerns is
-often with the software used~\cite{Ivie2018}. Using well-developed, open-source
+often with the software used~\citep{Ivie2018}. Using well-developed, open-source
 software can alleviate issues around reproducibility and reliability as how they
 are used involve less uncertainty and require more rigour than `drag-and-drop'
 software.
 
 The simulation framework of choice for this manuscript is the discrete event
-simulation library, Ciw~\cite{Palmer2019}. Ciw is written in Python, and is a
+simulation library, Ciw~\citep{Palmer2019}. Ciw is written in Python, and is a
 well-developed piece of open-source software, adhering to best practices in
 research software development. In~\cite{Palmer2019}, the authors stress how
 % TODO: Add reference or two for RSD
@@ -394,8 +395,8 @@ administrative summary of 5,231 patients presenting COPD from February 2011
 through to March 2019, covering 10,861 hospital spells. A patient (hospital)
 spell is defined as the continuous stay of a patient using a hospital bed on
 premises controlled by a healthcare provider, and is made up of one or more
-patient episodes~\cite{NHS:spell}. A patient episode is defined to be any
-continuous period of care provided by the same consultant~\cite{NHS:episode}.
+patient episodes~\citep{NHS:spell}. A patient episode is defined to be any
+continuous period of care provided by the same consultant~\citep{NHS:episode}.
 Figure~\ref{fig:spell} contains an illustrative example of the relationship
 between patient episodes and patient spells.
 
@@ -757,7 +758,7 @@ requirements in two healthcare settings.
 Aside from healthcare-specific works, the approximation of queue parameters has
 formed a part of relevant modern queuing research. However, the scope is
 primarily focused on theoretic approximations rather than simulation. For
-instance, two recent works~\cite{Djabali2018,Goldenshluger2016} consider an
+instance, two recent works~\citep{Djabali2018,Goldenshluger2016}, consider an
 underlying process to estimate a general service time distribution in single
 server and infinite server queues respectively.
 
@@ -765,7 +766,7 @@ While these solutions are interesting, they do not necessarily tackle the issue
 in this scenario where information about the system is also missing. With that,
 there is a precedent for simplifying healthcare systems to a single node with
 parallel servers that emulate overall resource availability. Two
-studies~\cite{Steins2013,Williams2015} provide examples of how this approach,
+studies~\citep{Steins2013,Williams2015}, provide examples of how this approach,
 when paired with discrete event simulation, can expose the resource needs of a
 system beyond deterministic queuing theory models. In particular, the authors
 of~\cite{Williams2015} show how a single node, multiple server queue can be used
@@ -785,13 +786,13 @@ stochastic process on the same state space as the other queues in this section.
 Given the generic nature of customer departure times, a lot of the structure of
 the underlying process is lost. As such, deriving exact values for many
 properties of the \(M/G/c\) queue continues to be an open
-problem~\cite{Kingman2009}. Despite the theoretical challenges posed by the
+problem~\citep{Kingman2009}. Despite the theoretical challenges posed by the
 \(M/G/c\) queue, simulating these generic queues can still be of great benefit
 --- as is done in Section~\ref{sec:model}. 
 
 \subsection{Deriving the model parameters}\label{subsec:derive}
 
-Following in the suit of recent literature~\cite{Steins2013,Williams2015}, this
+Following in the suit of recent literature~\citep{Steins2013,Williams2015}, this
 work employs a single node using the \(M/G/c\) queue to model a hypothetical
 ward of patients presenting COPD.\ In addition to this, the grouping found in
 Section~\ref{subsec:overview} provides a set of patient classes in the queue.
@@ -886,13 +887,13 @@ distributions, such as the Kolmogorov-Smirnov test, a variety of discrepancy
 approaches such as summed mean-squared error, and \(f\)-divergences. A popular
 choice among the last group (which may be considered distance-like) is the
 Kullback-Leibler divergence which measures relative information entropy from one
-probability distribution to another~\cite{Kullback1951}. A key issue with many
+probability distribution to another~\citep{Kullback1951}. A key issue with many
 of these methods is that they lack interpretability, something which is
 paramount when conveying information to stakeholders, not only for explaining
 how something works, but also how its results may be explained.
 
 As such, a reasonable candidate is the (first) Wasserstein metric, also known as
-the `earth mover' or `digger' distance~\cite{Vaserstein1969}. The Wasserstein
+the `earth mover' or `digger' distance~\citep{Vaserstein1969}. The Wasserstein
 metric satisfies the conditions of a formal mathematical metric --- like
 Euclidean distance or the dissimilarity measure given in
 Definition~\ref{def:dissim}. Also, the values of the Wasserstein metric take the
