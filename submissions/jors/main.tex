@@ -158,11 +158,10 @@ fine-grained data can be overcome. Thus, finding useful operational results
 despite using only administrative data.
 
 The paper begins by finding a useful clustering of the population from this
-granular data that feeds into a multi-class \(M/M/c\) model, whose parameters
-are recovered from the data via parameterisation and the Wasserstein distance.
-This model is then used to conduct an informative analysis of the underlying
-queuing system and the needs of the population under study through several
-what-if scenarios.
+granular data that feeds into a multi-class \(M/G/c\) model, whose parameters
+are recovered from the data via the Wasserstein distance. This model is then
+used to conduct an informative analysis of the underlying queuing system and the
+needs of the population under study through several what-if scenarios.
 
 The analyses used to form and study this model consider, in effect, all types of
 patient arrivals and how those types impact the system. With that, this study
@@ -395,10 +394,10 @@ administrative summary of 5,231 patients presenting COPD from February 2011
 through to March 2019, covering 10,861 hospital spells. A patient (hospital)
 spell is defined as the continuous stay of a patient using a hospital bed on
 premises controlled by a healthcare provider, and is made up of one or more
-patient episodes~\citep{NHS:spell}. A patient episode is defined to be any
-continuous period of care provided by the same consultant~\citep{NHS:episode}.
-Figure~\ref{fig:spell} contains an illustrative example of the relationship
-between patient episodes and patient spells.
+patient episodes. A patient episode is defined to be any continuous period of
+care provided by the same consultant. Figure~\ref{fig:spell} contains an
+illustrative example of the relationship between patient episodes and patient
+spells.
 
 \begin{figure}
     \centering
@@ -520,13 +519,13 @@ separation in the characteristics of the clusters.
 
 Although the dataset is confidential and may not be published, a synthetic
 analogue which illustrates the clustering has been archived
-under~DOI:\texttt{10.5281/zenodo.3908167}. A summary of the dataset and its
-clustering is provided in Table~\ref{tab:summary}. Note that a negative length of stay
-indicates that the patient had passed away prior to arriving at the hospital and
-so these spells have been omitted from further analysis. This table separates
-each cluster and the overall dataset (referred to as the population). From this
-table, helpful insights can be gained about the segments identified by the
-clustering. For instance, the needs of the spells in each cluster can be
+under~\texttt{DOI:10.5281/zenodo.3908167}. A summary of the dataset and its
+clustering is provided in Table~\ref{tab:summary}. Note that a negative length
+of stay indicates that the patient had passed away prior to arriving at the
+hospital and so these spells have been omitted from further analysis. This table
+separates each cluster and the overall dataset (referred to as the population).
+From this table, helpful insights can be gained about the segments identified by
+the clustering. For instance, the needs of the spells in each cluster can be
 summarised succinctly:
 
 \begin{itemize}
@@ -732,46 +731,25 @@ using the dataset at hand.
 
 \section{Constructing the queuing model}\label{sec:model}
 
-The data available for study in this work is not as detailed as in comparative
-projects. Without access to such data --- but intending to gain insight from
-what is available --- it is imperative to bridge the gap left by the incomplete
-data. Figure~\ref{fig:process} provides a diagrammatic depiction of the process
-described in this section.
+Following in the suit of recent literature~\citep{Steins2013,Williams2015}, this
+work employs a single node queue to model a hypothetical
+ward of patients presenting COPD.\ In addition to this, the grouping found in
+Section~\ref{subsec:overview} provides a set of patient classes in the queue.
 
-It is often the case that in practical situations where suitable data is not
-(immediately) available, further inquiry in that line of research will stop.
-Queuing models in healthcare settings appear to be such a case; the line ends at
-incomplete queue data. The bibliographic work~\cite{Asanjarani2017} collates
-articles on the estimation of queuing system characteristics --- including their
-parameters. Despite its breadth of almost 300 publications from 1955, only two
-articles have been identified as being applied to
-healthcare:~\cite{Mohammadi2012,Yom2014}. Both works are concerned with
-customers who can re-enter services during their time in the queuing system,
-which is mainly of value when considering the effect of unpredictable behaviour
-in intensive care units, for instance. In~\cite{Mohammadi2012}, the authors seek
-to approximate service and re-service densities through a Bayesian approach and
-by filtering out those customers seeking to be serviced again. Meanwhile, the
-approach in~\cite{Yom2014} considers an extension to the \(M/M/c\) queue with
-direct re-entries. The devised model is then used to determine resource
-requirements in two healthcare settings.
+Without full details of the process order or idle periods during a spell, some
+assumption must be made about the actual `service' time of a patient in the
+hospital. It is assumed here that the mean service time of a group of patients
+may be approximated via their mean length of stay, i.e. the mean time spent in
+the system. As indicated by the distributions in Figure~\ref{fig:cluster_los},
+the length of stay distributions require shifting prior to fitting an
+exponential distribution. As such, this work employs a \(M/G/c\) queue with
+shifted exponential service time distributions for each cluster.
 
-Aside from healthcare-specific works, the approximation of queue parameters has
-formed a part of relevant modern queuing research. However, the scope is
-primarily focused on theoretic approximations rather than simulation. For
-instance, two recent works~\citep{Djabali2018,Goldenshluger2016}, consider an
-underlying process to estimate a general service time distribution in single
-server and infinite server queues respectively.
-
-While these solutions are interesting, they do not necessarily tackle the issue
-in this scenario where information about the system is also missing. With that,
-there is a precedent for simplifying healthcare systems to a single node with
-parallel servers that emulate overall resource availability. Two
-studies~\citep{Steins2013,Williams2015}, provide examples of how this approach,
-when paired with discrete event simulation, can expose the resource needs of a
-system beyond deterministic queuing theory models. In particular, the authors
-of~\cite{Williams2015} show how a single node, multiple server queue can be used
-to accurately predict bed capacity and length of stay distributions in a
-critical care unit using administrative data.
+To fit the model, the Wasserstein distance is used to recover an estimate for
+the proportion of the length of stay each cluster contributes to their active
+service time. To do this, a parameter sweep is utilised. The remainder of this
+section provides details of how these steps are done. Figure~\ref{fig:process}
+provides a diagrammatic depiction of the process described in this section.
 
 \begin{figure}
     \centering%
@@ -781,22 +759,10 @@ critical care unit using administrative data.
     }\label{fig:process}
 \end{figure}
 
-The \(M/G/c\) queue cannot be represented as a Markov chain, but it is a
-stochastic process on the same state space as the other queues in this section.
-Given the generic nature of customer departure times, a lot of the structure of
-the underlying process is lost. As such, deriving exact values for many
-properties of the \(M/G/c\) queue continues to be an open
-problem~\citep{Kingman2009}. Despite the theoretical challenges posed by the
-\(M/G/c\) queue, simulating these generic queues can still be of great benefit
---- as is done in Section~\ref{sec:model}. 
 
 \subsection{Deriving the model parameters}\label{subsec:derive}
 
-Following in the suit of recent literature~\citep{Steins2013,Williams2015}, this
-work employs a single node using the \(M/G/c\) queue to model a hypothetical
-ward of patients presenting COPD.\ In addition to this, the grouping found in
-Section~\ref{subsec:overview} provides a set of patient classes in the queue.
-Under this model, the following assumptions are made:
+Under the proposed \(M/G/c\) model, the following assumptions are made:
 
 \begin{enumerate}
     \item Inter-arrival and service times of patients are each exponentially
@@ -819,18 +785,12 @@ Each group of patients has its arrival distribution, the parameter of which is
 the reciprocal of the mean inter-arrival times for that group. This parameter
 is denoted by \(\lambda_l\) for each cluster \(l\).
 
-Like arrivals, each group of patients has its service time distribution.
-Without full details of the process order or idle periods during a spell, some
-assumption must be made about the actual `service' time of a patient in the
-hospital. It is assumed here that the mean service time of a group of patients
-may be approximated via their mean length of stay, i.e. the mean time spent in
-the system. As indicated by the distributions in Figure~\ref{fig:cluster_los},
-the length of stay distributions require shifting prior to fitting an
-exponential distribution.
-
-Let \(T_l\) denote the set of observed lengths of stay for cluster \(l\), and
-let \(m_l = \max \left\{0, \min T_l\right\}\) be its feasible minimum. Thus, the
-\emph{shifted times} for cluster \(l\), denoted \(\widehat T_l\), are:
+Like arrivals, each group of patients has its service time distribution. As
+noted at the start of this section, the lengths of stay must be shifted before
+they can be used to derive the service time distribution. Let \(T_l\) denote the
+set of observed lengths of stay for cluster \(l\), and let
+\(m_l = \max \left\{0, \min T_l\right\}\) be its feasible minimum. Thus, the
+shifted times for cluster \(l\), denoted \(\widehat T_l\), are:
 
 \begin{equation}\label{eq:shifted}
     \widehat T_l := \left\{t - m_l : t \in T_l\right\}
@@ -846,13 +806,13 @@ proportional to the corresponding mean shifted system time such that:
     \mu_l = p_l \phi_l
 \end{equation}
 
-\noindent where \(p_l \in \interval[open left]{0}{1}\) is a {\slshape service
-proportion} parameter to be determined for each group.
+\noindent where \(p_l \in \interval[open left]{0}{1}\) is a service proportion
+parameter to be determined for each group.
 
 With these definitions, the service time for cluster \(l\), denoted \(S_l\), is
-distributed by a {\slshape shifted exponential distribution} with a mean of
-\(\frac{1}{\mu_l}\) and shift of \(m_l\). The probability density function
-of this distribution is as follows:
+distributed by a shifted exponential distribution with a mean of
+\(\frac{1}{\mu_l}\) and shift of \(m_l\). The probability density function of
+this distribution is as follows:
 
 \begin{equation}\label{eq:shifted_pdf}
     f(s) = \begin{cases}
@@ -861,18 +821,20 @@ of this distribution is as follows:
     \end{cases}
 \end{equation}
 
-Since this distribution is geometrically identical to the exponential
-distribution with rate \(\mu_l\) except for a shift of \(m_l\), its memoryless
-property holds for \(s \ge m_l\). However, since this model allows for multiple
-classes and the shift terms are not the same for each cluster, this model
-technically should be reclassified as a \(M/G/c\) model. Regardless of this, the
-mean service time for spells in cluster \(l\) is given by:
+Therefore, the mean service time for spells in cluster \(l\) is given by:
 
 \begin{equation}\label{eq:services}
     \mathbb E \left(S_l\right)
     = \int_{m_l}^{\infty} \mu_l s e^{-\mu_l (s - m_l)} \mathrm ds
     = m_l + \frac{1}{\mu_l}
 \end{equation}
+
+Since this distribution is geometrically identical to the exponential
+distribution with rate \(\mu_l\) except for a shift of \(m_l\), its memoryless
+property holds for \(s \ge m_l\). However, since the proposed model allows for
+multiple classes and the shift terms are not the same for each cluster, the
+model does not have Markovian service times and is described as a \(M/G/c\)
+model.
 
 \subsection{Validating the model}\label{subsec:validate}
 
@@ -904,7 +866,9 @@ formally, the Wasserstein distance between two probability distributions \(U\)
 and \(V\) is defined as:
 
 \begin{equation}\label{eq:wasserstein}
-    W(U, V) = \int_{0}^{1} \left\vert F^{-1}(t) - G^{-1}(t) \right\vert dt
+    W(U, V) = {
+        \int_{0}^{1} \left\vert F^{-1}(t) - G^{-1}(t) \right\vert \mathrm dt
+    }
 \end{equation}
 
 Here, \(F\) and \(G\) are the cumulative density functions of \(U\) and \(V\),
@@ -1010,12 +974,11 @@ generated from the best parameter set recorded in Table~\ref{tab:comparison}. In
 particular, the data from each scenario is scaled by the corresponding median
 value in the base case, meaning that a metric having a value of 1 is `normal'.
 
-As mentioned in Section~\ref{sec:intro}, the source code used throughout
-this manuscript has been archived online
-under~DOI:\texttt{10.5281/zenodo.4457902}.
+As mentioned in Section~\ref{sec:intro}, the source code used throughout this
+manuscript has been archived online under~\texttt{DOI:10.5281/zenodo.4457902}.
 Also, the datasets generated from the simulations in this section, and the
-parameter sweep, have been archived online
-under~DOI:\texttt{10.5281/zenodo.4457808}.
+parameter sweep from Section~\ref{sec:model}, have been archived online
+under~\texttt{DOI:10.5281/zenodo.4457808}.
 
 
 \subsection{Changes to overall patient arrivals}\label{subsec:arrivals}
