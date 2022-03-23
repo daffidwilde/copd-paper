@@ -1,0 +1,63 @@
+\documentclass[border=5pt]{standalone}
+
+\usepackage{garamondx}
+\usepackage[garamondx,cmbraces]{newtxmath}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows, positioning}
+
+\begin{document}
+
+\begin{tikzpicture}
+
+    \tikzstyle{gantt-arrow} = [%
+        |-latex, ultra thick, shorten >=-5pt
+    ]
+
+    \Large
+    \node (p1) {1};
+    \node[below=2em of p1] (p2) {1};
+    \node[below=2em of p2] (p3) {2};
+
+    \node[right=10 of p1] (e1) {1};
+    \node[right=10 of p2] (e2) {2};
+    \node[right=10 of p3] (e3) {3};
+
+    \draw[dashed] ([yshift=-1em]p1.south east) -- ([yshift=-1em]e1.south west);
+    \draw[dashed] ([yshift=-1em]p2.south east) -- ++(10, 0);
+
+    \large
+    \node[left=1em of p2] (patients) {%
+        \begin{tikzpicture}
+            \node[rotate=90] {Spell ID};
+        \end{tikzpicture}
+    };
+    \node[right=1em of e2] (episodes) {%
+        \begin{tikzpicture}
+            \node[rotate=270] {Episode ID};
+        \end{tikzpicture}
+    };
+
+    \normalsize
+    \color{blue}
+    \draw[gantt-arrow] ([xshift=1em, yshift=-0.5em]p1.east) -- ++(3.5, 0)
+        node[midway, above] {Consultation}
+        node[pos=1] (p1-consult) {};
+    \draw[gantt-arrow] (p1-consult.east) -- ++(2.5, 0)
+        node[midway, above] {X-ray}
+        node[pos=1] (xray) {};
+
+    \draw[gantt-arrow] ([yshift=-5em]xray.east) -- ++(3, 0)
+        node[midway, above] {Physiotherapy};
+
+    \color{orange}
+    \draw[gantt-arrow] ([xshift=3em, yshift=-0.5em]p3.east) -- ++(3.5, 0)
+        node[midway, above] {Consultation}
+        node[pos=1] (p3-consult) {};
+    \draw[gantt-arrow] (p3-consult.east) -- ++(1.5, 0)
+        node[midway, above] {MRI} node[pos=1] (mri) {};
+    \draw[gantt-arrow] (mri.east) -- ++(2.5, 0)
+        node[midway, above] {Ward};
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,30 @@
+\balg%
+    \caption{\textsc{Update} (\(k\)-prototypes)}\label{alg:kprototypes_update}
+    \KwIn{%
+        an attribute space \(%
+            \mathcal A = \mathcal A^{(n)} \times \mathcal A^{(c)}
+        \), a prototype to update \(z^{(l)}\) and its cluster \(Z_l\)
+    }
+    \KwOut{an updated prototype}
+
+    Find \(z_n \in \mathcal A^{(n)}\), the mean numeric attribute vector in
+    \(Z_l\):
+    \[
+        z_n := \left(%
+            \frac{1}{\lvert Z_l \rvert} \sum_{u \in Z_l} u_j :
+            j = 1, \ldots, p
+        \right)%
+    \]\;
+    Find \(z_c \in \mathcal A^{(c)}\) that minimises
+    \(D\left(Z_l^{(c)},z_c\right)\) where:
+    \[
+        Z_l^{(c)} := \left\{%
+            (u_j: j = p+1, \ldots, m) : u \in Z_l 
+        \right\}%
+    \]
+    i.e. find the modal categorical attribute vector in \(Z_l\)\;
+    Update the prototype to be the concatenation of these vectors:
+    \[
+        z^{(l)} \gets z_n \frown z_c%
+    \]
+\ealg%
