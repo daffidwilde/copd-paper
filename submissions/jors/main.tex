@@ -894,9 +894,7 @@ how something works, but also how its results may be explained.
 
 As such, a reasonable candidate is the (first) Wasserstein metric, also known as
 the `earth mover' or `digger' distance~\citep{Vaserstein1969}. The Wasserstein
-metric satisfies the conditions of a formal mathematical metric --- like
-Euclidean distance or the dissimilarity measure given in
-Definition~\ref{def:dissim}. Also, the values of the Wasserstein metric take the
+metric satisfies the conditions of a formal mathematical metric and takes the
 units of the distributions under comparison (in this case: days). These
 characteristics can aid understanding and explanation. The distance measures the
 approximate `minimal work' required to move between two probability
@@ -975,8 +973,7 @@ resembles the observed distribution in its positive skew; the worst-case
 distribution lacks the distinctive `exponential' nose and has a considerably
 heavier tail corresponding to a disproportionate amount of long-stay patients.
 Table~\ref{tab:comparison} reinforces these results numerically, showing a
-precise fit by the best parameter set across all measures except the maximum
-recorded stay, where the fit is still good.
+precise fit by the best parameter set across all measures.
 
 \begin{table}
     \centering
@@ -1057,15 +1054,15 @@ by:
     }\label{fig:lambda}
 \end{figure}
 
-Figure~\ref{fig:lambda} shows the effects of changing patient arrivals on
-(\subref{fig:lambda_time})~relative system times and
-(\subref{fig:lambda_util})~relative server utilisation for values of \(\sigma\)
-from 0.5 to 2.0 at a precision of \(1.0 \times 10^{-2}\). Specifically, each
-plot in the figure (and the subsequent figures in this section) shows the median
-and interquartile range (IQR) of each relative attribute. These metrics provide
-an insight into the experience of a typical user (or server) in the system.
-Furthermore, they reveal the stability and variation of the body of users
-(or servers).
+Figure~\ref{fig:lambda} shows the effects of changing patient arrivals
+on~\subref{fig:lambda_time}~relative system times
+and~\subref{fig:lambda_util}~relative server utilisation for values of
+\(\sigma\) from 0.5 to 2.0 at a precision of \(1.0 \times 10^{-2}\).
+Specifically, each plot in the figure (and the subsequent figures in this
+section) shows the median and interquartile range (IQR) of each relative
+attribute. These metrics provide an insight into the experience of a typical
+user (or server) in the system. Furthermore, they reveal the stability and
+variation of the body of users (or servers).
 
 What is evident from these plots is that things are happening as one might
 expect: as arrivals increase, the strain on the system increases. However, it
@@ -1328,7 +1325,7 @@ hospital, as is shown by moving patient arrivals between clusters. In reality,
 this would correspond to an external, preventive policy that improves the
 overall health of COPD patients.
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \bibliographystyle{apacite}
 \bibliography{bibliography}
 
