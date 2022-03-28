@@ -424,13 +424,12 @@ length of stay (LOS), COPD intervention, and the engineered attributes (not
 including age or costs due to a lack of coverage).
 
 With these attributes selected, a clustering algorithm must be chosen. Two
-critical specifications are that it must handle mixed-type data, and that it
-should be interpretable by stakeholders. The authors of~\cite{Jahangirian2015}
-present an analysis of the factors that result in a low level of engagement from
-stakeholders with healthcare simulation work. The key findings indicate that
-complexity and communication are the limiting factors for stakeholders, and so
-the onus resides on researchers to make their models informative, effective and
-transferable.
+critical specifications are that it must handle mixed-type data and be
+interpretable by stakeholders. The authors of~\cite{Jahangirian2015} present an
+analysis of the factors resulting in a low level of engagement from stakeholders
+with healthcare simulation work. The key findings indicate that complexity and
+communication are the limiting factors for stakeholders, so the onus rests with
+researchers to make their models informative, effective and transferable.
 
 Given these constraints, the \(k\)-prototypes algorithm is a strong candidate.
 Presented in~\cite{Huang1997a} alongside the \(k\)-modes algorithm for
@@ -452,13 +451,13 @@ The choice of \(\gamma\) is of particular importance as it balances the
 contribution of each data type to the objective function. The seminal
 work~\cite{Huang1997a} investigated the effect of various \(\gamma\) values, and
 determined that a sensible, robust value for \(\gamma\) is the average of the
-standard deviations for the numeric attributes. The analysis that informed the
-clustering in this work found that this value for \(\gamma\) provided a useful
-clustering; as such, no further modifications were made.
+standard deviations for the numeric attributes. The analysis for this work found
+that this value for \(\gamma\) provided a useful clustering; as such, no further
+modifications were made.
 
 To determine the optimal number of clusters, \(k\), the knee point detection
 algorithm~\cite{Satopaa2011} was used with a range of potential values for \(k\)
-from two to ten. This range is based on what may be considered feasibly
+from two to ten. This range was based on what may be considered feasibly
 informative to stakeholders. This process revealed an optimal value for \(k\) of
 four, but both three and five clusters were considered; both were eliminated due
 to a lack of separation between the cluster characteristics.
@@ -473,15 +472,15 @@ to a lack of separation between the cluster characteristics.
     \label{tab:summary}
 \end{table}
 
-Although the dataset is confidential, a synthetic analogue which illustrates the
-clustering has been archived under~\texttt{DOI:10.5281/zenodo.3908167}. A
-summary of the dataset and its clustering is provided in
-Table~\ref{tab:summary}. Note that a negative length of stay indicates that the
-patient had passed away prior to arriving at the hospital; these spells have
-been omitted from further analysis. This table separates each cluster and the
-overall dataset (referred to as the population). From this table, helpful
-insights can be gained about the segments identified by the clustering. For
-instance, the needs of each cluster can be summarised succinctly:
+The dataset studied here is confidential, but a synthetic analogue illustrating
+the clustering has been archived under~\texttt{DOI:10.5281/zenodo.3908167}.
+Table~\ref{tab:summary} provides a summary of the dataset and its clustering.
+Note that a negative length of stay indicates that the patient had passed away
+prior to arriving at the hospital; these spells have been omitted from further
+analysis. This table separates each cluster and the overall dataset (referred to
+as the population). From this table, insights can be gained about the segments
+identified by the clustering. For instance, the needs of each cluster can be
+summarised succinctly:
 
 \begin{itemize}
     \item Cluster 0 represents those spells with {\slshape low clinical
@@ -647,8 +646,8 @@ distributions regardless of intervention.
 
 Figures~\ref{fig:ltcs}~and~\ref{fig:icds} show the proportions of each grouping
 presenting levels of concurrent LTCs and ICDs, respectively. By exposing the
-distribution of these attributes, some notion of the clinical complexity for
-each cluster can be captured better than with Table~\ref{tab:summary} alone. In
+distribution of these attributes, the clinical complexity of each cluster can be
+captured better than with Table~\ref{tab:summary} alone. In
 Figure~\ref{fig:cluster_ltcs}, there are distinct LTC count profiles among the
 clusters: Cluster 0 is typical of the population; Cluster 1 shows that no
 patient presented COPD solely as an LTC in their spells, and more than half
@@ -660,47 +659,42 @@ medical needs.
 
 Figure~\ref{fig:cluster_icds} largely mirrors these cluster profiles with the
 number of concurrent ICDs. There are some points of interest, however. Firstly,
-Cluster 1 has a relatively low-leaning distribution of ICDs that does not marry
-up with the high rates of LTCs. Secondly, the vast majority of spells in Cluster
-3 present with at least nine ICDs suggesting a likely wide range of conditions
-and comorbidities beyond the LTCs used to calculate CCI.\
+Cluster 1 has a relatively low-leaning distribution of ICDs that does not align
+with the high rates of LTCs. Secondly, the vast majority of spells in Cluster
+3 present with at least nine ICDs suggesting a wide range of conditions and
+comorbidities beyond the LTCs used to calculate CCI.\
 
-However, little can be drawn from the intervention counterparts to these figures
-(i.e. Figures~\ref{fig:intervention_ltcs}~and~\ref{fig:intervention_icds}),
-regarding the corresponding spells. One thing of note is that patients receiving
-both interventions for their COPD (or either, in fact) have disproportionately
-fewer LTCs and concurrent ICDs when compared to the population. Aside from this,
-the profiles of each intervention are similar to one another.
+Conversely, little can be drawn from the same figures for the interventions
+(Figures~\ref{fig:intervention_ltcs}~and~\ref{fig:intervention_icds}). One thing
+of note is that patients receiving both interventions (or either, in fact) have
+disproportionately fewer LTCs and concurrent ICDs when compared to the
+population. Aside from this, the profiles of each intervention are similar.
 
 As discussed earlier, the purpose of this manuscript is to construct a queuing
 model for the data described here. Insights have already been gained into the
-needs of the segments that have been identified in this section. However, to
-glean further insights, some parameters of the queuing model must be recovered
-from the data. The following section describes how these parameters are derived
-using the dataset at hand.
+needs of the segments identified in this section. However, to glean further 
+insights, some parameters of the queuing model must be recovered from the data.
+The following section describes how these parameters are derived using the
+dataset at hand.
 
 
 \section{Constructing the queuing model}\label{sec:model}
 
-Following in the suit of recent literature~\citep{Steins2013,Williams2015}, this
-work employs a single node queue to model a hypothetical
-ward of patients presenting COPD.\ In addition to this, the grouping found in
-Section~\ref{subsec:overview} provides a set of patient classes in the queue.
+Following on from recent literature~\citep{Steins2013,Williams2015}, this work
+employs a single node queue to model a hypothetical ward of patients presenting
+COPD.\ Additionally, the segmentation found in Section~\ref{subsec:overview}
+provides a set of classes in the queue.
 
 Without full details of the process order or idle periods during a spell, some
 assumption must be made about the actual `service' time of a patient in the
 hospital. It is assumed here that the mean service time of a group of patients
 may be approximated via their mean length of stay, i.e. the mean time spent in
-the system. As indicated by the distributions in Figure~\ref{fig:cluster_los},
-the length of stay distributions require shifting prior to fitting an
-exponential distribution. As such, this work employs a \(M/G/c\) queue with
-shifted exponential service time distributions for each cluster.
-
-To fit the model, the Wasserstein distance is used to recover an estimate for
-the proportion of the length of stay each cluster contributes to their active
-service time. To do this, a parameter sweep is utilised. The remainder of this
-section provides details of how these steps are done. Figure~\ref{fig:process}
-provides a diagrammatic depiction of the process described in this section.
+the system. As indicated in Figure~\ref{fig:cluster_los}, the lengths of stay
+require shifting prior to fitting an exponential distribution. As such, this
+work employs a \(M/G/c\) queue with shifted exponential service time
+distributions for each cluster. Figure~\ref{fig:process} provides a diagrammatic
+depiction of the process described in the remainder of this section to recover
+and simulate this \(M/G/c\) queue.
 
 \begin{figure}
     \centering%
@@ -717,29 +711,29 @@ Under the proposed \(M/G/c\) model, the following assumptions are made:
 
 \begin{enumerate}
     \item Inter-arrival and service times of patients are each exponentially
-        distributed with some mean. This distribution is used to simplify the
-        model parameterisation.
+        distributed with some mean and a `shift' defined in~\eqref{eq:shifted}.
+        This distribution is used to simplify the model parameterisation.
     \item There are \(c \in \mathbb{N}\) servers available to arriving patients
         at the node representing the overall resource availability, including
         bed capacity and hospital staff.
-    \item There is no queue or system capacity. In~\cite{Williams2015}, a
-        queue capacity of zero is set under the assumption that any surplus
-        arrivals would be sent to another suitable ward or unit. As this
-        hypothetical ward represents the sole unit for COPD patients within the
-        health board, this assumption is not held.
+    \item There is no queue or system capacity. A queue capacity of zero is used
+        in~\cite{Williams2015} under the assumption that any surplus arrivals
+        would be sent to another ward or unit. As this hypothetical ward
+        represents the sole unit for COPD patients within the health board, this
+        assumption is not held.
     \item Without the availability of expert clinical knowledge, a
-        first-in-first-out service policy is employed in place of some patient
-        priority framework.
+        first-in-first-out service policy is employed rather than some priority
+        framework.
 \end{enumerate}
 
 Each group of patients has its arrival distribution, the parameter of which is
-the reciprocal of the mean inter-arrival times for that group. This parameter
-is denoted by \(\lambda_l\) for each cluster \(l\).
+the reciprocal of the mean inter-arrival time for that group. This parameter
+is denoted \(\lambda_l\) for each cluster \(l\).
 
 Like arrivals, each group of patients has its service time distribution. As
-noted at the start of this section, the lengths of stay must be shifted before
-they can be used to derive the service time distribution. Let \(T_l\) denote the
-set of observed lengths of stay for cluster \(l\), and let
+noted earlier in this section, the lengths of stay must be shifted before they
+can be used to derive the service time distribution. Let \(T_l\) denote the set
+of observed lengths of stay for cluster \(l\), and let
 \(m_l = \max \left\{0, \min T_l\right\}\) be its feasible minimum. Thus, the
 shifted times for cluster \(l\), denoted \(\widehat T_l\), are:
 
@@ -748,10 +742,10 @@ shifted times for cluster \(l\), denoted \(\widehat T_l\), are:
 \end{equation}
 
 An exponential distribution may be fitted to these shifted system times by
-using their mean, denoted by \(\frac{1}{\phi_l}\), as the distribution
-parameter. For the sake of simplicity, it is assumed that for each cluster
-\(l\), the mean shifted service time of that cluster, \(\frac{1}{\mu_l}\), is
-proportional to the corresponding mean shifted system time such that:
+using their mean, denoted by \(\frac{1}{\phi_l}\). For the sake of simplicity,
+it is assumed that for each cluster \(l\), the mean shifted service time of that
+cluster, \(\frac{1}{\mu_l}\), is proportional to the corresponding mean shifted
+system time such that:
 
 \begin{equation}\label{eq:shifted_services}
     \mu_l = p_l \phi_l
@@ -760,8 +754,8 @@ proportional to the corresponding mean shifted system time such that:
 \noindent where \(p_l \in \interval[open left]{0}{1}\) is a service proportion
 parameter to be determined for each group.
 
-With these definitions, the service time for cluster \(l\), denoted \(S_l\), is
-distributed by a shifted exponential distribution with a mean of
+With these definitions, the service times for cluster \(l\), denoted \(S_l\),
+are distributed by a shifted exponential distribution with a mean of
 \(\frac{1}{\mu_l}\) and shift of \(m_l\). The probability density function of
 this distribution is as follows:
 
@@ -796,25 +790,24 @@ stay distributions for a range of values \(p_l\) and \(c\), to find the
 parameters that best match the observed data.
 
 Several methods are available for the statistical comparison of two or more
-distributions, such as the Kolmogorov-Smirnov test, a variety of discrepancy
-approaches such as summed mean-squared error, and \(f\)-divergences. A popular
-choice among the last group (which may be considered distance-like) is the
-Kullback-Leibler divergence which measures relative information entropy from one
-probability distribution to another~\citep{Kullback1951}. A key issue with many
-of these methods is that they lack interpretability, something which is
-paramount when conveying information to stakeholders, not only for explaining
-how something works, but also how its results may be explained.
+distributions, such as the Kolmogorov-Smirnov test, discrepancy approaches such
+as summed mean-squared error, and \(f\)-divergences. A popular choice among the
+last group (which may be considered distance-like) is the Kullback-Leibler
+divergence which measures relative information entropy from one probability
+distribution to another~\citep{Kullback1951}. A key issue with many of these
+methods is that they lack interpretability, something which is paramount when
+conveying information to stakeholders, not only for explaining how something
+works, but also how its results may be explained.
 
 As such, a reasonable candidate is the (first) Wasserstein metric, also known as
-the `earth mover' or `digger' distance~\citep{Vaserstein1969}. The Wasserstein
-metric satisfies the conditions of a formal mathematical metric and takes the
-units of the distributions under comparison (in this case: days). These
-characteristics can aid understanding and explanation. The distance measures the
-approximate `minimal work' required to move between two probability
-distributions where `work' can be loosely defined as the product of how much of
-the distribution's mass moves and the distance by which it must be moved. More
-formally, the Wasserstein distance between two probability distributions \(U\)
-and \(V\) is defined as:
+the `earth mover' distance~\citep{Vaserstein1969}. The Wasserstein metric
+satisfies the definition of a mathematical metric and takes the units of the
+distributions under comparison (in this case: days). These characteristics can
+aid understanding and explanation. The distance measures the approximate
+`minimal work' required to move between two probability distributions where
+`work' can be loosely defined as the product of how much of the distribution's
+mass moves and the distance by which it must be moved. Formally, the Wasserstein
+distance between two probability distributions \(U\) and \(V\) is defined as:
 
 \begin{equation}\label{eq:wasserstein}
     W(U, V) = {
@@ -829,7 +822,7 @@ in~\cite{Ramdas2017}.
 Each trial used here takes a parameter set and simulates the ward across a
 series of independent repetitions. The parameter set with the smallest maximum
 distance between the simulated system time distribution and the observed length
-of stay distribution is taken to be the most appropriate. To be specific, let
+of stay distribution is taken to be the most appropriate. Specifically, let
 \(T_{c,p}\) denote the system time distribution obtained from a simulation with
 \(c\) servers and \(p := \left(p_0,p_1,p_2,p_3\right)\), and let \(T\) denote
 the observed length of stay distribution. Then the optimal parameter set
@@ -842,13 +835,13 @@ the observed length of stay distribution. Then the optimal parameter set
 \end{equation}
 
 The parameter sweep included values of each \(p_l\) from \(0.5\) to \(1.0\) with
-a granularity of \(5.0 \times 10^{-2}\) and values of \(c\) from \(30\) to
-\(50\) at steps of five. These choices were informed by the assumptions of the
+a granularity of \(5.0 \times 10^{-2}\), and values of \(c\) from \(30\) to
+\(50\) in steps of five. These choices were informed by the assumptions of the
 model and formative analysis to reduce the parameter space given the
-computational resources required to conduct the simulations. Each parameter set
+computational resources required to perform the simulations. Each parameter set
 was repeated 50 times, with each simulation running for four years of virtual
-time. The warm-up and cool-down periods were taken to be approximately one year
-each, leaving two years of simulated data from each repetition.
+time. The warm-up and cool-down periods were taken to be one year each, leaving
+two years of simulated data from each repetition.
 
 \begin{figure}
     \centering
@@ -881,15 +874,15 @@ The results of this parameter sweep are summarised in Figure~\ref{fig:params}.
 Each plot shows a comparison of the observed lengths of stay across all groups
 and the newly simulated data with the best, median and worst parameter sets,
 respectively. These figures highlight the importance of choosing good parameters
-under this model as the differences in the quality of the fits are stark. In the
-best case the fit is uncanny, whereas the median case shows a distribution that
-inflates the presence of short-stay patients despite an otherwise good fit.
-Meanwhile, Figure~\ref{fig:worst_params} displays a distribution that only
-resembles the observed distribution in its positive skew; the worst-case
-distribution lacks the distinctive `exponential' nose and has a considerably
-heavier tail corresponding to a disproportionate amount of long-stay patients.
-Table~\ref{tab:comparison} reinforces these results numerically, showing a
-precise fit by the best parameter set across all measures.
+as the differences in the quality of the fits are stark. In the best case the
+fit is uncanny, whereas the median case shows a distribution that inflates
+short-stay patients despite an otherwise good fit. Meanwhile,
+Figure~\ref{fig:worst_params} displays a distribution that only resembles the
+observed distribution in its positive skew; the worst-case distribution lacks
+the distinctive exponential nose and has a considerably heavier tail from a
+disproportionate amount of long-stay patients. Table~\ref{tab:comparison}
+reinforces these results numerically, showing a precise fit everywhere by the
+best parameter set.
 
 \begin{table}
     \centering
@@ -900,31 +893,32 @@ precise fit by the best parameter set across all measures.
     }\label{tab:comparison}
 \end{table}
 
-In this section, the previously identified clustering enriched the overall
-queuing model and was used to recover the parameters for several classes within
-that. Now, using this model, the next section details an investigation into the
-underlying system by adjusting the parameters of the queue with the clustering.
+In this section, the identified clustering enriched the overall queuing model
+and was used to recover the parameters for several classes within that. The next
+section details an investigation into the underlying system by adjusting the
+parameters of the queue with the clustering.
+
 
 \section{Adjusting the queuing model}\label{sec:scenarios}
 
 This section comprises several what-if scenarios---a classic component of
 healthcare operational research---under the novel parameterisation of the
-queue established in Section~\ref{sec:model}. The outcomes of interest in this
+queue introduced in Section~\ref{sec:model}. The outcomes of interest in this
 work are server (resource) utilisation and system times. These metrics capture
-the driving forces of cost and the state of the system. Specifically, the
-objective of these experiments is to address the following questions:
+the driving forces of cost and the state of the system. The objective of these
+experiments is to address the following questions:
 \begin{itemize}
     \item How is the system affected by a change in overall patient arrivals?
     \item How is the system affected by a change in resource availability?
     \item How is the system affected by patients moving between clusters?
 \end{itemize}
 
-Given the nature of the observed data, the queuing model parameterisation and
+Given the nature of the observed data, the model parameterisation, and
 its assumptions, the effects on the chosen metrics in each scenario are in
-relative terms with respect to the base case. The base case being those results
-generated from the best parameter set recorded in Table~\ref{tab:comparison}. In
-particular, the data from each scenario is scaled by the corresponding median
-value in the base case, meaning that a metric having a value of 1 is `normal'.
+relative terms with respect to the base case---i.e., the results from the best
+parameter set recorded in Table~\ref{tab:comparison}. In particular, the data
+in each scenario is scaled by the corresponding median base case value, meaning
+that a metric having a value of 1 is `normal'.
 
 As mentioned in Section~\ref{sec:intro}, the source code used throughout this
 manuscript has been archived online under~\texttt{DOI:10.5281/zenodo.4457902}.
@@ -938,12 +932,11 @@ under~\texttt{DOI:10.5281/zenodo.4457808}.
 Changes in overall patient arrivals to a queue reflect real-world scenarios
 where some stimulus is improving (or worsening) the condition of the patient
 population. Examples of stimuli could include an ageing population or
-independent life events that lead to a change in deprivation, such as an
-accident or job loss. Within this model, overall patient arrivals are altered
-using a scaling factor denoted by \(\sigma > 0\). This scaling factor is applied
-to the model by multiplying each cluster's arrival rate by \(\sigma\). That is,
-the new arrival rate for a cluster, \(l\), denoted \(\hat\lambda_l\), is given
-by:
+independent life events that lead to a change in deprivation. Within this model,
+overall patient arrivals are altered using a scaling factor denoted by
+\(\sigma > 0\). This scaling factor is applied to the model by multiplying each
+cluster's arrival rate by \(\sigma\). That is, the new arrival rate for cluster
+\(l\), denoted \(\hat\lambda_l\), is given by:
 
 \begin{equation}\label{eq:lambda}
     \hat\lambda_{l} = \sigma\lambda_l
@@ -969,32 +962,30 @@ by:
     }\label{fig:lambda}
 \end{figure}
 
-Figure~\ref{fig:lambda} shows the effects of changing patient arrivals
-on~\subref{fig:lambda_time}~relative system times
-and~\subref{fig:lambda_util}~relative server utilisation for values of
-\(\sigma\) from 0.5 to 2.0 at a precision of \(1.0 \times 10^{-2}\).
-Specifically, each plot in the figure (and the subsequent figures in this
-section) shows the median and interquartile range (IQR) of each relative
-attribute. These metrics provide an insight into the experience of a typical
-user (or server) in the system. Furthermore, they reveal the stability and
-variation of the body of users (or servers).
+Figure~\ref{fig:lambda} shows the effect of changing patient arrivals
+on the relative system metrics for values of \(\sigma\) from 0.5 to 2.0 at a
+precision of \(1.0 \times 10^{-2}\). Each plot in the figure (and the subsequent
+figures in this section) shows the median and interquartile range (IQR) of each
+relative metric. These metrics provide an insight into the experience of a
+typical user (or server) in the system. Furthermore, they reveal the stability
+and variation of the body of users (or servers).
 
-What is evident from these plots is that things are happening as one might
-expect: as arrivals increase, the strain on the system increases. However, it
-should be noted that it also appears that the model has some amount of slack
-relative to the base case. Looking at Figure~\ref{fig:lambda_time}, for
-instance, the relative system time distribution stays unchanged up to \(\sigma
-\approx 1.2\), or an approximate 20\% increase in arrivals of COPD patients.
-Beyond that, relative system times quickly rise to an untenable point where the
-median time becomes orders of magnitude above the norm.
+The indications of these plots align with what one might expect: as arrivals
+increase, the strain on the system increases. However, it should be noted that
+it also appears that the model has some amount of slack relative to the base
+case. Looking at Figure~\ref{fig:lambda_time}, for instance, the relative system
+time distribution stays unchanged up to \(\sigma \approx 1.2\), or an
+approximate 20\% increase in arrivals of COPD patients. Beyond that, relative
+system times quickly rise to an untenable point where the median time reaches
+orders of magnitude above the norm.
 
-However, Figure~\ref{fig:lambda_util} shows that the situation for the system's
-resources reaches its worst-case near to the start of that spike in relative
-system times (at \(\sigma \approx 1.3\)). That is, the median server utilisation
-reaches a maximum (this corresponds to constant utilisation) at this point, and
-the variation in server utilisation disappears entirely. The reality of this
-situation is that the system has no slack at all, and all parts of the system
-are under equal load, which is not preferable given the differences in resource
+However, Figure~\ref{fig:lambda_util} shows that the system resources reach
+their worst case near to the start of that spike in relative system times (at
+\(\sigma \approx 1.3\)). That is, the median server utilisation hits its maximum
+at this point, and the variation in server utilisation disappears entirely. In
+this scenario, the servers are constantly active. The reality of this situation
+is that the system has no slack at all, and all parts of the system are under
+equal load, which is not preferable given the differences in resource
 requirements for the parts of a hospital system. For instance, if surgical
 theatres were in constant use but administrative processing required an
 equivalent amount of resources to continue running, the system would likely
@@ -1003,12 +994,12 @@ falter or deteriorate entirely.
 
 \subsection{Changes to resource availability}\label{subsec:resources}
 
-As is discussed in Section~\ref{sec:model}, the resource availability of the
-system is captured by the number of parallel servers, \(c\). Therefore, to
-modify the overall resource availability, only the number of servers needs to be
-changed. This kind of sensitivity analysis is usually done to determine the
-opportunity cost of adding service capacity to a system, e.g.\ would an increase
-of \(n\) servers sufficiently increase efficiency without exceeding a budget?
+As discussed in Section~\ref{sec:model}, the resource availability of the system
+is captured by the number of parallel servers, \(c\). Therefore, to modify the
+overall resource availability, only the number of servers needs to be changed.
+This kind of sensitivity analysis is usually done to determine the opportunity
+cost of adding service capacity to a system, e.g.\ would an increase of \(n\)
+servers sufficiently increase efficiency without exceeding a budget?
 
 To reiterate the beginning of this section: all suitable parameters are given in
 relative terms, including the number of servers here. By doing this, the changes
@@ -1040,21 +1031,22 @@ Figure~\ref{fig:servers} shows how the relative resource availability affects
 relative system times and server utilisation. In this scenario, the relative
 number of servers took values from 0.5 to 2.0 at an equivalent step size of one
 in the number of servers, i.e. \(c\) takes values from 17 to 70. Overall, these
-figures fortify the claim from the previous scenario that there is some room to
-manoeuvre so that the system runs `as normal', but pressing on those boundaries
-results in massive changes to both resource requirements and system times.
+figures bolster the claim from Section~\ref{subsec:arrivals} that there is some
+room to manoeuvre where the system runs as normal. However, pressing on those
+boundaries results in massive changes to both resource requirements and system
+times.
 
-In Figure~\ref{fig:servers_time} this amounts to a maximum of 10\% slack in
+In Figure~\ref{fig:servers_time}, this amounts to a maximum of 10\% slack in
 resources before relative system times are substantially affected; further
 reductions quickly result in a potentially tenfold increase in the median system
 time, and up to 100 times once resource availability falls by 50\%. Moreover,
 the variation in the body of the relative times (i.e. the IQR) decreases as
 resource availability decreases. The reality of this is that patients arriving
-at a hospital are forced to consume more significant amounts of resources (by
-merely being in a hospital) regardless of their condition, putting added strains
-on the system. Figure~\ref{fig:servers_util} mirrors these observations on the
-small amount of slack in resource requirements, but (as with the previous
-scenario) constant utilisation occurs quickly.
+at a hospital are forced to consume more resources (by merely being in a
+hospital) regardless of their condition, putting added strains on the system.
+Figure~\ref{fig:servers_util} mirrors these observations on the small amount of
+slack in resource requirements, but (as with the previous scenario) constant
+utilisation occurs quickly.
 
 Meanwhile, it appears that there is no tangible change in relative system times
 given an increase in the number of servers. This indicates that the model
@@ -1064,12 +1056,12 @@ system times.
 
 Again, Figure~\ref{fig:servers_util} shows that there is a substantial change in
 the variation in the relative utilisation of the servers. In this case, the
-variation dissipates as resource levels fall, and increases as resources
-increase. While the relationship between real hospital resources and the number
-of servers is not exact, having variation in server utilisation would suggest
-that small parts of an existing system may be configured or partitioned away in
-the case of some significant public health event (such as a global pandemic)
-without overloading the system.
+variation dissipates as resource levels fall, and increases with resources.
+While the relationship between real hospital resources and the number of servers
+is not exact, having variation in server utilisation would suggest that small
+parts of an existing system may be configured or partitioned away in the case of
+some significant public health event (such as a global pandemic) without
+overloading the system.
 
 
 \subsection{Moving arrivals between clusters}\label{subsec:moving}
@@ -1227,8 +1219,8 @@ This parameterisation ultimately recovers a surrogate for service times for each
 cluster, and a universal number of servers to emulate resource availability. The
 parameterisation itself offers its strengths by being straightforward and
 effective. Despite its simplicity, a good fit to the observed data is found,
-and---as is evident from the closing section of this manuscript---substantial
-and useful insights can be gained into the needs of the population under study.
+and---as is evident from Section~\ref{sec:scenarios}---substantial and useful
+insights can be gained into the needs of the population under study.
 
 This mode of analysis, in effect, considers all types of patient arrivals and
 how they each impact the system in terms of resource capacity and length of
